@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default function AuthSyles({children}){
+export default function AuthSyles({children, isDisabled, ...otherprops}){
     return (
         <>
         <Container>
@@ -8,7 +8,7 @@ export default function AuthSyles({children}){
                 <h1>Linkr</h1>
                 <p>save, share and discover<br/>the best links on the web</p>
             </Infos>
-            <Form>
+            <Form isDisabled={isDisabled} {...otherprops}>
                 {children}
             </Form>
         </Container>
@@ -59,7 +59,7 @@ const Form = styled.form`
         width: 100%;
         height: 65px;
         border-radius: 6px;
-        background-color: #FFF;
+        background-color: ${props => props.isDisabled ? '#8A8A8A' : '#FFF'};
         border: none;
         margin-bottom: 12px;
         padding-left: 15px;
@@ -78,7 +78,7 @@ const Form = styled.form`
     button{
         width: 100%;
         height: 65px;
-        background-color: #1877F2;
+        background-color: ${props => props.isDisabled ? '#8A8A8A' : '#1877F2'};
         display: flex;
         align-items: center;
         justify-content: center;
