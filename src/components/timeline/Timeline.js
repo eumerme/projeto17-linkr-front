@@ -27,6 +27,7 @@ export default function HomeScreen() {
         })
         .catch(() => {
           alert("Houve um erro ao publicar seu link");
+          setMsgBtn("Publish");
           setUrl("");
           setComment("");
           setIsDisabled(false);

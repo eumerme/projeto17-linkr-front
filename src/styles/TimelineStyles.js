@@ -49,6 +49,7 @@ const Navbar = styled.div`
     font-size: 49px;
     font-weight: 700;
     line-height: 53.95px;
+    font-family: "Passion One", cursive;
   }
   div {
     display: flex;
@@ -78,6 +79,7 @@ const Timeline = styled.div`
   align-items: center;
   h1 {
     width: 611px;
+    font-family: "Oswald", sans-serif;
     font-size: 43px;
     font-weight: 700;
     line-height: 63.73px;
@@ -98,6 +100,7 @@ const Publish = styled.div`
   background-color: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
+  font-family: "Lato", sans-serif;
   div {
     width: 86px;
     display: flex;
@@ -133,6 +136,9 @@ const Publish = styled.div`
         font-weight: 300;
         line-height: 18px;
         color: #949494;
+      }
+      :focus {
+        outline: 0;
       }
     }
     input:nth-child(3) {
