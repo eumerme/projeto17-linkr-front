@@ -1,9 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'http://localhost:4000';
+const BASE_URL = "http://localhost:4000";
 
-function register(body){
-    return axios.post(`${BASE_URL}/signup`, body);
+function register(body) {
+	return axios.post(`${BASE_URL}/sign-up`, body);
 }
 
-export { register };
+function login(body) {
+	return axios.post(`${BASE_URL}/sign-in`, body);
+}
+
+export { register, login };
