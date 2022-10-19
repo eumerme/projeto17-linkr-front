@@ -1,7 +1,39 @@
 import styled from "styled-components";
+import { IoIosArrowDown } from "react-icons/io";
 
-export default function TimelineStyles({ children }) {
-  return <></>;
+export default function TimelineStyles({
+  children,
+  isDisabled,
+  ...otherprops
+}) {
+  return (
+    <>
+      <Navbar>
+        <h1>linkr</h1>
+        <div>
+          <IoIosArrowDown />
+          <img
+            src="https://www.fotoregistro.com.br/subhomes/_lojas_consumer/paginas/fotos/fotos-2020/src/Img_11.png"
+            alt="profileImg"
+          ></img>
+        </div>
+      </Navbar>
+      <Timeline>
+        <h1>timeline</h1>
+        <Publish>
+          <div>
+            <img
+              src="https://www.fotoregistro.com.br/subhomes/_lojas_consumer/paginas/fotos/fotos-2020/src/Img_11.png"
+              alt="profileImg"
+            ></img>
+          </div>
+          <form isDisabled={isDisabled} {...otherprops}>
+            {children}
+          </form>
+        </Publish>
+      </Timeline>
+    </>
+  );
 }
 
 const Navbar = styled.div`
