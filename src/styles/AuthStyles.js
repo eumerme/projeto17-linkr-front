@@ -20,6 +20,12 @@ const Container = styled.div`
     box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: space-between;
+
+
+    @media screen and (max-width: 768px){
+        background-color: white;
+        flex-direction: column;
+    }
 `;
 
 const Infos = styled.div`
@@ -33,6 +39,7 @@ const Infos = styled.div`
     background-color: #151515;
     color: #FFF;
     font-weight: 700;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     h1{
         font-family: 'Passion One', cursive;
@@ -43,6 +50,27 @@ const Infos = styled.div`
         font-family: 'Oswald', sans-serif;
         font-size: 43px;
     }
+
+    @media screen and (max-width: 768px){
+       position: fixed;
+       left: 0;
+       right: 0;
+       top: 0;
+       width: 100%;
+       min-height: 175px;
+       padding-left: 0;
+       align-items: center;
+       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+       h1{
+        font-size: 76px;
+       }
+
+       p{
+        font-size: 23px;
+       }
+    }
+
 `;
 
 const Form = styled.form`
@@ -99,5 +127,20 @@ const Form = styled.form`
         color: #FFF;
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px){
+        width: 100%;
+        height: 100%;
+        justify-content: start;
+        padding-top: 200px;
+
+        input, button{
+            font-size: 22px;
+        }
+
+        p{
+            font-size: 17px;
+        }
     }
 `;
