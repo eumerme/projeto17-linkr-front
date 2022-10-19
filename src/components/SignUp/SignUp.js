@@ -7,7 +7,14 @@ export default function SingUp(){
                 <h1>Linkr</h1>
                 <p>save, share and discover<br/>the best links on the web</p>
             </Infos>
-            <Auth></Auth>
+            <Form>
+                <input placeholder='e-mail'/>
+                <input placeholder='password'/>
+                <input placeholder='username'/>
+                <input placeholder='picture url'/>
+                <button>Sign Up</button>
+                <p>Switch back to log in</p>
+            </Form>
         </Container>
     );
 }
@@ -41,8 +48,59 @@ const Infos = styled.div`
     }
 `;
 
-const Auth = styled.div`
+const Form = styled.form`
     width: 35%;
     min-height: 100vh;
     background-color: #333;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    input{
+        width: 100%;
+        height: 65px;
+        border-radius: 6px;
+        background-color: #FFF;
+        border: none;
+        margin-bottom: 12px;
+        padding-left: 15px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 27px;
+        font-weight: 700;
+        color: #9F9F9F;
+        cursor: pointer;
+    }
+
+    input::placeholder{
+        color: #9F9F9F;
+        font-size: 27px;
+    }
+
+    button{
+        width: 100%;
+        height: 65px;
+        background-color: #1877F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Oswald', sans-serif;
+        font-size: 27px;
+        font-weight: 700;
+        color: #FFF;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 12px;
+    }
+
+    p{
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        color: #FFF;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 `;
