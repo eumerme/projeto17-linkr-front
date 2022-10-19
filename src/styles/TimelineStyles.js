@@ -9,13 +9,15 @@ export default function TimelineStyles({
   return (
     <>
       <Navbar>
-        <h1>linkr</h1>
         <div>
-          <IoIosArrowDown />
-          <img
-            src="https://www.fotoregistro.com.br/subhomes/_lojas_consumer/paginas/fotos/fotos-2020/src/Img_11.png"
-            alt="profileImg"
-          ></img>
+          <h1>linkr</h1>
+          <span>
+            <IoIosArrowDown />
+            <img
+              src="https://www.fotoregistro.com.br/subhomes/_lojas_consumer/paginas/fotos/fotos-2020/src/Img_11.png"
+              alt="profileImg"
+            ></img>
+          </span>
         </div>
       </Navbar>
       <Timeline>
@@ -37,21 +39,26 @@ export default function TimelineStyles({
 }
 
 const Navbar = styled.div`
-  width: 1440px;
+  width: 100%;
   height: 72px;
   background-color: #151515;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 17px 0 28px;
+  justify-content: center;
   color: #ffffff;
+  div {
+    width: 1440px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 17px 0 28px;
+  }
   h1 {
     font-size: 49px;
     font-weight: 700;
     line-height: 53.95px;
     font-family: "Passion One", cursive;
   }
-  div {
+  span {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +69,7 @@ const Navbar = styled.div`
     border-radius: 27px;
     margin: 0 0 0 17px;
   }
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
     img {
       margin: 0 0 0 12px;
@@ -86,7 +93,7 @@ const Timeline = styled.div`
     text-align: justify;
     color: #ffffff;
     margin: 78px 0 43px 0;
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: 768px) {
       width: 100%;
       margin: 19px 0 19px 17px;
     }
@@ -116,6 +123,7 @@ const Publish = styled.div`
     width: 90%;
     display: flex;
     flex-direction: column;
+    position: relative;
     p {
       font-size: 20px;
       font-weight: 300;
@@ -154,9 +162,12 @@ const Publish = styled.div`
       font-size: 14px;
       font-weight: 700;
       line-height: 16.8px;
+      position: absolute;
+      bottom: 5px;
+      right: 5%;
     }
   }
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
     border-radius: 0px;
     div {
@@ -165,6 +176,9 @@ const Publish = styled.div`
     form {
       width: 100%;
       align-items: center;
+      button {
+        right: 2.5%;
+      }
     }
   }
 `;
