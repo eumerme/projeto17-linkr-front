@@ -78,7 +78,7 @@ export default function HomeScreen() {
         <button type="onSubmit">{msgBtn}</button>
       </TimelineStyles>
       {existPost ? 
-      posts.map(value =>  <PostStyles img={value.imageUrl} user={value.name} text={value.text}/>) 
+      posts.map((value, index) =>  <PostStyles key={index} img={value.imageUrl} user={value.name} text={value.text}/>) 
       : <Loading error={+errorServer} empty={+empty}/>}
       </Container>
     </>
