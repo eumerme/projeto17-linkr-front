@@ -14,4 +14,8 @@ function publish(body) {
   return axios.post(`${BASE_URL}/timeline/publish`, body);
 }
 
-export { register, login, publish };
+function listPosts(){
+  return axios.get(`${BASE_URL}/timeline/posts`);
+}
+
+export { register, login, publish, listPosts };

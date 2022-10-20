@@ -1,12 +1,28 @@
-import { useState } from "react";
-import { publish } from "../../services/linkr";
+import { useState, useEffect } from "react";
+import { publish, listPosts } from "../../services/linkr";
 import TimelineStyles from "../../styles/TimelineStyles";
+import PostStyles from "../../styles/PostStyles";
+import styled from 'styled-components';
+import Loading from "../../styles/Loading";
 
 export default function HomeScreen() {
   const [url, setUrl] = useState("");
   const [comment, setComment] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [msgBtn, setMsgBtn] = useState("Publish");
+  const [posts, setPosts] = useState([]);
+  const [existPost, setExistPost] = useState(false);
+  const [errorServer, setErrorServer] = useState(false);
+
+  useEffect(() => {
+    setTimeout(function(){
+      listPosts().then((data) => {
+        setPosts(data.data);
+      }).catch((error) => {
+        setErrorServer(true);
+      });
+    }, 1000);
+  }, []);
 
   function publishPost(event) {
     event.preventDefault();
@@ -37,6 +53,7 @@ export default function HomeScreen() {
 
   return (
     <>
+      <Container>
       <TimelineStyles onSubmit={publishPost} isDisabled={+isDisabled}>
         <p>What are you going to share today?</p>
         <input
@@ -57,6 +74,20 @@ export default function HomeScreen() {
         ></input>
         <button type="onSubmit">{msgBtn}</button>
       </TimelineStyles>
+      {existPost ? <></>: <Loading error={+errorServer}/>}
+        <PostStyles>
+            
+        </PostStyles>
+      </Container>
     </>
   );
 }
+
+const Container = styled.div`
+  min-height: 100vh;
+  background-color: #333333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;

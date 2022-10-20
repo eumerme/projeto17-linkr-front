@@ -38,6 +38,7 @@ export default function TimelineStyles({
   );
 }
 
+
 const Navbar = styled.div`
   width: 100%;
   height: 72px;
@@ -79,8 +80,7 @@ const Navbar = styled.div`
 
 const Timeline = styled.div`
   width: 100%;
-  height: 100vh;
-  background-color: #333333;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
