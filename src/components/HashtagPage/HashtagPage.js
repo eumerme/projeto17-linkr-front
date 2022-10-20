@@ -7,7 +7,6 @@ import PostStyles from "../../styles/PostStyles";
 export default function HashtagPage() {
   const params = useParams();
   const [posts, setPosts] = useState([]);
-  console.log(params.hashtag);
 
   useEffect(() => {
     setTimeout(function () {

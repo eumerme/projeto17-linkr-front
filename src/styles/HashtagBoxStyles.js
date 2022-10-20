@@ -27,7 +27,9 @@ export default function HashtagBox() {
       <h2>trending</h2>
       <ul>
         {posts.map((value, index) => (
-          <li onClick={() => redirect(value.name)}>{value.name}</li>
+          <li key={index} onClick={() => redirect(value.name)}>
+            # {value.name}
+          </li>
         ))}
       </ul>
     </Container>
