@@ -32,8 +32,19 @@ function listPosts() {
   return axios.get(`${BASE_URL}/timeline/posts`);
 }
 
+function listHashtags() {
+  return axios.get(`${BASE_URL}/hashtags`);
+}
+
 function listPostsbyHashtags(body) {
   return axios.get(`${BASE_URL}/hashtags/${body}`);
 }
 
-export { register, login, publish, listPosts, listPostsbyHashtags };
+export {
+  register,
+  login,
+  publish,
+  listPosts,
+  listHashtags,
+  listPostsbyHashtags,
+};

@@ -1,8 +1,22 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { listHashtags } from "../services/linkr";
 
 export default function HashtagBox() {
   const navigate = useNavigate();
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    setTimeout(function () {
+      listHashtags()
+        .then((data) => {
+          setPosts(data.data);
+        })
+        .catch();
+    }, 2000);
+  }, []);
 
   function redirect(text) {
     navigate(`/hashtag/${text}`);
@@ -12,12 +26,9 @@ export default function HashtagBox() {
     <Container>
       <h2>trending</h2>
       <ul>
-        <li onClick={() => redirect("hashtagName")}>
-          #NomeRealmenteMuitoGrandeParaVerNoLayou
-        </li>
-        <li onClick={() => redirect("hashtagName")}># react</li>
-        <li onClick={() => redirect("hashtagName")}># react-native</li>
-        <li onClick={() => redirect("hashtagName")}># web-dev</li>
+        {posts.map((value, index) => (
+          <li onClick={() => redirect(value.name)}>{value.name}</li>
+        ))}
       </ul>
     </Container>
   );
