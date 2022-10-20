@@ -1,6 +1,6 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { userLogout } from "../../../services/linkr";
 
 function ButtonLogout() {
@@ -42,7 +42,10 @@ export default function Logout({ auth }) {
 				setIsActive(!isActive);
 			}}
 		>
-			<IoIosArrowDown />
+			<ToggleArrow isActive={isActive}>
+				<IoIosArrowDown />
+			</ToggleArrow>
+
 			<img src={auth.image} alt="profileImg"></img>
 			<ButtonWrapper
 				ref={dropdownRef}
@@ -55,6 +58,11 @@ export default function Logout({ auth }) {
 	);
 }
 
+const ToggleArrow = styled.div`
+	transform: ${(props) => (props.isActive ? "rotate(180deg)" : "rotate(0deg)")};
+	transition: all 0.5s ease;
+`;
+
 const ButtonWrapper = styled.div`
 	width: 100px;
 	height: 47px;
@@ -65,7 +73,7 @@ const ButtonWrapper = styled.div`
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	top: 60px;
+	top: 70px;
 	right: 0;
 	background-color: #151515;
 	border-radius: 0px 0px 0px 20px;
@@ -80,7 +88,7 @@ const ButtonWrapper = styled.div`
               &&& {
                 opacity: 1;
                 visibility: visible;
-                transform: translateY(0);
+                transform: translateY(0);				
               } 
             `;
 		}
