@@ -14,6 +14,7 @@ export default function HomeScreen() {
 	const [existPost, setExistPost] = useState(false);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
+	const [upload, setUpload] = useState(true);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -27,7 +28,7 @@ export default function HomeScreen() {
 					setErrorServer(true);
 				});
 		}, 2000);
-	}, []);
+	}, [upload]);
 
 	function publishPost(event) {
 		event.preventDefault();
@@ -42,11 +43,14 @@ export default function HomeScreen() {
 		} else {
 			publish({ url, comment })
 				.then(() => {
+					setMsgBtn("Publish");
 					setIsDisabled(false);
 					setUrl("");
 					setComment("");
+					setUpload(!upload);
 				})
 				.catch((error) => {
+					setIsDisabled(false);
 					if (error.response.status === 401) {
 						alert("Sessão expirada, faça login novamente!");
 						localStorage.clear("linkr");
@@ -86,8 +90,9 @@ export default function HomeScreen() {
 					<button type="onSubmit">{msgBtn}</button>
 				</TimelineStyles>
 				{existPost ? (
-					posts.map((value) => (
+					posts.map((value, index) => (
 						<PostStyles
+							key={index}
 							img={value.imageUrl}
 							user={value.name}
 							text={value.text}

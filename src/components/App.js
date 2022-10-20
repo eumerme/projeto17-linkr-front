@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SingUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import Timeline from "./timeline/Timeline";
+import HashtagPage from "./HashtagPage/HashtagPage";
 import Private from "./Private/Private";
 
 export default function App() {
@@ -18,6 +19,14 @@ export default function App() {
 						element={
 							<Private>
 								<Timeline />
+							</Private>
+						}
+					/>
+					<Route
+						path="/hashtag/:hashtag"
+						element={
+							<Private>
+								<HashtagPage />
 							</Private>
 						}
 					/>

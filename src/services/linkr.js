@@ -36,4 +36,20 @@ async function userLogout() {
 	return axios.post(`${BASE_URL}/logout`, {}, config);
 }
 
-export { register, login, publish, listPosts, userLogout };
+function listHashtags() {
+	return axios.get(`${BASE_URL}/hashtags`);
+}
+
+function listPostsbyHashtags(body) {
+	return axios.get(`${BASE_URL}/hashtags/${body}`);
+}
+
+export {
+	register,
+	login,
+	publish,
+	listPosts,
+	userLogout,
+	listHashtags,
+	listPostsbyHashtags,
+};

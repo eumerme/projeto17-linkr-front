@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Logout from "../components/timeline/Logout/Logout";
+import HashtagBox from "./HashtagBoxStyles";
 
 export default function TimelineStyles({
 	children,
@@ -26,6 +27,7 @@ export default function TimelineStyles({
 						{children}
 					</form>
 				</Publish>
+				<HashtagBox></HashtagBox>
 			</Timeline>
 		</>
 	);
@@ -80,6 +82,7 @@ const Timeline = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 	h1 {
 		width: 611px;
 		font-family: "Oswald", sans-serif;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export default function PostStyles({img, user, text}){
+
     return (
         <>
         <Container>
@@ -25,6 +26,11 @@ const Container = styled.div`
     height: 276px;
     border-radius: 16px;
     display: flex;
+
+    @media screen and (max-width: 768px){
+        width: 100%;
+        border-radius: 0;
+    }
 `;
 
 const Infos = styled.div`
