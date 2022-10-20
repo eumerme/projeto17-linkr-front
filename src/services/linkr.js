@@ -1,21 +1,39 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
 
-function register(body) {
-  return axios.post(`${BASE_URL}/sign-up`, body);
+function createHeaders() {
+	const auth = JSON.parse(localStorage.getItem("linkr"));
+
+	if (auth !== null) {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		};
+		return config;
+	}
 }
 
-function login(body) {
-  return axios.post(`${BASE_URL}/sign-in`, body);
+async function register(body) {
+	return axios.post(`${BASE_URL}/sign-up`, body);
 }
 
-function publish(body) {
-  return axios.post(`${BASE_URL}/timeline/publish`, body);
+async function login(body) {
+	return axios.post(`${BASE_URL}/sign-in`, body);
 }
 
-function listPosts(){
-  return axios.get(`${BASE_URL}/timeline/posts`);
+async function publish(body) {
+	return axios.post(`${BASE_URL}/timeline/publish`, body);
 }
 
-export { register, login, publish, listPosts };
+async function listPosts() {
+	return axios.get(`${BASE_URL}/timeline/posts`);
+}
+
+async function userLogout() {
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/logout`, {}, config);
+}
+
+export { register, login, publish, listPosts, userLogout };
