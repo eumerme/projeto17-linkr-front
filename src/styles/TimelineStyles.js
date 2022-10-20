@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
+import HashtagBox from "./HashtagBoxStyles";
 
 export default function TimelineStyles({
   children,
@@ -33,11 +34,11 @@ export default function TimelineStyles({
             {children}
           </form>
         </Publish>
+        <HashtagBox></HashtagBox>
       </Timeline>
     </>
   );
 }
-
 
 const Navbar = styled.div`
   width: 100%;
@@ -84,6 +85,7 @@ const Timeline = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   h1 {
     width: 611px;
     font-family: "Oswald", sans-serif;

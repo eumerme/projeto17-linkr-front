@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { publish, listPosts } from "../../services/linkr";
 import TimelineStyles from "../../styles/TimelineStyles";
 import PostStyles from "../../styles/PostStyles";
-import styled from 'styled-components';
+import styled from "styled-components";
 import Loading from "../../styles/Loading";
 
 export default function HomeScreen() {
@@ -14,18 +14,21 @@ export default function HomeScreen() {
   const [existPost, setExistPost] = useState(false);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
+  const [upload, setUpload] = useState(true);
 
   useEffect(() => {
-    setTimeout(function(){
-      listPosts().then((data) => {
-        setPosts(data.data);
-        if(data.data.length === 0) setEmpty(true);
-        else setExistPost(true);
-      }).catch((error) => {
-        setErrorServer(true);
-      });
+    setTimeout(function () {
+      listPosts()
+        .then((data) => {
+          setPosts(data.data);
+          if (data.data.length === 0) setEmpty(true);
+          else setExistPost(true);
+        })
+        .catch((error) => {
+          setErrorServer(true);
+        });
     }, 2000);
-  }, []);
+  }, [upload]);
 
   function publishPost(event) {
     event.preventDefault();
@@ -40,9 +43,11 @@ export default function HomeScreen() {
     } else {
       publish({ url, comment })
         .then(() => {
+          setMsgBtn("Publish");
           setIsDisabled(false);
           setUrl("");
           setComment("");
+          setUpload(!upload);
         })
         .catch(() => {
           alert("Houve um erro ao publicar seu link");
@@ -57,29 +62,38 @@ export default function HomeScreen() {
   return (
     <>
       <Container>
-      <TimelineStyles onSubmit={publishPost} isDisabled={+isDisabled}>
-        <p>What are you going to share today?</p>
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          disabled={isDisabled}
-          type="text"
-          placeholder="http://..."
-          required
-        ></input>
-        <input
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          disabled={isDisabled}
-          type="text"
-          placeholder="Awesome article about..."
-          required
-        ></input>
-        <button type="onSubmit">{msgBtn}</button>
-      </TimelineStyles>
-      {existPost ? 
-      posts.map((value, index) =>  <PostStyles key={index} img={value.imageUrl} user={value.name} text={value.text}/>) 
-      : <Loading error={+errorServer} empty={+empty}/>}
+        <TimelineStyles onSubmit={publishPost} isDisabled={+isDisabled}>
+          <p>What are you going to share today?</p>
+          <input
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            disabled={isDisabled}
+            type="text"
+            placeholder="http://..."
+            required
+          ></input>
+          <input
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            disabled={isDisabled}
+            type="text"
+            placeholder="Awesome article about..."
+            required
+          ></input>
+          <button type="onSubmit">{msgBtn}</button>
+        </TimelineStyles>
+        {existPost ? (
+          posts.map((value, index) => (
+            <PostStyles
+              key={index}
+              img={value.imageUrl}
+              user={value.name}
+              text={value.text}
+            />
+          ))
+        ) : (
+          <Loading error={+errorServer} empty={+empty} />
+        )}
       </Container>
     </>
   );
