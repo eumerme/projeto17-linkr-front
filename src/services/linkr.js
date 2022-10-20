@@ -1,50 +1,55 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
 
 function createHeaders() {
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
-  if (auth) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    };
-    return config;
-  }
+	if (auth !== null) {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		};
+		return config;
+	}
 }
 
-function register(body) {
-  return axios.post(`${BASE_URL}/sign-up`, body);
+async function register(body) {
+	return axios.post(`${BASE_URL}/sign-up`, body);
 }
 
-function login(body) {
-  return axios.post(`${BASE_URL}/sign-in`, body);
+async function login(body) {
+	return axios.post(`${BASE_URL}/sign-in`, body);
 }
 
-function publish(body) {
-  const config = createHeaders();
-  return axios.post(`${BASE_URL}/timeline/publish`, body, config);
+async function publish(body) {
+	return axios.post(`${BASE_URL}/timeline/publish`, body);
 }
 
-function listPosts() {
-  return axios.get(`${BASE_URL}/timeline/posts`);
+async function listPosts() {
+	return axios.get(`${BASE_URL}/timeline/posts`);
+}
+
+async function userLogout() {
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/logout`, {}, config);
 }
 
 function listHashtags() {
-  return axios.get(`${BASE_URL}/hashtags`);
+	return axios.get(`${BASE_URL}/hashtags`);
 }
 
 function listPostsbyHashtags(body) {
-  return axios.get(`${BASE_URL}/hashtags/${body}`);
+	return axios.get(`${BASE_URL}/hashtags/${body}`);
 }
 
 export {
-  register,
-  login,
-  publish,
-  listPosts,
-  listHashtags,
-  listPostsbyHashtags,
+	register,
+	login,
+	publish,
+	listPosts,
+	userLogout,
+	listHashtags,
+	listPostsbyHashtags,
 };

@@ -28,6 +28,7 @@ export default function SignIn() {
 					JSON.stringify({
 						name: res.data.name,
 						token: res.data.token,
+						image: res.data.image,
 					})
 				);
 				navigate("/timeline");

@@ -6,104 +6,111 @@ import styled from "styled-components";
 import Loading from "../../styles/Loading";
 
 export default function HomeScreen() {
-  const [url, setUrl] = useState("");
-  const [comment, setComment] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [msgBtn, setMsgBtn] = useState("Publish");
-  const [posts, setPosts] = useState([]);
-  const [existPost, setExistPost] = useState(false);
-  const [errorServer, setErrorServer] = useState(false);
-  const [empty, setEmpty] = useState(false);
-  const [upload, setUpload] = useState(true);
+	const [url, setUrl] = useState("");
+	const [comment, setComment] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
+	const [msgBtn, setMsgBtn] = useState("Publish");
+	const [posts, setPosts] = useState([]);
+	const [existPost, setExistPost] = useState(false);
+	const [errorServer, setErrorServer] = useState(false);
+	const [empty, setEmpty] = useState(false);
+	const [upload, setUpload] = useState(true);
 
-  useEffect(() => {
-    setTimeout(function () {
-      listPosts()
-        .then((data) => {
-          setPosts(data.data);
-          if (data.data.length === 0) setEmpty(true);
-          else setExistPost(true);
-        })
-        .catch((error) => {
-          setErrorServer(true);
-        });
-    }, 2000);
-  }, [upload]);
+	useEffect(() => {
+		setTimeout(function () {
+			listPosts()
+				.then((data) => {
+					setPosts(data.data);
+					if (data.data.length === 0) setEmpty(true);
+					else setExistPost(true);
+				})
+				.catch((error) => {
+					setErrorServer(true);
+				});
+		}, 2000);
+	}, [upload]);
 
-  function publishPost(event) {
-    event.preventDefault();
-    setIsDisabled(true);
-    setMsgBtn("Publishing...");
-    if (url === " ") {
-      setTimeout(function () {
-        alert("É necessário compartilhar uma Url para publicar!");
-        setIsDisabled(false);
-        setMsgBtn("Publish");
-      }, 1000);
-    } else {
-      publish({ url, comment })
-        .then(() => {
-          setMsgBtn("Publish");
-          setIsDisabled(false);
-          setUrl("");
-          setComment("");
-          setUpload(!upload);
-        })
-        .catch(() => {
-          alert("Houve um erro ao publicar seu link");
-          setMsgBtn("Publish");
-          setUrl("");
-          setComment("");
-          setIsDisabled(false);
-        });
-    }
-  }
+	function publishPost(event) {
+		event.preventDefault();
+		setIsDisabled(true);
+		setMsgBtn("Publishing...");
+		if (url === " ") {
+			setTimeout(function () {
+				alert("É necessário compartilhar uma Url para publicar!");
+				setIsDisabled(false);
+				setMsgBtn("Publish");
+			}, 1000);
+		} else {
+			publish({ url, comment })
+				.then(() => {
+					setMsgBtn("Publish");
+					setIsDisabled(false);
+					setUrl("");
+					setComment("");
+					setUpload(!upload);
+				})
+				.catch((error) => {
+					setIsDisabled(false);
+					if (error.response.status === 401) {
+						alert("Sessão expirada, faça login novamente!");
+						localStorage.clear("linkr");
+						window.location.reload();
+					} else {
+						alert("Houve um erro ao publicar seu link");
+						setMsgBtn("Publish");
+						setUrl("");
+						setComment("");
+						setIsDisabled(false);
+					}
+				});
+		}
+	}
 
-  return (
-    <>
-      <Container>
-        <TimelineStyles onSubmit={publishPost} isDisabled={+isDisabled}>
-          <p>What are you going to share today?</p>
-          <input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            disabled={isDisabled}
-            type="text"
-            placeholder="http://..."
-            required
-          ></input>
-          <input
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            disabled={isDisabled}
-            type="text"
-            placeholder="Awesome article about..."
-            required
-          ></input>
-          <button type="onSubmit">{msgBtn}</button>
-        </TimelineStyles>
-        {existPost ? (
-          posts.map((value, index) => (
-            <PostStyles
-              key={index}
-              img={value.imageUrl}
-              user={value.name}
-              text={value.text}
-            />
-          ))
-        ) : (
-          <Loading error={+errorServer} empty={+empty} />
-        )}
-      </Container>
-    </>
-  );
+	return (
+		<>
+			<Container>
+				<TimelineStyles onSubmit={publishPost} isDisabled={+isDisabled}>
+					<p>What are you going to share today?</p>
+					<input
+						value={url}
+						onChange={(e) => setUrl(e.target.value)}
+						disabled={isDisabled}
+						type="text"
+						placeholder="http://..."
+						required
+					></input>
+					<input
+						value={comment}
+						onChange={(e) => setComment(e.target.value)}
+						disabled={isDisabled}
+						type="text"
+						placeholder="Awesome article about..."
+						required
+					></input>
+					<button type="onSubmit">{msgBtn}</button>
+				</TimelineStyles>
+				{existPost ? (
+					posts.map((value, index) => (
+						<PostStyles
+							key={index}
+							img={value.imageUrl}
+							user={value.name}
+							text={value.text}
+						/>
+					))
+				) : (
+					<Loading error={+errorServer} empty={+empty} />
+				)}
+			</Container>
+		</>
+	);
 }
 
 const Container = styled.div`
-  min-height: 100vh;
-  background-color: #333333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+	min-height: 100vh;
+	background-color: #333333;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 `;

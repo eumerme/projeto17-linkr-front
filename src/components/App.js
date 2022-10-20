@@ -4,19 +4,34 @@ import SingUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import Timeline from "./timeline/Timeline";
 import HashtagPage from "./HashtagPage/HashtagPage";
+import Private from "./Private/Private";
 
 export default function App() {
-  return (
-    <>
-      <GlobalStyle />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/sign-up" element={<SingUp />} />
-          <Route path="/timeline" element={<Timeline />} />
-          <Route path="/hashtag/:hashtag" element={<HashtagPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+	return (
+		<>
+			<GlobalStyle />
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<SignIn />} />
+					<Route path="/sign-up" element={<SingUp />} />
+					<Route
+						path="/timeline"
+						element={
+							<Private>
+								<Timeline />
+							</Private>
+						}
+					/>
+					<Route
+						path="/hashtag/:hashtag"
+						element={
+							<Private>
+								<HashtagPage />
+							</Private>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
 }
