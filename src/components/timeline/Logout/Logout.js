@@ -1,6 +1,6 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { userLogout } from "../../../services/linkr";
 
 function ButtonLogout() {
