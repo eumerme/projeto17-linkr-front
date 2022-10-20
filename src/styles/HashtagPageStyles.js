@@ -19,7 +19,7 @@ export default function HashtagPageStyles({ children, params }) {
           </div>
         </Navbar>
         <Timeline>
-          <h1># {params}</h1>
+          <span># {params}</span>
           {children}
           <HashtagBox></HashtagBox>
         </Timeline>
@@ -82,7 +82,7 @@ const Timeline = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  h1 {
+  span {
     width: 611px;
     font-family: "Oswald", sans-serif;
     font-size: 43px;

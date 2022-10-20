@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { listPosts } from "../../services/linkr";
+import { listPostsbyHashtags } from "../../services/linkr";
 import HashtagPageStyles from "../../styles/HashtagPageStyles";
 import PostStyles from "../../styles/PostStyles";
 
 export default function HashtagPage() {
   const params = useParams();
   const [posts, setPosts] = useState([]);
+  console.log(params.hashtag);
 
   useEffect(() => {
     setTimeout(function () {
-      listPosts()
+      listPostsbyHashtags(params.hashtag)
         .then((data) => {
           setPosts(data.data);
         })
         .catch();
     }, 2000);
-  }, []);
+  }, [params.hashtag]);
   return (
     <>
       <HashtagPageStyles params={params.hashtag}>
