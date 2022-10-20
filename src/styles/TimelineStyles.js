@@ -38,7 +38,6 @@ export default function TimelineStyles({
   );
 }
 
-
 const Navbar = styled.div`
   width: 100%;
   height: 72px;
