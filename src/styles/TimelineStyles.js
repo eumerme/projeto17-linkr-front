@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
+import HashtagBox from "./HashtagBoxStyles";
 
 export default function TimelineStyles({
   children,
@@ -20,8 +21,10 @@ export default function TimelineStyles({
           </span>
         </div>
       </Navbar>
-      <Timeline>
+      <Title>
         <h1>timeline</h1>
+      </Title>
+      <Timeline>
         <Publish>
           <div>
             <img
@@ -33,6 +36,7 @@ export default function TimelineStyles({
             {children}
           </form>
         </Publish>
+        <HashtagBox></HashtagBox>
       </Timeline>
     </>
   );
@@ -77,12 +81,9 @@ const Navbar = styled.div`
   }
 `;
 
-const Timeline = styled.div`
-  width: 100%;
-  height: 100%;
+const Title = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   h1 {
     width: 611px;
     font-family: "Oswald", sans-serif;
@@ -97,6 +98,14 @@ const Timeline = styled.div`
       margin: 19px 0 19px 17px;
     }
   }
+`;
+
+const Timeline = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Publish = styled.div`
