@@ -21,10 +21,8 @@ export default function TimelineStyles({
           </span>
         </div>
       </Navbar>
-      <Title>
-        <h1>timeline</h1>
-      </Title>
       <Timeline>
+        <h1>timeline</h1>
         <Publish>
           <div>
             <img
@@ -81,9 +79,12 @@ const Navbar = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Timeline = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   h1 {
     width: 611px;
     font-family: "Oswald", sans-serif;
@@ -98,14 +99,6 @@ const Title = styled.div`
       margin: 19px 0 19px 17px;
     }
   }
-`;
-
-const Timeline = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Publish = styled.div`

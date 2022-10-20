@@ -9,18 +9,6 @@ export default function HashtagBox() {
         <li># react</li>
         <li># react-native</li>
         <li># web-dev</li>
-        <li># NomeRealmenteMuitoGrandeParaVerNoLayou</li>
-        <li># react</li>
-        <li># react-native</li>
-        <li># web-dev</li>
-        <li># NomeRealmenteMuitoGrandeParaVerNoLayou</li>
-        <li># react</li>
-        <li># react-native</li>
-        <li># web-dev</li>
-        <li># NomeRealmenteMuitoGrandeParaVerNoLayou</li>
-        <li># react</li>
-        <li># react-native</li>
-        <li># web-dev</li>
       </ul>
     </Container>
   );
@@ -31,6 +19,9 @@ const Container = styled.div`
   height: 406px;
   border-radius: 16px;
   background-color: #171717;
+  position: absolute;
+  right: 6%;
+  top: 0;
   h1 {
     width: 100%;
     font-family: "Oswald", sans-serif;
@@ -59,5 +50,8 @@ const Container = styled.div`
       margin: 0 0 8px 0;
       cursor: pointer;
     }
+  }
+  @media screen and (max-width: 1024px) {
+    display: none;
   }
 `;
