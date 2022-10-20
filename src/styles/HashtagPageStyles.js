@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import HashtagBox from "./HashtagBoxStyles";
 
-export default function HashtagPageStyles() {
+export default function HashtagPageStyles({ children, params }) {
   return (
     <>
       <Container>
@@ -19,7 +19,8 @@ export default function HashtagPageStyles() {
           </div>
         </Navbar>
         <Timeline>
-          <h1>timeline</h1>
+          <h1># {params}</h1>
+          {children}
           <HashtagBox></HashtagBox>
         </Timeline>
       </Container>
