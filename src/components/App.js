@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SingUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import Timeline from "./timeline/Timeline";
+import HashtagPage from "./HashtagPage/HashtagPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/" element={<SignIn />} />
           <Route path="/sign-up" element={<SingUp />} />
           <Route path="/timeline" element={<Timeline />} />
+          <Route path="/hashtag/:hashtag" element={<HashtagPage />} />
         </Routes>
       </BrowserRouter>
     </>

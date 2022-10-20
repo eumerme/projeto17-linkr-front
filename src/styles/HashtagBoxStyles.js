@@ -1,14 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function HashtagBox() {
+  const navigate = useNavigate();
+
+  function redirect(text) {
+    navigate(`/hashtag/${text}`);
+  }
+
   return (
     <Container>
       <h2>trending</h2>
       <ul>
-        <li>#NomeRealmenteMuitoGrandeParaVerNoLayou</li>
-        <li># react</li>
-        <li># react-native</li>
-        <li># web-dev</li>
+        <li onClick={() => redirect("hashtagName")}>
+          #NomeRealmenteMuitoGrandeParaVerNoLayou
+        </li>
+        <li onClick={() => redirect("hashtagName")}># react</li>
+        <li onClick={() => redirect("hashtagName")}># react-native</li>
+        <li onClick={() => redirect("hashtagName")}># web-dev</li>
       </ul>
     </Container>
   );
