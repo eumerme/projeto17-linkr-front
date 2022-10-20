@@ -13,15 +13,18 @@ export default function HomeScreen() {
   const [posts, setPosts] = useState([]);
   const [existPost, setExistPost] = useState(false);
   const [errorServer, setErrorServer] = useState(false);
+  const [empty, setEmpty] = useState(false);
 
   useEffect(() => {
     setTimeout(function(){
       listPosts().then((data) => {
         setPosts(data.data);
+        if(data.data.length === 0) setEmpty(true);
+        else setExistPost(true);
       }).catch((error) => {
         setErrorServer(true);
       });
-    }, 1000);
+    }, 2000);
   }, []);
 
   function publishPost(event) {
@@ -74,10 +77,9 @@ export default function HomeScreen() {
         ></input>
         <button type="onSubmit">{msgBtn}</button>
       </TimelineStyles>
-      {existPost ? <></>: <Loading error={+errorServer}/>}
-        <PostStyles>
-            
-        </PostStyles>
+      {existPost ? 
+      posts.map(value =>  <PostStyles img={value.imageUrl} user={value.name} text={value.text}/>) 
+      : <Loading error={+errorServer} empty={+empty}/>}
       </Container>
     </>
   );

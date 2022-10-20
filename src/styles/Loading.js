@@ -1,13 +1,23 @@
 import { ThreeDots } from "react-loader-spinner";
 import styled from 'styled-components';
 
-export default function Loading({error}){
+export default function Loading({error, empty}){
 
     if(error){
         return (
             <Wrapper>
                 <h1>
                     An error occured while trying to fetch the posts, please refresh the page
+                </h1>
+            </Wrapper>
+        )
+    }
+
+    if(empty){
+        return (
+            <Wrapper>
+                <h1>
+                    There are no posts yet
                 </h1>
             </Wrapper>
         )
