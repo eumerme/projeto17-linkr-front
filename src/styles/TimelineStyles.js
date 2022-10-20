@@ -85,6 +85,7 @@ const Timeline = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   h1 {
     width: 611px;
     font-family: "Oswald", sans-serif;

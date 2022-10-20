@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function HashtagBox() {
   return (
     <Container>
-      <h1>trending</h1>
+      <h2>trending</h2>
       <ul>
         <li>#NomeRealmenteMuitoGrandeParaVerNoLayou</li>
         <li># react</li>
@@ -21,8 +21,8 @@ const Container = styled.div`
   background-color: #171717;
   position: absolute;
   right: 6%;
-  top: 0;
-  h1 {
+  top: 184.72px;
+  h2 {
     width: 100%;
     font-family: "Oswald", sans-serif;
     font-size: 27px;
