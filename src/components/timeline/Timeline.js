@@ -96,6 +96,7 @@ export default function HomeScreen() {
 							img={value.imageUrl}
 							user={value.name}
 							text={value.text}
+							id={value.id}
 						/>
 					))
 				) : (

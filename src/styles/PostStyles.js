@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import { useState } from 'react';
+import { likes } from '../services/linkr';
 
-export default function PostStyles({img, user, text}){
+export default function PostStyles({id, img, user, text}){
 
     const [clickLike, setClickLike] = useState({
         draw: <AiOutlineHeart color='#FFF' size='30px' />,
@@ -15,10 +16,23 @@ export default function PostStyles({img, user, text}){
                 draw: <AiFillHeart color='red' size='30px' />,
                 type: true
             });
+            likes({
+                id,
+                type: 'like',
+            }).then(() => {}).catch((error) => {
+                console.log(error.response.status);
+            });
+
         }else{
             setClickLike({
                 draw: <AiOutlineHeart color='#FFF' size='30px' />,
                 type: false
+            });
+            likes({
+                id,
+                type: 'noLike',
+            }).then(() => {}).catch((error) => {
+                console.log(error.response.status);
             });
         }
     };

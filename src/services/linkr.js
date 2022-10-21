@@ -45,6 +45,10 @@ function listPostsbyHashtags(body) {
 	return axios.get(`${BASE_URL}/hashtags/${body}`);
 }
 
+function likes(body){
+	return axios.post(`${BASE_URL}/timeline/likes`, body);
+}
+
 export {
 	register,
 	login,
@@ -53,4 +57,5 @@ export {
 	userLogout,
 	listHashtags,
 	listPostsbyHashtags,
+	likes
 };
