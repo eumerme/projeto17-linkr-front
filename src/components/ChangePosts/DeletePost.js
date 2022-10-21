@@ -12,34 +12,30 @@ const customStyles = {
 };
 
 export default function DeleteModal({ modalIsOpen, setIsOpen }) {
-  function afterOpenModal() {
-    subtitle.style.color = "#f00";
-  }
-
   function closeModal() {
     setIsOpen(false);
   }
 
-  let subtitle = "heelo";
+  function deletePost() {
+    alert("em breve função de apagar o post");
+    setIsOpen(false);
+  }
+
   return (
     <>
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="DeletePostModal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <p>
+          Are you sure you want
+          <br />
+          to delete this post?
+        </p>
+        <button onClick={closeModal}>No, go back</button>
+        <button onClick={deletePost}>Yes, delete it</button>
       </Modal>
     </>
   );
