@@ -6,6 +6,7 @@ function createHeaders() {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	if (auth !== null) {
+		console.log(auth.token);
 		const config = {
 			headers: {
 				Authorization: `Bearer ${auth.token}`,
@@ -24,7 +25,8 @@ async function login(body) {
 }
 
 async function publish(body) {
-	return axios.post(`${BASE_URL}/timeline/publish`, body);
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/timeline/publish`, body, config);
 }
 
 async function listPosts() {
@@ -36,11 +38,12 @@ async function userLogout() {
 	return axios.post(`${BASE_URL}/logout`, {}, config);
 }
 
-function listHashtags() {
+async function listHashtags() {
 	return axios.get(`${BASE_URL}/hashtags`);
 }
 
-function listPostsbyHashtags(body) {
+async function listPostsbyHashtags(body) {
+	console.log(body);
 	return axios.get(`${BASE_URL}/hashtags/${body}`);
 }
 

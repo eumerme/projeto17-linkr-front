@@ -1,7 +1,7 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { userLogout } from "../../../services/linkr";
+import { userLogout } from "../../services/linkr.js";
 
 function ButtonLogout() {
 	const promise = userLogout();
@@ -13,9 +13,10 @@ function ButtonLogout() {
 		.catch((error) => console.error(error));
 }
 
-export default function Logout({ auth }) {
+export default function Logout() {
 	const dropdownRef = useRef(null);
 	const [isActive, setIsActive] = useState(false);
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	useEffect(() => {
 		const pageClickEvent = (e) => {
@@ -64,7 +65,7 @@ const ToggleArrow = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-	width: 100px;
+	width: 120px;
 	height: 47px;
 	font-family: "Lato", sans-serif;
 	font-weight: 700;
