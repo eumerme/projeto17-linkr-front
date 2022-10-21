@@ -2,7 +2,14 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { editPostText } from "../../services/linkr";
 
-export default function EditPost({ isEditing, setIsEditing, text }) {
+export default function EditPost({
+  isEditing,
+  setIsEditing,
+  text,
+  id,
+  upload,
+  setUpload,
+}) {
   const [comment, setComment] = useState(text);
   const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef(null);
@@ -16,9 +23,10 @@ export default function EditPost({ isEditing, setIsEditing, text }) {
   function changeText(e) {
     if (e.key === "Enter") {
       setIsDisabled(true);
-      editPostText({ comment })
+      editPostText({ comment: comment }, id)
         .then(() => {
           setIsEditing(!isEditing);
+          setUpload(!upload);
         })
         .catch(() => {
           alert("Não foi possível salvar suas alterações, tente novamente!");

@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import EditPost from "../components/ChangePosts/EditPost";
 import { useState } from "react";
 
-export default function PostStyles({ id, img, user, text }) {
+export default function PostStyles({ id, img, user, text, upload, setUpload }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -30,6 +30,8 @@ export default function PostStyles({ id, img, user, text }) {
               isEditing={isEditing}
               setIsEditing={setIsEditing}
               text={text}
+              upload={upload}
+              setUpload={setUpload}
             />
           ) : (
             <p>{text}</p>

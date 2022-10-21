@@ -100,6 +100,8 @@ function Timeline() {
           posts.map((value, index) => (
             <PostStyles
               key={index}
+              upload={upload}
+              setUpload={setUpload}
               id={value.id}
               img={value.imageUrl}
               user={value.name}
