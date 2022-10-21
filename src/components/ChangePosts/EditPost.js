@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
+import { editPostText } from "../../services/linkr";
 
 export default function EditPost({ isEditing, setIsEditing, text }) {
   const [comment, setComment] = useState(text);
@@ -13,7 +14,10 @@ export default function EditPost({ isEditing, setIsEditing, text }) {
 
   function changeText(e) {
     if (e.key === "Enter") {
-      console.log("vou enviar hein");
+      editPostText(comment);
+    }
+    if (e.key === "esc") {
+      setIsEditing(!isEditing);
     }
   }
 
