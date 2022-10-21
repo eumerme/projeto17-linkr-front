@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import { deleteFatalPost } from "../../services/linkr";
+import Loading from "../../styles/Loading";
+import { useState } from "react";
 
 const customStyles = {
   content: {
@@ -15,7 +17,15 @@ const customStyles = {
   },
 };
 
-export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
+export default function DeleteModal({
+  modalIsOpen,
+  setIsOpen,
+  id,
+  upload,
+  setUpload,
+}) {
+  const [isSucess, setIsSucess] = useState(false);
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -23,7 +33,11 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
   function deletePost() {
     deleteFatalPost(id)
       .then(() => {
-        setIsOpen(false);
+        setUpload(!upload);
+        setIsSucess(true);
+        setTimeout(function () {
+          setIsOpen(false);
+        }, 2000);
       })
       .catch(() => {
         alert("Houve um problema com a sua requisição, tente novamente!");
@@ -40,15 +54,21 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
         contentLabel="DeletePostModal"
       >
         <Style>
-          <p>
-            Are you sure you want
-            <br />
-            to delete this post?
-          </p>
-          <div>
-            <button onClick={closeModal}>No, go back</button>
-            <button onClick={deletePost}>Yes, delete it</button>
-          </div>
+          {isSucess ? (
+            <Loading />
+          ) : (
+            <>
+              <p>
+                Are you sure you want
+                <br />
+                to delete this post?
+              </p>
+              <div>
+                <button onClick={closeModal}>No, go back</button>
+                <button onClick={deletePost}>Yes, delete it</button>
+              </div>
+            </>
+          )}
         </Style>
       </Modal>
     </>
@@ -64,6 +84,7 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   p {
     font-weight: 700;

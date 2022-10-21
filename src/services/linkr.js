@@ -53,7 +53,7 @@ async function editPostText(body, id) {
 
 async function deleteFatalPost(id) {
   const config = createHeaders();
-  return axios.put(`${BASE_URL}/timeline/posts/delete/${id}`, config);
+  return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
 }
 
 export {

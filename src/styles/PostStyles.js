@@ -45,7 +45,13 @@ export default function PostStyles({ id, img, user, text, upload, setUpload }) {
           <div></div>
         </Description>
       </Container>
-      <DeleteModal id={id} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+      <DeleteModal
+        upload={upload}
+        setUpload={setUpload}
+        id={id}
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+      />
     </>
   );
 }
