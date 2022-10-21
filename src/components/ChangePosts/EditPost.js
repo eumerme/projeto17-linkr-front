@@ -14,9 +14,17 @@ export default function EditPost({
   const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef(null);
 
+  const pageClickEvent = (e) => {
+    if (e.keyCode === 27) {
+      setIsEditing(false);
+      window.removeEventListener("keyup", pageClickEvent);
+    }
+  };
+
   useEffect(() => {
     if (isEditing) {
       inputRef.current.focus();
+      window.addEventListener("keyup", pageClickEvent);
     }
   }, [isEditing]);
 
@@ -32,9 +40,6 @@ export default function EditPost({
           alert("Não foi possível salvar suas alterações, tente novamente!");
           setIsDisabled(false);
         });
-    }
-    if (e.key === "esc") {
-      setIsEditing(!isEditing);
     }
   }
 
