@@ -5,35 +5,27 @@ export default function EditPost({ isEditing, setIsEditing, text }) {
   const [comment, setComment] = useState(text);
   const inputRef = useRef(null);
 
-  const pageClickEvent = (e) => {
-    if (e.keyCode === 27) {
-      setIsEditing(false);
-      window.removeEventListener("keypress", pageClickEvent);
-    }
-  };
-
   useEffect(() => {
     if (isEditing) {
       inputRef.current.focus();
-      window.addEventListener("keypress", pageClickEvent);
     }
-  }, []);
+  }, [isEditing]);
 
-  function changeText() {
-    console.log("vou enviar hein");
+  function changeText(e) {
+    if (e.key === "Enter") {
+      console.log("vou enviar hein");
+    }
   }
 
   return (
-    <form onSubmit={changeText}>
-      <EditText
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onKeyPress={pageClickEvent}
-        ref={inputRef}
-        type="text"
-        required
-      ></EditText>
-    </form>
+    <EditText
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+      onKeyPress={changeText}
+      ref={inputRef}
+      type="text"
+      required
+    ></EditText>
   );
 }
 
