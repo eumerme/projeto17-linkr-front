@@ -94,9 +94,12 @@ export default function HomeScreen() {
 						<PostStyles
 							key={index}
 							img={value.imageUrl}
+							likesUser={value.likes}
 							user={value.name}
 							text={value.text}
 							id={value.id}
+							upload={upload}
+							setUpload={setUpload}
 						/>
 					))
 				) : (

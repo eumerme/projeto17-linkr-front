@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import { useState } from 'react';
 import { likes } from '../services/linkr';
+import ReactTooltip from 'react-tooltip';
 
-export default function PostStyles({id, img, user, text}){
+export default function PostStyles({id, img, user, text, likesUser, upload, setUpload}){
 
     const [clickLike, setClickLike] = useState({
         draw: <AiOutlineHeart color='#FFF' size='30px' />,
@@ -19,7 +20,9 @@ export default function PostStyles({id, img, user, text}){
             likes({
                 id,
                 type: 'like',
-            }).then(() => {}).catch((error) => {
+            }).then(() => {
+                setUpload(!upload);
+            }).catch((error) => {
                 console.log(error.response.status);
             });
 
@@ -31,12 +34,13 @@ export default function PostStyles({id, img, user, text}){
             likes({
                 id,
                 type: 'noLike',
-            }).then(() => {}).catch((error) => {
+            }).then(() => {
+                setUpload(!upload);
+            }).catch((error) => {
                 console.log(error.response.status);
             });
         }
     };
-
     return (
         <>
         <Container>
@@ -45,6 +49,7 @@ export default function PostStyles({id, img, user, text}){
                 <div onClick={() => like()}>
                     {clickLike.draw}
                 </div>
+                <p data-tip="hello word">{likesUser} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
             </Infos>
             <Description>
                 <h1>{user}</h1>
@@ -86,6 +91,22 @@ const Infos = styled.div`
         height: 50px;
         border-radius: 50%;
         margin-bottom: 20px;
+    }
+
+    p{  
+        margin-top: 5px;
+        font-family: 'Lato', sans-serif;
+        color: #FFFFFF;
+        font-weight: 400;
+        font-size: 11px;
+    }
+
+    .toopTip{
+        border-radius: 3px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        color: #505050;
     }
 `;
 
