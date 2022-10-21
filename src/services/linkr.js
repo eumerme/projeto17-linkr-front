@@ -46,9 +46,9 @@ async function listPostsbyHashtags(body) {
   return axios.get(`${BASE_URL}/hashtags/${body}`);
 }
 
-async function editPostText(text, id) {
+async function editPostText(body, id) {
   const config = createHeaders();
-  return axios.put(`${BASE_URL}/timeline/posts/update/${id}`, text, config);
+  return axios.put(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
 }
 
 export {

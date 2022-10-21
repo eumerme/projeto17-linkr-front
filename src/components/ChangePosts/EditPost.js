@@ -4,6 +4,7 @@ import { editPostText } from "../../services/linkr";
 
 export default function EditPost({ isEditing, setIsEditing, text }) {
   const [comment, setComment] = useState(text);
+  const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -14,7 +15,15 @@ export default function EditPost({ isEditing, setIsEditing, text }) {
 
   function changeText(e) {
     if (e.key === "Enter") {
-      editPostText(comment);
+      setIsDisabled(true);
+      editPostText({ comment })
+        .then(() => {
+          setIsEditing(!isEditing);
+        })
+        .catch(() => {
+          alert("Não foi possível salvar suas alterações, tente novamente!");
+          setIsDisabled(false);
+        });
     }
     if (e.key === "esc") {
       setIsEditing(!isEditing);
@@ -28,6 +37,7 @@ export default function EditPost({ isEditing, setIsEditing, text }) {
       onKeyPress={changeText}
       ref={inputRef}
       type="text"
+      disabled={isDisabled}
       required
     ></EditText>
   );
