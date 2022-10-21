@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
+import EditPost from "../components/ChangePosts/EditPost";
+import { useState } from "react";
 
 export default function PostStyles({ img, user, text }) {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <>
       <Container>
@@ -13,11 +17,22 @@ export default function PostStyles({ img, user, text }) {
           <span>
             <h1>{user}</h1>
             <h3>
-              <TiPencil />
-              <FaTrash />
+              <TiPencil
+                style={{ cursor: "pointer" }}
+                onClick={() => setIsEditing(!isEditing)}
+              />
+              <FaTrash style={{ cursor: "pointer" }} />
             </h3>
           </span>
-          <p>{text}</p>
+          {isEditing ? (
+            <EditPost
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              text={text}
+            />
+          ) : (
+            <p>{text}</p>
+          )}
           <div></div>
         </Description>
       </Container>
