@@ -1,17 +1,43 @@
 import styled from 'styled-components';
+import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
+import { useState } from 'react';
 
 export default function PostStyles({img, user, text}){
+
+    const [clickLike, setClickLike] = useState({
+        draw: <AiOutlineHeart color='#FFF' size='30px' />,
+        type: false
+    });
+
+    function like(){
+        if(clickLike.type === false){
+            setClickLike({
+                draw: <AiFillHeart color='red' size='30px' />,
+                type: true
+            });
+        }else{
+            setClickLike({
+                draw: <AiOutlineHeart color='#FFF' size='30px' />,
+                type: false
+            });
+        }
+    };
 
     return (
         <>
         <Container>
             <Infos>
                 <img src={img}/>
+                <div onClick={() => like()}>
+                    {clickLike.draw}
+                </div>
             </Infos>
             <Description>
                 <h1>{user}</h1>
                 <p>{text}</p>
-                <div></div>
+                <div>
+                
+                </div>
             </Description>
         </Container>
         </>
@@ -37,11 +63,15 @@ const Infos = styled.div`
     width: 50px;
     height: 100%;
     margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     img{
         width: 50px;
         height: 50px;
         border-radius: 50%;
+        margin-bottom: 20px;
     }
 `;
 
