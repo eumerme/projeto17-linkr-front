@@ -22,7 +22,14 @@ export default function App() {
 							</Private>
 						}
 					/>
-					<Route path="/hashtag/:hashtag" element={<HashtagPage />} />
+					<Route
+						path="/hashtag/:hashtag"
+						element={
+							<Private>
+								<HashtagPage />
+							</Private>
+						}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</>

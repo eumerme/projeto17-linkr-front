@@ -6,7 +6,6 @@ function createHeaders() {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	if (auth !== null) {
-		console.log(auth.token);
 		const config = {
 			headers: {
 				Authorization: `Bearer ${auth.token}`,
@@ -30,7 +29,8 @@ async function publish(body) {
 }
 
 async function listPosts() {
-	return axios.get(`${BASE_URL}/timeline/posts`);
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
 async function userLogout() {
@@ -39,12 +39,18 @@ async function userLogout() {
 }
 
 async function listHashtags() {
-	return axios.get(`${BASE_URL}/hashtags`);
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/hashtags`, config);
 }
 
 async function listPostsbyHashtags(body) {
-	console.log(body);
-	return axios.get(`${BASE_URL}/hashtags/${body}`);
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/hashtags/${body}`, config);
+}
+
+async function listUsers() {
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/listusers`, config);
 }
 
 export {
@@ -55,4 +61,5 @@ export {
 	userLogout,
 	listHashtags,
 	listPostsbyHashtags,
+	listUsers,
 };

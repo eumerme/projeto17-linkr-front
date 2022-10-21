@@ -118,6 +118,10 @@ const Homescreen = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	@media screen and (max-width: 768px) {
+		width: 100%;
+	}
 `;
 
 const Title = styled.div`

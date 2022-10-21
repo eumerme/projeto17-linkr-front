@@ -32,6 +32,7 @@ export default function SingUp() {
 				imageUrl: url,
 			})
 				.then(() => {
+					alert("Usuário criado com sucesso!");
 					navigate("/");
 				})
 				.catch((error) => {

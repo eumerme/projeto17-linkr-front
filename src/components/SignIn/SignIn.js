@@ -26,6 +26,7 @@ export default function SignIn() {
 				localStorage.setItem(
 					"linkr",
 					JSON.stringify({
+						id: res.data.id,
 						name: res.data.name,
 						token: res.data.token,
 						image: res.data.image,

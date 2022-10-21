@@ -43,6 +43,7 @@ const Container = styled.div`
 	background-color: #171717;
 	position: sticky;
 	top: 255px;
+	margin-left: 50px;
 
 	h2 {
 		width: 100%;
