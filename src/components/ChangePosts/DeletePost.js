@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import Modal from "react-modal";
 
 const customStyles = {
@@ -6,6 +7,8 @@ const customStyles = {
     left: "50%",
     right: "auto",
     bottom: "auto",
+    background: "none",
+    border: "none",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
@@ -29,14 +32,75 @@ export default function DeleteModal({ modalIsOpen, setIsOpen }) {
         style={customStyles}
         contentLabel="DeletePostModal"
       >
-        <p>
-          Are you sure you want
-          <br />
-          to delete this post?
-        </p>
-        <button onClick={closeModal}>No, go back</button>
-        <button onClick={deletePost}>Yes, delete it</button>
+        <Style>
+          <p>
+            Are you sure you want
+            <br />
+            to delete this post?
+          </p>
+          <div>
+            <button onClick={closeModal}>No, go back</button>
+            <button onClick={deletePost}>Yes, delete it</button>
+          </div>
+        </Style>
       </Modal>
     </>
   );
 }
+
+const Style = styled.div`
+  width: 597px;
+  height: 262px;
+  background: #333333;
+  border-radius: 50px;
+  font-family: "Lato", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 41px;
+    text-align: center;
+    color: #ffffff;
+    padding: 39px 0;
+  }
+
+  div {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+      width: 134px;
+      height: 37px;
+      background: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      color: #1877f2;
+      cursor: pointer;
+    }
+
+    button:nth-child(2) {
+      background: #1877f2;
+      color: #ffffff;
+    }
+  }
+  @media screen and (max-width: 645px) {
+    width: 300px;
+    p {
+      font-size: 20px;
+      line-height: 30px;
+    }
+    button:nth-child(1),
+    button:nth-child(2) {
+      width: 80px;
+      height: 50px;
+      font-size: 14px;
+    }
+  }
+`;
