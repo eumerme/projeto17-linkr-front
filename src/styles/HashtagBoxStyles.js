@@ -42,7 +42,7 @@ const Container = styled.div`
 	border-radius: 16px;
 	background-color: #171717;
 	position: sticky;
-	top: 185px;
+	top: 255px;
 
 	h2 {
 		width: 100%;

@@ -18,7 +18,7 @@ export default function TimelineStyles({ children, auth }) {
 
 const Container = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	position: relative;
 	background-color: crimson;
 	margin-top: 72px;
@@ -26,6 +26,7 @@ const Container = styled.div`
 	align-items: flex-start;
 	justify-content: space-around;
 	background-color: #333333;
+	padding-bottom: 60px;
 `;
 
 const Navbar = styled.div`
