@@ -3,9 +3,15 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import EditPost from "../components/ChangePosts/EditPost";
 import { useState } from "react";
+import DeleteModal from "../components/ChangePosts/DeletePost";
 
 export default function PostStyles({ id, img, user, text, upload, setUpload }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
 
   return (
     <>
@@ -21,7 +27,7 @@ export default function PostStyles({ id, img, user, text, upload, setUpload }) {
                 style={{ cursor: "pointer" }}
                 onClick={() => setIsEditing(!isEditing)}
               />
-              <FaTrash style={{ cursor: "pointer" }} />
+              <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
             </h3>
           </span>
           {isEditing ? (
@@ -39,6 +45,7 @@ export default function PostStyles({ id, img, user, text, upload, setUpload }) {
           <div></div>
         </Description>
       </Container>
+      <DeleteModal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
     </>
   );
 }
