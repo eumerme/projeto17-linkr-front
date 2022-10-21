@@ -51,6 +51,11 @@ async function editPostText(body, id) {
   return axios.put(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
 }
 
+async function deleteFatalPost(id) {
+  const config = createHeaders();
+  return axios.put(`${BASE_URL}/timeline/posts/delete/${id}`, config);
+}
+
 export {
   register,
   login,
@@ -60,4 +65,5 @@ export {
   listHashtags,
   listPostsbyHashtags,
   editPostText,
+  deleteFatalPost,
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Modal from "react-modal";
+import { deleteFatalPost } from "../../services/linkr";
 
 const customStyles = {
   content: {
@@ -14,14 +15,20 @@ const customStyles = {
   },
 };
 
-export default function DeleteModal({ modalIsOpen, setIsOpen }) {
+export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
   function closeModal() {
     setIsOpen(false);
   }
 
   function deletePost() {
-    alert("em breve função de apagar o post");
-    setIsOpen(false);
+    deleteFatalPost(id)
+      .then(() => {
+        setIsOpen(false);
+      })
+      .catch(() => {
+        alert("Houve um problema com a sua requisição, tente novamente!");
+        setIsOpen(false);
+      });
   }
 
   return (
