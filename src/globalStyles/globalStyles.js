@@ -47,6 +47,22 @@ const GlobalStyle = createGlobalStyle`
     }
     *{
         box-sizing: border-box;
+        scrollbar-width: thin;
+	    scrollbar-color: #333333 #171717;
+    }
+    /* Works on Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #333333;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color:#333333;
+        border-radius: 20px;
+        border: 3px solid #171717;
     }
 `;
 

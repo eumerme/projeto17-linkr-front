@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { listPostsbyHashtags } from "../../services/linkr";
-import PostStyles from "../../styles/PostStyles";
-import TimelineStyles from "../../styles/TimelineStyles";
-import { Homescreen, Title } from "../timeline/Timeline";
-import Loading from "../../styles/Loading";
+import PostsMainLayout from "../Posts/PostsMainLayout";
+import TimelineMainLayout from "../Timeline/TimelineMainLayout";
+import { Homescreen, Title } from "../Timeline/Timeline";
+import Loading from "../commom/Loading";
 
 export default function HashtagPage() {
 	const params = useParams();
@@ -22,23 +22,27 @@ export default function HashtagPage() {
 
 	return (
 		<>
-			<TimelineStyles>
+			<TimelineMainLayout>
 				<Homescreen>
 					<Title># {params.hashtag}</Title>
 					{posts.length !== 0 ? (
 						posts.map((value, index) => (
-							<PostStyles
+							<PostsMainLayout
 								key={index}
+								id={value.id}
 								img={value.imageUrl}
+								url={value.url}
 								user={value.name}
 								text={value.text}
+								likesUser={value.likes}
+								userId={value.userId}
 							/>
 						))
 					) : (
 						<Loading />
 					)}
 				</Homescreen>
-			</TimelineStyles>
+			</TimelineMainLayout>
 		</>
 	);
 }

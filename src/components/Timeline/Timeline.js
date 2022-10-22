@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { publish, listPosts } from "../../services/linkr";
-import TimelineStyles from "../../styles/TimelineStyles";
-import PostStyles from "../../styles/PostStyles";
+import TimelineMainLayout from "./TimelineMainLayout";
+import PostsMainLayout from "../Posts/PostsMainLayout";
 import styled from "styled-components";
-import Loading from "../../styles/Loading";
+import Loading from "../commom/Loading";
+import { auth } from "../commom/localStorage";
 
 function Timeline() {
 	const [url, setUrl] = useState("");
@@ -15,7 +16,6 @@ function Timeline() {
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
 	const [upload, setUpload] = useState(true);
-	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -28,7 +28,7 @@ function Timeline() {
 				.catch((error) => {
 					setErrorServer(true);
 				});
-		}, 2000);
+		}, 1000);
 	}, [upload]);
 
 	function publishPost(event) {
@@ -67,7 +67,7 @@ function Timeline() {
 	}
 
 	return (
-		<TimelineStyles>
+		<TimelineMainLayout>
 			<Homescreen>
 				<Title>timeline</Title>
 				<Publish>
@@ -98,14 +98,16 @@ function Timeline() {
 
 				{existPost ? (
 					posts.map((value, index) => (
-						<PostStyles
+						<PostsMainLayout
 							key={index}
 							upload={upload}
 							setUpload={setUpload}
 							id={value.id}
 							img={value.imageUrl}
+							url={value.url}
 							user={value.name}
 							text={value.text}
+							likesUser={value.likes}
 							userId={value.userId}
 						/>
 					))
@@ -113,11 +115,12 @@ function Timeline() {
 					<Loading error={+errorServer} empty={+empty} />
 				)}
 			</Homescreen>
-		</TimelineStyles>
+		</TimelineMainLayout>
 	);
 }
 
 const Homescreen = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

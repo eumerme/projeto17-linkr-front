@@ -1,10 +1,10 @@
 import axios from "axios";
+import { auth } from "../components/commom/localStorage";
 
-const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
+//const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
+const BASE_URL = `http://localhost:4000`;
 
 function createHeaders() {
-	const auth = JSON.parse(localStorage.getItem("linkr"));
-
 	if (auth !== null) {
 		const config = {
 			headers: {
@@ -63,9 +63,17 @@ async function deleteFatalPost(id) {
 	return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
 }
 
+function likes(body) {
+	return axios.post(`${BASE_URL}/timeline/likes`, body);
+}
+
 async function listUserPosts(id) {
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/url/${id}`, config);
+}
+
+async function getUrlMetadata(url) {
+	return axios.get(`https://api.microlink.io/?url=${url}`);
 }
 
 export {
@@ -80,4 +88,6 @@ export {
 	editPostText,
 	deleteFatalPost,
 	listUserPosts,
+	likes,
+	getUrlMetadata,
 };

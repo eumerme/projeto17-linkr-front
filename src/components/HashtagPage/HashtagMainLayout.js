@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { listHashtags } from "../services/linkr";
+import { listHashtags } from "../../services/linkr";
 
-export default function HashtagBoxStyles() {
+export default function HashtagMainLayout() {
 	const navigate = useNavigate();
 
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
 		setTimeout(function () {
+			console.log("entrou hashtag");
 			listHashtags()
 				.then((data) => {
 					setPosts(data.data);
 				})
 				.catch();
-		}, 2000);
+		}, 1000);
 	}, []);
 
+	console.log("posts ", posts);
 	function redirect(text) {
 		navigate(`/hashtag/${text}`);
 	}

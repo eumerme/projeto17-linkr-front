@@ -1,11 +1,18 @@
 import styled from "styled-components";
-import Logout from "../components/Logout/Logout";
-import HashtagBoxStyles from "./HashtagBoxStyles";
-import SearchUser from "../components/SearchUser/SearchUser";
+import Logout from "../Logout/Logout";
+import HashtagMainLayout from "../HashtagPage/HashtagMainLayout";
+import SearchUser from "../SearchUser/SearchUser";
 import { useNavigate } from "react-router-dom";
 
-export default function TimelineStyles({ children, auth }) {
+export default function TimelineMainLayout({ children }) {
 	const navigate = useNavigate();
+
+	setTimeout(() => {
+		document
+			.getElementById("search")
+			.scrollIntoView({ block: "center", behavior: "smooth" });
+	}, 1000);
+
 	return (
 		<Container>
 			<Navbar>
@@ -13,7 +20,7 @@ export default function TimelineStyles({ children, auth }) {
 				<Logout />
 			</Navbar>
 			{children}
-			<HashtagBoxStyles />
+			<HashtagMainLayout />
 			<SearchUser />
 		</Container>
 	);
@@ -23,7 +30,7 @@ const Container = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
-	margin-top: 72px;
+	padding-top: 72px;
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -32,7 +39,7 @@ const Container = styled.div`
 	position: relative;
 
 	@media screen and (max-width: 768px) {
-		margin-top: 130px;
+		padding-top: 130px;
 	}
 `;
 

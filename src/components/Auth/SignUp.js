@@ -1,4 +1,4 @@
-import AuthSyles from "../../styles/AuthStyles.js";
+import AuthMainLayout from "./AuthMainLayout.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
@@ -52,7 +52,7 @@ export default function SingUp() {
 
 	return (
 		<>
-			<AuthSyles onSubmit={registerUser} isDisabled={+isDisabled}>
+			<AuthMainLayout onSubmit={registerUser} isDisabled={+isDisabled}>
 				<input
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
@@ -88,7 +88,7 @@ export default function SingUp() {
 				/>
 				<button disabled={isDisabled}>{msgBtn}</button>
 				<p onClick={() => redirect()}>Switch back to log in</p>
-			</AuthSyles>
+			</AuthMainLayout>
 		</>
 	);
 }

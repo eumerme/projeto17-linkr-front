@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { listUserPosts } from "../../services/linkr";
-import Loading from "../../styles/Loading";
-import PostStyles from "../../styles/PostStyles";
-import TimelineStyles from "../../styles/TimelineStyles";
-import { Homescreen, Title } from "../timeline/Timeline";
+import Loading from "../commom/Loading";
+import PostsMainLayout from "../Posts/PostsMainLayout";
+import TimelineMainLayout from "../Timeline/TimelineMainLayout";
+import { Homescreen, Title } from "../Timeline/Timeline";
 
 export default function UserPage() {
 	const { id } = useParams();
@@ -18,28 +18,32 @@ export default function UserPage() {
 					setPosts(res.data);
 				})
 				.catch((error) => console.log(error));
-		}, 2000);
+		}, 1000);
 	}, [id]);
 
 	return (
 		<>
-			<TimelineStyles>
+			<TimelineMainLayout>
 				<Homescreen>
 					<Title>{`${state.name}'s posts`}</Title>
 					{posts.length !== 0 ? (
 						posts.map((value, index) => (
-							<PostStyles
+							<PostsMainLayout
 								key={index}
+								id={value.id}
 								img={value.imageUrl}
+								url={value.url}
 								user={value.name}
 								text={value.text}
+								likesUser={value.likes}
+								userId={value.userId}
 							/>
 						))
 					) : (
 						<Loading />
 					)}
 				</Homescreen>
-			</TimelineStyles>
+			</TimelineMainLayout>
 		</>
 	);
 }

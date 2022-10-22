@@ -9,10 +9,6 @@ export default function SearchUser() {
 	const [search, setSearch] = useState("");
 	const [userFiltered, setUserFiltered] = useState([]);
 	const navigate = useNavigate();
-	/* 
-	const scrollTo = () => {
-		window.scrollTo(0, 0);
-	}; */
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -49,7 +45,7 @@ export default function SearchUser() {
 	}
 
 	return (
-		<Container>
+		<Container id="search">
 			<SearchWrapper>
 				<SearchInput
 					type="text"
@@ -66,7 +62,7 @@ export default function SearchUser() {
 						<li
 							className="list_item"
 							key={index}
-							onClick={redirectTo(user.id, user.name)}
+							onClick={() => redirectTo(user.id, user.name)}
 						>
 							<img className="list_img" src={user.imageUrl} alt="" />
 							<p className="list_name">{user.name}</p>
@@ -98,7 +94,7 @@ const Container = styled.div`
 	@media screen and (max-width: 768px) {
 		position: absolute;
 		width: 95%;
-		top: -40px;
+		top: 90px;
 		z-index: 0;
 	}
 `;
