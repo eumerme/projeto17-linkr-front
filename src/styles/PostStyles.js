@@ -103,7 +103,7 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
           ) : (
             <p>{text}</p>
           )}
-          <UrlDatas>
+          <UrlDatas onClick={() => window.open(url, "_blank")}>
             <div>
                 <h1>{urlData.title}</h1>
                 <p>{urlData.description}</p>
@@ -112,9 +112,6 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
             <div className='UrlImage'>
                 <img src={urlData.image}/>
             </div >
-            {/* <p></p>
-            <p></p>
-            <img src={urlData.image}/> */}
           </UrlDatas>
             </Description>
         </Container>
