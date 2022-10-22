@@ -185,8 +185,8 @@ const Publish = styled.div`
 			border: none;
 			border-radius: 5px;
 			margin: 0 0 5px 0;
+			padding: 0 0 0 13px;
 			::placeholder {
-				padding: 0 0 0 13px;
 				font-size: 15px;
 				font-weight: 300;
 				line-height: 18px;
