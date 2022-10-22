@@ -104,9 +104,9 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
           )}
           <UrlDatas>
             <div>a</div>
-            <span>
-                b
-            </span>
+            <div className='UrlImage'>
+                <img src={urlData.image}/>
+            </div >
             {/* <p>{urlData.title}</p>
             <p>{urlData.description}</p>
             <img src={urlData.image}/> */}
@@ -210,16 +210,24 @@ const UrlDatas = styled.div`
     height: 100%;
     border: 1px solid #4d4d4d;
     border-radius: 11px;
-    background-color: yellow;
     display: flex;
 
     div{
-        background-color: royalblue;
-        width: 100%;
+        padding: 20px 0 20px 20px;
+        width: 65%;
     }
 
-    span{
-        background-color: crimson;
-    }
+    .UrlImage{
+        width: 35%;
+        border-left: 1px solid #4D4D4D;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
 
+        img{
+            width: 150px;
+            height: 150px;
+        }
+    }
 `;
