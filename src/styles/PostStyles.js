@@ -26,7 +26,8 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
             setUrlData({
                 title: auxData.title,
                 description: auxData.description,
-                image: auxData.image.url
+                image: auxData.image.url,
+                url: auxData.url
             });
         }).catch((error) => {
             console.log(error);
@@ -103,12 +104,16 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
             <p>{text}</p>
           )}
           <UrlDatas>
-            <div>a</div>
+            <div>
+                <h1>{urlData.title}</h1>
+                <p>{urlData.description}</p>
+                <h2>{urlData.url}</h2>
+            </div>
             <div className='UrlImage'>
                 <img src={urlData.image}/>
             </div >
-            {/* <p>{urlData.title}</p>
-            <p>{urlData.description}</p>
+            {/* <p></p>
+            <p></p>
             <img src={urlData.image}/> */}
           </UrlDatas>
             </Description>
@@ -213,8 +218,32 @@ const UrlDatas = styled.div`
     display: flex;
 
     div{
-        padding: 20px 0 20px 20px;
+        padding: 20px;
         width: 65%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        h1{
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: #CECECE;
+        }
+
+        p{
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            color: #9B9595;
+        }
+
+        h2{
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            color: #CECECE;
+        }
     }
 
     .UrlImage{
@@ -230,4 +259,19 @@ const UrlDatas = styled.div`
             height: 150px;
         }
     }
+
+    @media screen and (max-width: 768px) {
+
+        justify-content: space-between;
+
+        .UrlImage{
+            width: 25%;
+        }
+        
+        .UrlImage img{
+            width: 50%;
+            height: 50%;
+        }
+    }
+
 `;
