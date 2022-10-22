@@ -53,6 +53,22 @@ async function listUsers() {
 	return axios.get(`${BASE_URL}/listusers`, config);
 }
 
+async function editPostText(body, id) {
+	const config = createHeaders();
+	return axios.put(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
+}
+
+async function deleteFatalPost(id) {
+	const config = createHeaders();
+	return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
+}
+
+async function listUserPosts(id) {
+	console.log("linkr ", id);
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/url/${id}`, config);
+}
+
 export {
 	register,
 	login,
@@ -62,4 +78,7 @@ export {
 	listHashtags,
 	listPostsbyHashtags,
 	listUsers,
+	editPostText,
+	deleteFatalPost,
+	listUserPosts,
 };

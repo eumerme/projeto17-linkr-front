@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { listPostsbyHashtags } from "../../services/linkr";
+import { listUserPosts } from "../../services/linkr";
+import Loading from "../../styles/Loading";
 import PostStyles from "../../styles/PostStyles";
 import TimelineStyles from "../../styles/TimelineStyles";
 import { Homescreen, Title } from "../timeline/Timeline";
-import Loading from "../../styles/Loading";
 
-export default function HashtagPage() {
-	const params = useParams();
+export default function UserPage() {
+	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
-
+	const auth = JSON.parse(localStorage.getItem("linkr"));
+	console.log("userpage ", id);
 	useEffect(() => {
 		setTimeout(function () {
-			listPostsbyHashtags(params.hashtag)
-				.then((data) => {
-					setPosts(data.data);
+			listUserPosts(id)
+				.then((res) => {
+					setPosts(res.data);
 				})
-				.catch();
+				.catch((error) => console.log(error));
 		}, 2000);
-	}, [params.hashtag]);
+	}, [id]);
 
 	return (
 		<>
 			<TimelineStyles>
 				<Homescreen>
-					<Title># {params.hashtag}</Title>
+					<Title>{`${auth.name}'s posts`}</Title>
 					{posts.length !== 0 ? (
 						posts.map((value, index) => (
 							<PostStyles

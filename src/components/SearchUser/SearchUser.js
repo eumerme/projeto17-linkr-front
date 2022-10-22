@@ -8,6 +8,10 @@ export default function SearchUser() {
 	const [search, setSearch] = useState("");
 	const [userFiltered, setUserFiltered] = useState([]);
 
+	const scrollTo = () => {
+		window.scrollTo(0, 0);
+	};
+
 	useEffect(() => {
 		setTimeout(() => {
 			if (search?.length >= 3) {

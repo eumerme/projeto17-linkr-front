@@ -1,6 +1,32 @@
 import styled from "styled-components";
+import { TiPencil } from "react-icons/ti";
+import { FaTrash } from "react-icons/fa";
+import EditPost from "../components/ChangePosts/EditPost";
+import { useState } from "react";
+import DeleteModal from "../components/ChangePosts/DeletePost";
+import { useNavigate } from "react-router-dom";
 
-export default function PostStyles({ img, user, text }) {
+export default function PostStyles({
+	id,
+	img,
+	user,
+	text,
+	upload,
+	setUpload,
+	userId,
+}) {
+	const [isEditing, setIsEditing] = useState(false);
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+
+	function openModal() {
+		setIsOpen(true);
+	}
+
+	function redirectTo() {
+		navigate(`/user/${userId}`);
+	}
+
 	return (
 		<>
 			<Container>
@@ -8,11 +34,38 @@ export default function PostStyles({ img, user, text }) {
 					<img src={img} alt="" />
 				</Infos>
 				<Description>
-					<h1>{user}</h1>
-					<p>{text}</p>
+					<span>
+						<h1 onClick={redirectTo}>{user}</h1>
+						<h3>
+							<TiPencil
+								style={{ cursor: "pointer" }}
+								onClick={() => setIsEditing(!isEditing)}
+							/>
+							<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+						</h3>
+					</span>
+					{isEditing ? (
+						<EditPost
+							id={id}
+							isEditing={isEditing}
+							setIsEditing={setIsEditing}
+							text={text}
+							upload={upload}
+							setUpload={setUpload}
+						/>
+					) : (
+						<p>{text}</p>
+					)}
 					<div></div>
 				</Description>
 			</Container>
+			<DeleteModal
+				upload={upload}
+				setUpload={setUpload}
+				id={id}
+				modalIsOpen={modalIsOpen}
+				setIsOpen={setIsOpen}
+			/>
 		</>
 	);
 }
@@ -51,12 +104,21 @@ const Description = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	h1 {
+	span {
 		font-family: "Lato", sans-serif;
 		font-size: 22px;
 		font-weight: 400;
 		color: #ffffff;
 		margin-bottom: 10px;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		h3 {
+			width: 50px;
+			display: flex;
+			justify-content: space-between;
+		}
 	}
 
 	p {

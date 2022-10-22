@@ -74,7 +74,7 @@ function Timeline() {
 					<div>
 						<img src={auth.image} alt="profileImg"></img>
 					</div>
-					<form isDisabled={isDisabled}>
+					<form onSubmit={publishPost} isDisabled={isDisabled}>
 						<p>What are you going to share today?</p>
 						<input
 							value={url}
@@ -100,9 +100,13 @@ function Timeline() {
 					posts.map((value, index) => (
 						<PostStyles
 							key={index}
+							upload={upload}
+							setUpload={setUpload}
+							id={value.id}
 							img={value.imageUrl}
 							user={value.name}
 							text={value.text}
+							userId={value.userId}
 						/>
 					))
 				) : (
