@@ -120,7 +120,6 @@ function Timeline() {
 }
 
 const Homescreen = styled.div`
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -139,10 +138,10 @@ const Title = styled.div`
 	line-height: 63.73px;
 	text-align: justify;
 	color: #ffffff;
-	margin: 78px 0 43px 0;
+	padding: 78px 0 43px 0;
 	@media screen and (max-width: 768px) {
 		width: 100%;
-		margin: 19px 0 19px 17px;
+		padding: 19px 0 19px 17px;
 	}
 `;
 

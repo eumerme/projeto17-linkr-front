@@ -10,14 +10,20 @@ export default function UserPage() {
 	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
 	const { state } = useLocation();
+	const [errorServer, setErrorServer] = useState(false);
+	const [empty, setEmpty] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
 			listUserPosts(id)
 				.then((res) => {
 					setPosts(res.data);
+					if (res.data.length === 0) setEmpty(true);
 				})
-				.catch((error) => console.log(error));
+				.catch((error) => {
+					console.log(error);
+					setErrorServer(true);
+				});
 		}, 1000);
 	}, [id]);
 
@@ -40,7 +46,7 @@ export default function UserPage() {
 							/>
 						))
 					) : (
-						<Loading />
+						<Loading error={+errorServer} empty={+empty} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>
