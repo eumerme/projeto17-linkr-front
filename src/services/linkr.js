@@ -64,7 +64,6 @@ async function deleteFatalPost(id) {
 }
 
 async function listUserPosts(id) {
-	console.log("linkr ", id);
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/url/${id}`, config);
 }

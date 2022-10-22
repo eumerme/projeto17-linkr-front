@@ -18,13 +18,17 @@ export default function PostStyles({
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const navigate = useNavigate();
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	function openModal() {
 		setIsOpen(true);
 	}
 
 	function redirectTo() {
-		navigate(`/user/${userId}`);
+		navigate(`/user/${userId}`, {
+			replace: false,
+			state: { name: user },
+		});
 	}
 
 	return (
@@ -36,13 +40,17 @@ export default function PostStyles({
 				<Description>
 					<span>
 						<h1 onClick={redirectTo}>{user}</h1>
-						<h3>
-							<TiPencil
-								style={{ cursor: "pointer" }}
-								onClick={() => setIsEditing(!isEditing)}
-							/>
-							<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
-						</h3>
+						{auth.id === userId ? (
+							<h3>
+								<TiPencil
+									style={{ cursor: "pointer" }}
+									onClick={() => setIsEditing(!isEditing)}
+								/>
+								<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+							</h3>
+						) : (
+							""
+						)}
 					</span>
 					{isEditing ? (
 						<EditPost
@@ -71,7 +79,7 @@ export default function PostStyles({
 }
 
 const Container = styled.div`
-	margin-top: 30px;
+	margin-bottom: 30px;
 	padding: 18px;
 	width: 611px;
 	background-color: #171717;
@@ -113,6 +121,7 @@ const Description = styled.div`
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+		cursor: pointer;
 
 		h3 {
 			width: 50px;

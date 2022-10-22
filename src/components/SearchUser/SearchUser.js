@@ -2,15 +2,17 @@ import { IoIosSearch } from "react-icons/io";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { listUsers } from "../../services/linkr";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchUser() {
 	const [users, setUsers] = useState([]);
 	const [search, setSearch] = useState("");
 	const [userFiltered, setUserFiltered] = useState([]);
-
+	const navigate = useNavigate();
+	/* 
 	const scrollTo = () => {
 		window.scrollTo(0, 0);
-	};
+	}; */
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -39,6 +41,13 @@ export default function SearchUser() {
 		}
 	}, [users.length, search.length]);
 
+	function redirectTo(id, name) {
+		navigate(`/user/${id}`, {
+			replace: false,
+			state: { name },
+		});
+	}
+
 	return (
 		<Container>
 			<SearchWrapper>
@@ -54,7 +63,11 @@ export default function SearchUser() {
 			{userFiltered?.length !== 0 ? (
 				<List>
 					{userFiltered.map((user, index) => (
-						<li className="list_item" key={index}>
+						<li
+							className="list_item"
+							key={index}
+							onClick={redirectTo(user.id, user.name)}
+						>
 							<img className="list_img" src={user.imageUrl} alt="" />
 							<p className="list_name">{user.name}</p>
 						</li>
@@ -103,6 +116,7 @@ const List = styled.ul`
 		align-items: center;
 		justify-content: flex-start;
 		margin: 13px 0;
+		cursor: pointer;
 	}
 
 	.list_img {

@@ -68,7 +68,7 @@ function Timeline() {
 
 	return (
 		<TimelineStyles>
-			<Homescreen onSubmit={publishPost}>
+			<Homescreen>
 				<Title>timeline</Title>
 				<Publish>
 					<div>
@@ -151,6 +151,7 @@ const Publish = styled.div`
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	display: flex;
 	font-family: "Lato", sans-serif;
+	margin-bottom: 30px;
 	div {
 		width: 86px;
 		display: flex;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { listUserPosts } from "../../services/linkr";
 import Loading from "../../styles/Loading";
 import PostStyles from "../../styles/PostStyles";
@@ -9,8 +9,8 @@ import { Homescreen, Title } from "../timeline/Timeline";
 export default function UserPage() {
 	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
-	const auth = JSON.parse(localStorage.getItem("linkr"));
-	console.log("userpage ", id);
+	const { state } = useLocation();
+
 	useEffect(() => {
 		setTimeout(function () {
 			listUserPosts(id)
@@ -25,7 +25,7 @@ export default function UserPage() {
 		<>
 			<TimelineStyles>
 				<Homescreen>
-					<Title>{`${auth.name}'s posts`}</Title>
+					<Title>{`${state.name}'s posts`}</Title>
 					{posts.length !== 0 ? (
 						posts.map((value, index) => (
 							<PostStyles
