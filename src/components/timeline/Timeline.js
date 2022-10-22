@@ -104,8 +104,10 @@ function Timeline() {
               setUpload={setUpload}
               id={value.id}
               img={value.imageUrl}
+              url={value.url}
               user={value.name}
               text={value.text}
+              likesUser={value.likes}
             />
           ))
         ) : (
