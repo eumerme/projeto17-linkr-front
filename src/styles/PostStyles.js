@@ -1,24 +1,43 @@
 import styled from 'styled-components';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { likes } from '../services/linkr';
 import ReactTooltip from 'react-tooltip';
-import urlMetadata from 'url-metadata';
+import { TiPencil } from "react-icons/ti";
+import { FaTrash } from "react-icons/fa";
+import EditPost from "../components/ChangePosts/EditPost";
+import DeleteModal from "../components/ChangePosts/DeletePost";
+import axios from 'axios';
 
-export default function PostStyles({id, img, user, text, likesUser, upload, setUpload}){
+export default function PostStyles({id, img, user, text, likesUser, upload, setUpload, url}){
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [urlData, setUrlData] = useState({});
+
+    function openModal() {
+      setIsOpen(true);
+    }
+
+    useEffect(() => {
+        axios.get(`https://api.microlink.io/?url=${url}`)
+        .then((data) =>  {
+            const auxData = data.data.data;
+            setUrlData({
+                title: auxData.title,
+                description: auxData.description,
+                image: auxData.image.url
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     const [clickLike, setClickLike] = useState({
         draw: <AiOutlineHeart color='#FFF' size='30px' />,
         type: false
     });
 
-    urlMetadata('http://bit.ly/2ePIrDy').then(
-    function (metadata) { // success handler
-        console.log(metadata)
-    },
-    function (error) { // failure handler
-        console.log(error)
-    })
 
     function like(){
         if(clickLike.type === false){
@@ -61,30 +80,63 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
                 <p data-tip="hello word">{likesUser} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
             </Infos>
             <Description>
-                <h1>{user}</h1>
-                <p>{text}</p>
-                <div>
-                
-                </div>
+                <span>
+                    <h1>{user}</h1>
+                    <h3>
+                    <TiPencil
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsEditing(!isEditing)}
+                    />
+                    <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+                    </h3>
+                </span>
+          {isEditing ? (
+            <EditPost
+              id={id}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              text={text}
+              upload={upload}
+              setUpload={setUpload}
+            />
+          ) : (
+            <p>{text}</p>
+          )}
+          <UrlDatas>
+            <div>a</div>
+            <span>
+                b
+            </span>
+            {/* <p>{urlData.title}</p>
+            <p>{urlData.description}</p>
+            <img src={urlData.image}/> */}
+          </UrlDatas>
             </Description>
         </Container>
+        <DeleteModal
+        upload={upload}
+        setUpload={setUpload}
+        id={id}
+        modalIsOpen={modalIsOpen}
+        setIsOpen={setIsOpen}
+        />
         </>
     );
 };
 
 const Container = styled.div`
-    margin-top: 30px;
-    padding: 18px;
-    width: 611px;
-    background-color: #171717;
-    height: 276px;
-    border-radius: 16px;
-    display: flex;
+  margin-top: 30px;
+  padding: 18px;
+  width: 611px;
+  background-color: #171717;
+  height: 276px;
+  border-radius: 16px;
+  display: flex;
 
-    @media screen and (max-width: 768px){
-        width: 100%;
-        border-radius: 0;
-    }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 const Infos = styled.div`
@@ -100,6 +152,7 @@ const Infos = styled.div`
         height: 50px;
         border-radius: 50%;
         margin-bottom: 20px;
+        object-fit: cover;
     }
 
     p{  
@@ -120,31 +173,53 @@ const Infos = styled.div`
 `;
 
 const Description = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-family: "Lato", sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    h3 {
+      width: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  p {
+    font-family: "Lato", sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: #b7b7b7;
+    margin-bottom: 10px;
+  }
+
+`;
+
+const UrlDatas = styled.div`
     width: 100%;
     height: 100%;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    background-color: yellow;
     display: flex;
-    flex-direction: column;
-
-    h1{
-        font-family: 'Lato', sans-serif;
-        font-size: 22px;
-        font-weight: 400;
-        color: #FFFFFF;
-        margin-bottom: 10px;
-    }
-
-    p{
-        font-family: 'Lato', sans-serif;
-        font-size: 17px;
-        font-weight: 400;
-        color: #B7B7B7;
-        margin-bottom: 10px;
-    }
 
     div{
+        background-color: royalblue;
         width: 100%;
-        height: 100%;
-        border: 1px solid #4D4D4D;
-        border-radius: 11px;
     }
+
+    span{
+        background-color: crimson;
+    }
+
 `;
