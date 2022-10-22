@@ -3,6 +3,7 @@ import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import { useState } from 'react';
 import { likes } from '../services/linkr';
 import ReactTooltip from 'react-tooltip';
+import urlMetadata from 'url-metadata';
 
 export default function PostStyles({id, img, user, text, likesUser, upload, setUpload}){
 
@@ -10,6 +11,14 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
         draw: <AiOutlineHeart color='#FFF' size='30px' />,
         type: false
     });
+
+    urlMetadata('http://bit.ly/2ePIrDy').then(
+    function (metadata) { // success handler
+        console.log(metadata)
+    },
+    function (error) { // failure handler
+        console.log(error)
+    })
 
     function like(){
         if(clickLike.type === false){
