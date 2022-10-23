@@ -16,6 +16,7 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
     const [urlData, setUrlData] = useState({});
     const [ListLikes, setListLikes] = useState([]);
     const [clickLike, setClickLike] = useState({});
+    const [msg, setMsg] = useState('');
 
     function openModal() {
       setIsOpen(true);
@@ -40,29 +41,39 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
         ).then((data) => {
             setListLikes(data.data[0]);
             if(data.data[0].likeBy !== null){
-                const nameLike = (data.data[0].likeBy.map(value => value === name))[0];
+                const nameLike = (data.data[0].likeBy.filter(value => value === name))[0];
                 if(nameLike){
                     setClickLike({
                         draw: <AiFillHeart color='red' size='30px' />,
                         type: true
                     });
+                    const names = data.data[0].likeBy.filter(value => value !== name);
+                    setMsg(`Você, ${names[0]} e outras ${(names.length) - 1} pessoas`);
                 }else{
                     setClickLike({
                         draw: <AiOutlineHeart color='#FFF' size='30px' />,
                         type: false
                     })
+                    if(data.data[0].likeBy.length === 2){
+                        setMsg(`Curtido por ${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]}`);
+                    }else if(data.data[0].likeBy.length === 1){
+                        setMsg(`Curtido ${data.data[0].likeBy[0]}`);
+                    }
+                    else{
+                        setMsg(`${data.data[0].likeBy[0]}, ${data.data[0].likeBy[1]} e outras ${(data.data[0].likes) - 2} pessoas`);
+                    }
                 }
             }else{
                 setClickLike({
                     draw: <AiOutlineHeart color='#FFF' size='30px' />,
                     type: false
                 })
+                setMsg('0 curtidas');
             }
         }).catch((error) => {
             console.log(error);
         });
     }, [upload]);
-
 
     function like(){
         if(clickLike.type === false){
@@ -96,7 +107,6 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
             });
         }
     };
-
     return (
         <>
         <Container>
@@ -105,7 +115,7 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
                 <div onClick={() => like()}>
                     {clickLike.draw}
                 </div>
-                <p data-tip="hello word">{ListLikes.likes} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
+                <p data-tip={msg}>{ListLikes.likes} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
             </Infos>
             <Description>
                 <span>
