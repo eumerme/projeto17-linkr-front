@@ -1,10 +1,11 @@
-import GlobalStyle from "../styles/globalStyles";
+import GlobalStyle from "../globalStyles/globalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SingUp from "./SignUp/SignUp";
-import SignIn from "./SignIn/SignIn";
-import { Timeline } from "./timeline/Timeline";
+import SingUp from "./Auth/SignUp";
+import SignIn from "./Auth/SignIn";
+import { Timeline } from "./Timeline/Timeline";
 import HashtagPage from "./HashtagPage/HashtagPage";
 import Private from "./Private/Private";
+import UserPage from "./UserPage/UserPage";
 
 export default function App() {
 	return (
@@ -22,7 +23,22 @@ export default function App() {
 							</Private>
 						}
 					/>
-					<Route path="/hashtag/:hashtag" element={<HashtagPage />} />
+					<Route
+						path="/hashtag/:hashtag"
+						element={
+							<Private>
+								<HashtagPage />
+							</Private>
+						}
+					/>
+					<Route
+						path="/user/:id"
+						element={
+							<Private>
+								<UserPage />
+							</Private>
+						}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</>

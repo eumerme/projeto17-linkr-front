@@ -1,17 +1,27 @@
 import styled from "styled-components";
+import Logout from "../Logout/Logout";
+import HashtagMainLayout from "../HashtagPage/HashtagMainLayout";
+import SearchUser from "../SearchUser/SearchUser";
+import { useNavigate } from "react-router-dom";
 
-import Logout from "../components/Logout/Logout";
-import HashtagBoxStyles from "./HashtagBoxStyles";
+export default function TimelineMainLayout({ children }) {
+	const navigate = useNavigate();
 
-export default function TimelineStyles({ children, auth }) {
+	setTimeout(() => {
+		document
+			.getElementById("search")
+			.scrollIntoView({ block: "center", behavior: "smooth" });
+	}, 1000);
+
 	return (
 		<Container>
 			<Navbar>
-				<h1>linkr</h1>
+				<h1 onClick={() => navigate("/timeline")}>linkr</h1>
 				<Logout />
 			</Navbar>
 			{children}
-			<HashtagBoxStyles />
+			<HashtagMainLayout />
+			<SearchUser />
 		</Container>
 	);
 }
@@ -20,13 +30,17 @@ const Container = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
-	background-color: crimson;
-	margin-top: 72px;
+	padding-top: 72px;
 	display: flex;
 	align-items: flex-start;
-	justify-content: space-around;
+	justify-content: center;
 	background-color: #333333;
 	padding-bottom: 60px;
+	position: relative;
+
+	@media screen and (max-width: 768px) {
+		padding-top: 130px;
+	}
 `;
 
 const Navbar = styled.div`
@@ -48,11 +62,13 @@ const Navbar = styled.div`
 		font-weight: 700;
 		line-height: 53.95px;
 		font-family: "Passion One", cursive;
+		cursor: pointer;
 	}
 	span {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		cursor: pointer;
 	}
 	img {
 		width: 53px;
@@ -60,11 +76,5 @@ const Navbar = styled.div`
 		border-radius: 27px;
 		margin: 0 0 0 17px;
 		object-fit: cover;
-	}
-	@media screen and (max-width: 768px) {
-		width: 100%;
-		img {
-			margin: 0 0 0 12px;
-		}
 	}
 `;

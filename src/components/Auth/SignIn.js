@@ -1,8 +1,9 @@
-import AuthSyles from "../../styles/AuthStyles.js";
+import AuthMainLayout from "./AuthMainLayout.js";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { login } from "../../services/linkr.js";
+import { auth } from "../commom/localStorage.js";
 
 export default function SignIn() {
 	const navigate = useNavigate();
@@ -10,7 +11,6 @@ export default function SignIn() {
 	const [password, setPassword] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [msgBtn, setMsgBtn] = useState("Log In");
-	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	function loginUser(event) {
 		event.preventDefault();
@@ -26,6 +26,7 @@ export default function SignIn() {
 				localStorage.setItem(
 					"linkr",
 					JSON.stringify({
+						id: res.data.id,
 						name: res.data.name,
 						token: res.data.token,
 						image: res.data.image,
@@ -51,7 +52,7 @@ export default function SignIn() {
 			{auth ? (
 				<Navigate to="/timeline" />
 			) : (
-				<AuthSyles onSubmit={loginUser} isDisabled={isDisabled}>
+				<AuthMainLayout onSubmit={loginUser} isDisabled={isDisabled}>
 					<input
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
@@ -71,7 +72,7 @@ export default function SignIn() {
 					/>
 					<button disabled={isDisabled}>{msgBtn}</button>
 					<p onClick={() => redirect()}>First time? Create an account!</p>
-				</AuthSyles>
+				</AuthMainLayout>
 			)}
 		</>
 	);

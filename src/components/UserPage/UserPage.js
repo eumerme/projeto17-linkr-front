@@ -1,30 +1,37 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { listPostsbyHashtags } from "../../services/linkr";
+import { useLocation, useParams } from "react-router-dom";
+import { listUserPosts } from "../../services/linkr";
+import Loading from "../commom/Loading";
 import PostsMainLayout from "../Posts/PostsMainLayout";
 import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
-import Loading from "../commom/Loading";
 
-export default function HashtagPage() {
-	const params = useParams();
+export default function UserPage() {
+	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
+	const { state } = useLocation();
+	const [errorServer, setErrorServer] = useState(false);
+	const [empty, setEmpty] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
-			listPostsbyHashtags(params.hashtag)
-				.then((data) => {
-					setPosts(data.data);
+			listUserPosts(id)
+				.then((res) => {
+					setPosts(res.data);
+					if (res.data.length === 0) setEmpty(true);
 				})
-				.catch();
-		}, 2000);
-	}, [params.hashtag]);
+				.catch((error) => {
+					console.log(error);
+					setErrorServer(true);
+				});
+		}, 1000);
+	}, [id]);
 
 	return (
 		<>
 			<TimelineMainLayout>
 				<Homescreen>
-					<Title># {params.hashtag}</Title>
+					<Title>{`${state.name}'s posts`}</Title>
 					{posts.length !== 0 ? (
 						posts.map((value, index) => (
 							<PostsMainLayout
@@ -39,7 +46,7 @@ export default function HashtagPage() {
 							/>
 						))
 					) : (
-						<Loading />
+						<Loading error={+errorServer} empty={+empty} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>
