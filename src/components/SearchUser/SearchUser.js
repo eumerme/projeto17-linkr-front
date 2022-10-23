@@ -87,7 +87,10 @@ export default function SearchUser() {
 						<li
 							className="list_item"
 							key={index}
-							onClick={() => redirectTo(user.id, user.name)}
+							onClick={() => {
+								setSearch("");
+								redirectTo(user.id, user.name);
+							}}
 						>
 							<img className="list_img" src={user.imageUrl} alt="" />
 							<p className="list_name">{user.name}</p>
