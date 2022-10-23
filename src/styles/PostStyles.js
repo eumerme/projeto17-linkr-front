@@ -9,12 +9,13 @@ import EditPost from "../components/ChangePosts/EditPost";
 import DeleteModal from "../components/ChangePosts/DeletePost";
 import axios from 'axios';
 
-export default function PostStyles({id, img, user, text, upload, setUpload, url, userId}){
+export default function PostStyles({id, img, user, text, upload, setUpload, url, userId, name}){
 
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [urlData, setUrlData] = useState({});
     const [ListLikes, setListLikes] = useState([]);
+    const [clickLike, setClickLike] = useState({});
 
     function openModal() {
       setIsOpen(true);
@@ -38,15 +39,30 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
             id,
         ).then((data) => {
             setListLikes(data.data[0]);
+            if(data.data[0].likeBy !== null){
+                const nameLike = (data.data[0].likeBy.map(value => value === name))[0];
+                if(nameLike){
+                    setClickLike({
+                        draw: <AiFillHeart color='red' size='30px' />,
+                        type: true
+                    });
+                }else{
+                    setClickLike({
+                        draw: <AiOutlineHeart color='#FFF' size='30px' />,
+                        type: false
+                    })
+                }
+            }else{
+                setClickLike({
+                    draw: <AiOutlineHeart color='#FFF' size='30px' />,
+                    type: false
+                })
+            }
         }).catch((error) => {
             console.log(error);
         });
     }, [upload]);
 
-    const [clickLike, setClickLike] = useState({
-        draw: <AiOutlineHeart color='#FFF' size='30px' />,
-        type: false
-    });
 
     function like(){
         if(clickLike.type === false){

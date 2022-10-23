@@ -108,6 +108,7 @@ function Timeline() {
               user={value.name}
               text={value.text}
               userId={value.userId}
+              name={value.name}
             />
           ))
         ) : (
