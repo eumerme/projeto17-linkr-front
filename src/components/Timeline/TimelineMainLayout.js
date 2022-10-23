@@ -3,20 +3,30 @@ import Logout from "../Logout/Logout";
 import HashtagMainLayout from "../HashtagPage/HashtagMainLayout";
 import SearchUser from "../SearchUser/SearchUser";
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function TimelineMainLayout({ children }) {
 	const navigate = useNavigate();
+	const { upload, setUpload } = useContext(UploadContext);
 
-	setTimeout(() => {
-		document
-			.getElementById("search")
-			.scrollIntoView({ block: "center", behavior: "smooth" });
-	}, 1000);
+	useEffect(() => {
+		setTimeout(() => {
+			document
+				.getElementById("search")
+				.scrollIntoView({ block: "center", behavior: "smooth" });
+		}, 500);
+	}, []);
+
+	const redirectTo = () => {
+		navigate("/timeline");
+		window.location.reload();
+	};
 
 	return (
 		<Container>
 			<Navbar>
-				<h1 onClick={() => navigate("/timeline")}>linkr</h1>
+				<h1 onClick={redirectTo}>linkr</h1>
 				<Logout />
 			</Navbar>
 			{children}

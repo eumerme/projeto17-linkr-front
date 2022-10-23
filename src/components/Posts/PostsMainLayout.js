@@ -25,7 +25,7 @@ export default function PostsMainLayout({
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [urlData, setUrlData] = useState({});
-	//const [tag, setTag] = useState(null);
+	const [thereIsTag, setThereIsTag] = useState(false);
 	const navigate = useNavigate();
 	const tag = useRef(null);
 
@@ -57,10 +57,10 @@ export default function PostsMainLayout({
 			const hashtagText = hashtag.slice(1, hashtag.length);
 
 			insertHashtag({ hashtagText })
-				.then((res) => console.log(res))
+				.then((res) => setThereIsTag(!thereIsTag))
 				.catch((error) => console.log(error));
 		}
-	}, [tag]);
+	}, []);
 
 	const [clickLike, setClickLike] = useState({
 		draw: <AiOutlineHeart color="#FFF" size="30px" />,

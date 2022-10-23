@@ -6,41 +6,47 @@ import { Timeline } from "./Timeline/Timeline";
 import HashtagPage from "./HashtagPage/HashtagPage";
 import Private from "./Private/Private";
 import UserPage from "./UserPage/UserPage";
+import UploadContext from "../Contexts/UploadContext";
+import { useState } from "react";
 
 export default function App() {
+	const [upload, setUpload] = useState(true);
+
 	return (
 		<>
 			<GlobalStyle />
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<SignIn />} />
-					<Route path="/sign-up" element={<SingUp />} />
-					<Route
-						path="/timeline"
-						element={
-							<Private>
-								<Timeline />
-							</Private>
-						}
-					/>
-					<Route
-						path="/hashtag/:hashtag"
-						element={
-							<Private>
-								<HashtagPage />
-							</Private>
-						}
-					/>
-					<Route
-						path="/user/:id"
-						element={
-							<Private>
-								<UserPage />
-							</Private>
-						}
-					/>
-				</Routes>
-			</BrowserRouter>
+			<UploadContext.Provider value={{ upload, setUpload }}>
+				<BrowserRouter>
+					<Routes>
+						<Route path="/" element={<SignIn />} />
+						<Route path="/sign-up" element={<SingUp />} />
+						<Route
+							path="/timeline"
+							element={
+								<Private>
+									<Timeline />
+								</Private>
+							}
+						/>
+						<Route
+							path="/hashtag/:hashtag"
+							element={
+								<Private>
+									<HashtagPage />
+								</Private>
+							}
+						/>
+						<Route
+							path="/user/:id"
+							element={
+								<Private>
+									<UserPage />
+								</Private>
+							}
+						/>
+					</Routes>
+				</BrowserRouter>
+			</UploadContext.Provider>
 		</>
 	);
 }
