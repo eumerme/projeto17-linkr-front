@@ -285,17 +285,23 @@ const UrlDatas = styled.div`
 	border: 1px solid #4d4d4d;
 	border-radius: 11px;
 	display: flex;
+
 	cursor: pointer;
 
 	div {
 		padding: 10px;
-		width: 65%;
+		width: 100%;
+		height: auto;
 		display: flex;
 		flex-direction: column;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		overflow: hidden;
 
 		h1 {
+			height: auto;
+
+			width: 100%;
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 16px;
@@ -303,6 +309,9 @@ const UrlDatas = styled.div`
 		}
 
 		p {
+			width: 100%;
+			height: auto;
+
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 11px;
@@ -310,10 +319,13 @@ const UrlDatas = styled.div`
 		}
 
 		h2 {
+			width: 100%;
+			height: auto;
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 11px;
 			color: #cecece;
+			word-wrap: break-word;
 		}
 	}
 
