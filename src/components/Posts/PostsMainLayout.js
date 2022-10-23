@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useState, useEffect } from "react";
-import { getUrlMetadata, likes } from "../../services/linkr";
+import { useState, useEffect, useRef } from "react";
+import { getUrlMetadata, insertHashtag, likes } from "../../services/linkr";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -9,6 +9,7 @@ import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../commom/localStorage";
+import { ReactTagify } from "react-tagify";
 
 export default function PostsMainLayout({
 	id,
@@ -24,7 +25,9 @@ export default function PostsMainLayout({
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [urlData, setUrlData] = useState({});
+	//const [tag, setTag] = useState(null);
 	const navigate = useNavigate();
+	//const tag = useRef(null);
 
 	function openModal() {
 		setIsOpen(true);
@@ -45,6 +48,23 @@ export default function PostsMainLayout({
 				console.log(error);
 			});
 	}, []);
+
+	useEffect(
+		() => {
+			console.log("entrou");
+			//console.log("ref ", tag);
+			/* if (tag.current !== null) {
+			
+			const hashtag = tag.slice(1, tag.length);
+			insertHashtag({ body: hashtag })
+				.then((res) => console.log(res))
+				.catch((error) => console.log(error));
+		} */
+		},
+		[
+			/* tag.current */
+		]
+	);
 
 	const [clickLike, setClickLike] = useState({
 		draw: <AiOutlineHeart color="#FFF" size="30px" />,
@@ -85,13 +105,27 @@ export default function PostsMainLayout({
 		}
 	}
 
-	function redirectTo() {
+	function redirectToUserpage() {
 		navigate(`/user/${userId}`, {
 			replace: false,
 			state: { name: user },
 		});
 	}
 
+	function redirectToHashtagPage(tag) {
+		const hashtag = tag.slice(1, tag.length);
+		navigate(`/hashtag/${hashtag}`);
+	}
+
+	const tagStyle = {
+		fontSize: "17px",
+		fontWeight: 700,
+		color: "#FFFFFF",
+		cursor: "pointer",
+		margin: 0,
+	};
+
+	//console.log(tag);
 	return (
 		<>
 			<Container>
@@ -107,7 +141,7 @@ export default function PostsMainLayout({
 				</Infos>
 				<Description>
 					<span>
-						<h1 onClick={redirectTo}>{user}</h1>
+						<h1 onClick={redirectToUserpage}>{user}</h1>
 						{auth.id === userId ? (
 							<h3>
 								<TiPencil
@@ -130,7 +164,14 @@ export default function PostsMainLayout({
 							setUpload={setUpload}
 						/>
 					) : (
-						<p>{text}</p>
+						<ReactTagify
+							tagStyle={tagStyle}
+							colors={"red"}
+							/* ref={tag} */
+							tagClicked={(tag) => redirectToHashtagPage(tag)}
+						>
+							<p>{text}</p>
+						</ReactTagify>
 					)}
 					<UrlDatas onClick={() => window.open(url, "_blank")}>
 						<div>
@@ -237,6 +278,11 @@ const Description = styled.div`
 		font-weight: 400;
 		color: #b7b7b7;
 		margin-bottom: 10px;
+		display: flex;
+		span {
+			width: auto;
+			padding: 0 4px;
+		}
 	}
 `;
 

@@ -10,7 +10,6 @@ export default function HashtagMainLayout() {
 
 	useEffect(() => {
 		setTimeout(function () {
-			console.log("entrou hashtag");
 			listHashtags()
 				.then((data) => {
 					setPosts(data.data);
@@ -19,7 +18,6 @@ export default function HashtagMainLayout() {
 		}, 1000);
 	}, []);
 
-	console.log("posts ", posts);
 	function redirect(text) {
 		navigate(`/hashtag/${text}`);
 	}
