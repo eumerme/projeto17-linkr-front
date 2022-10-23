@@ -212,6 +212,7 @@ const Publish = styled.div`
 			position: absolute;
 			bottom: 5px;
 			right: 5%;
+			cursor: pointer;
 		}
 	}
 	@media screen and (max-width: 768px) {

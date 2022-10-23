@@ -27,7 +27,7 @@ export default function PostsMainLayout({
 	const [urlData, setUrlData] = useState({});
 	//const [tag, setTag] = useState(null);
 	const navigate = useNavigate();
-	//const tag = useRef(null);
+	const tag = useRef(null);
 
 	function openModal() {
 		setIsOpen(true);
@@ -49,22 +49,18 @@ export default function PostsMainLayout({
 			});
 	}, []);
 
-	useEffect(
-		() => {
-			console.log("entrou");
-			//console.log("ref ", tag);
-			/* if (tag.current !== null) {
-			
-			const hashtag = tag.slice(1, tag.length);
-			insertHashtag({ body: hashtag })
+	useEffect(() => {
+		if (tag.current.innerText.includes("#")) {
+			const hashtag = tag.current.innerText
+				.split("\n")
+				.find((value) => value.includes("#"));
+			const hashtagText = hashtag.slice(1, hashtag.length);
+
+			insertHashtag({ hashtagText })
 				.then((res) => console.log(res))
 				.catch((error) => console.log(error));
-		} */
-		},
-		[
-			/* tag.current */
-		]
-	);
+		}
+	}, [tag]);
 
 	const [clickLike, setClickLike] = useState({
 		draw: <AiOutlineHeart color="#FFF" size="30px" />,
@@ -125,7 +121,6 @@ export default function PostsMainLayout({
 		margin: 0,
 	};
 
-	//console.log(tag);
 	return (
 		<>
 			<Container>
@@ -166,11 +161,9 @@ export default function PostsMainLayout({
 					) : (
 						<ReactTagify
 							tagStyle={tagStyle}
-							colors={"red"}
-							/* ref={tag} */
 							tagClicked={(tag) => redirectToHashtagPage(tag)}
 						>
-							<p>{text}</p>
+							<p ref={tag}>{text}</p>
 						</ReactTagify>
 					)}
 					<UrlDatas onClick={() => window.open(url, "_blank")}>
@@ -334,10 +327,10 @@ const UrlDatas = styled.div`
 		padding: 0;
 
 		img {
-			width: 150px;
-			height: 150px;
+			width: 100%;
+			height: 100%;
 			object-fit: cover;
-			border-radius: 10px;
+			border-radius: 0 10px 10px 0;
 		}
 	}
 
@@ -349,8 +342,8 @@ const UrlDatas = styled.div`
 		}
 
 		.UrlImage img {
-			width: 60%;
-			height: 60%;
+			width: 100%;
+			height: 100%;
 		}
 	}
 `;

@@ -9,6 +9,7 @@ import Loading from "../commom/Loading";
 export default function HashtagPage() {
 	const params = useParams();
 	const [posts, setPosts] = useState([]);
+	const [errorServer, setErrorServer] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -16,7 +17,10 @@ export default function HashtagPage() {
 				.then((data) => {
 					setPosts(data.data);
 				})
-				.catch();
+				.catch((error) => {
+					console.log(error);
+					setErrorServer(true);
+				});
 		}, 2000);
 	}, [params.hashtag]);
 
@@ -39,7 +43,7 @@ export default function HashtagPage() {
 							/>
 						))
 					) : (
-						<Loading />
+						<Loading error={+errorServer} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>

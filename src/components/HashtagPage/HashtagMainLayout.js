@@ -14,7 +14,9 @@ export default function HashtagMainLayout() {
 				.then((data) => {
 					setPosts(data.data);
 				})
-				.catch();
+				.catch((error) => {
+					console.log(error);
+				});
 		}, 1000);
 	}, []);
 

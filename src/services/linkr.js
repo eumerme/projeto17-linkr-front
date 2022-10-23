@@ -77,9 +77,7 @@ async function getUrlMetadata(url) {
 
 async function insertHashtag(body) {
 	const config = createHeaders();
-	console.log("body front ", body);
-	console.log("config ", config);
-	//return axios.post(`${BASE_URL}/hashtags`, body, config);
+	return axios.post(`${BASE_URL}/hashtags`, body, config);
 }
 
 export {
