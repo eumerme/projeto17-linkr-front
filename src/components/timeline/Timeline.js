@@ -107,7 +107,7 @@ function Timeline() {
               url={value.url}
               user={value.name}
               text={value.text}
-              likesUser={value.likes}
+              userId={value.userId}
             />
           ))
         ) : (

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import { useState, useEffect } from 'react';
-import { likes } from '../services/linkr';
+import { likes, listLikes } from '../services/linkr';
 import ReactTooltip from 'react-tooltip';
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -9,11 +9,12 @@ import EditPost from "../components/ChangePosts/EditPost";
 import DeleteModal from "../components/ChangePosts/DeletePost";
 import axios from 'axios';
 
-export default function PostStyles({id, img, user, text, likesUser, upload, setUpload, url}){
+export default function PostStyles({id, img, user, text, upload, setUpload, url, userId}){
 
     const [isEditing, setIsEditing] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [urlData, setUrlData] = useState({});
+    const [ListLikes, setListLikes] = useState([]);
 
     function openModal() {
       setIsOpen(true);
@@ -32,44 +33,54 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
         }).catch((error) => {
             console.log(error);
         });
-    }, []);
+
+        listLikes(
+            id,
+        ).then((data) => {
+            setListLikes(data.data[0]);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, [upload]);
 
     const [clickLike, setClickLike] = useState({
         draw: <AiOutlineHeart color='#FFF' size='30px' />,
         type: false
     });
 
-
     function like(){
         if(clickLike.type === false){
-            setClickLike({
-                draw: <AiFillHeart color='red' size='30px' />,
-                type: true
-            });
             likes({
                 id,
+                userId,
                 type: 'like',
             }).then(() => {
+                setClickLike({
+                    draw: <AiFillHeart color='red' size='30px' />,
+                    type: true
+                });
                 setUpload(!upload);
             }).catch((error) => {
                 console.log(error.response.status);
             });
 
         }else{
-            setClickLike({
-                draw: <AiOutlineHeart color='#FFF' size='30px' />,
-                type: false
-            });
             likes({
                 id,
+                userId,
                 type: 'noLike',
             }).then(() => {
+                setClickLike({
+                    draw: <AiOutlineHeart color='#FFF' size='30px' />,
+                    type: false
+                });
                 setUpload(!upload);
             }).catch((error) => {
                 console.log(error.response.status);
             });
         }
     };
+
     return (
         <>
         <Container>
@@ -78,7 +89,7 @@ export default function PostStyles({id, img, user, text, likesUser, upload, setU
                 <div onClick={() => like()}>
                     {clickLike.draw}
                 </div>
-                <p data-tip="hello word">{likesUser} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
+                <p data-tip="hello word">{ListLikes.likes} likes</p><ReactTooltip backgroundColor='#FFFFFF' className='toopTip' place='bottom'/>
             </Infos>
             <Description>
                 <span>
@@ -213,6 +224,7 @@ const UrlDatas = styled.div`
     border: 1px solid #4d4d4d;
     border-radius: 11px;
     display: flex;
+    cursor: pointer;
 
     div{
         padding: 20px;

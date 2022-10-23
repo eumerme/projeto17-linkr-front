@@ -58,7 +58,11 @@ async function deleteFatalPost(id) {
 }
 
 function likes(body){
-	return axios.post(`${BASE_URL}/timeline/likes`, body);
+	return axios.post(`${BASE_URL}/timeline/like`, body);
+}
+
+function listLikes(id){
+  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
 }
 
 export {
@@ -72,4 +76,5 @@ export {
 	likes,
   editPostText,
   deleteFatalPost,
+  listLikes
 };
