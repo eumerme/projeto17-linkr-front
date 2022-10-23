@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useState, useEffect } from "react";
-import { getUrlMetadata, likes } from "../../services/linkr";
+import { useState, useEffect, useRef } from "react";
+import { getUrlMetadata, insertHashtag, likes } from "../../services/linkr";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -9,6 +9,7 @@ import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../commom/localStorage";
+import { ReactTagify } from "react-tagify";
 
 export default function PostsMainLayout({
 	id,
@@ -24,7 +25,9 @@ export default function PostsMainLayout({
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [urlData, setUrlData] = useState({});
+	const [thereIsTag, setThereIsTag] = useState(false);
 	const navigate = useNavigate();
+	const tag = useRef(null);
 
 	function openModal() {
 		setIsOpen(true);
@@ -44,6 +47,19 @@ export default function PostsMainLayout({
 			.catch((error) => {
 				console.log(error);
 			});
+	}, []);
+
+	useEffect(() => {
+		if (tag.current.innerText.includes("#")) {
+			const hashtag = tag.current.innerText
+				.split("\n")
+				.find((value) => value.includes("#"));
+			const hashtagText = hashtag.slice(1, hashtag.length);
+
+			insertHashtag({ hashtagText })
+				.then((res) => setThereIsTag(!thereIsTag))
+				.catch((error) => console.log(error));
+		}
 	}, []);
 
 	const [clickLike, setClickLike] = useState({
@@ -85,12 +101,25 @@ export default function PostsMainLayout({
 		}
 	}
 
-	function redirectTo() {
+	function redirectToUserpage() {
 		navigate(`/user/${userId}`, {
 			replace: false,
 			state: { name: user },
 		});
 	}
+
+	function redirectToHashtagPage(tag) {
+		const hashtag = tag.slice(1, tag.length);
+		navigate(`/hashtag/${hashtag}`);
+	}
+
+	const tagStyle = {
+		fontSize: "17px",
+		fontWeight: 700,
+		color: "#FFFFFF",
+		cursor: "pointer",
+		margin: 0,
+	};
 
 	return (
 		<>
@@ -107,7 +136,7 @@ export default function PostsMainLayout({
 				</Infos>
 				<Description>
 					<span>
-						<h1 onClick={redirectTo}>{user}</h1>
+						<h1 onClick={redirectToUserpage}>{user}</h1>
 						{auth.id === userId ? (
 							<h3>
 								<TiPencil
@@ -130,7 +159,12 @@ export default function PostsMainLayout({
 							setUpload={setUpload}
 						/>
 					) : (
-						<p>{text}</p>
+						<ReactTagify
+							tagStyle={tagStyle}
+							tagClicked={(tag) => redirectToHashtagPage(tag)}
+						>
+							<p ref={tag}>{text}</p>
+						</ReactTagify>
 					)}
 					<UrlDatas onClick={() => window.open(url, "_blank")}>
 						<div>
@@ -237,6 +271,11 @@ const Description = styled.div`
 		font-weight: 400;
 		color: #b7b7b7;
 		margin-bottom: 10px;
+		display: flex;
+		span {
+			width: auto;
+			padding: 0 4px;
+		}
 	}
 `;
 
@@ -246,17 +285,23 @@ const UrlDatas = styled.div`
 	border: 1px solid #4d4d4d;
 	border-radius: 11px;
 	display: flex;
+
 	cursor: pointer;
 
 	div {
 		padding: 10px;
-		width: 65%;
+		width: 100%;
+		height: auto;
 		display: flex;
 		flex-direction: column;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		overflow: hidden;
 
 		h1 {
+			height: auto;
+
+			width: 100%;
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 16px;
@@ -264,6 +309,9 @@ const UrlDatas = styled.div`
 		}
 
 		p {
+			width: 100%;
+			height: auto;
+
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 11px;
@@ -271,10 +319,13 @@ const UrlDatas = styled.div`
 		}
 
 		h2 {
+			width: 100%;
+			height: auto;
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 11px;
 			color: #cecece;
+			word-wrap: break-word;
 		}
 	}
 
@@ -288,10 +339,10 @@ const UrlDatas = styled.div`
 		padding: 0;
 
 		img {
-			width: 150px;
-			height: 150px;
+			width: 100%;
+			height: 100%;
 			object-fit: cover;
-			border-radius: 10px;
+			border-radius: 0 10px 10px 0;
 		}
 	}
 
@@ -303,8 +354,8 @@ const UrlDatas = styled.div`
 		}
 
 		.UrlImage img {
-			width: 60%;
-			height: 60%;
+			width: 100%;
+			height: 100%;
 		}
 	}
 `;

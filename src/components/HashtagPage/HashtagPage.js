@@ -9,15 +9,21 @@ import Loading from "../commom/Loading";
 export default function HashtagPage() {
 	const params = useParams();
 	const [posts, setPosts] = useState([]);
+	const [errorServer, setErrorServer] = useState(false);
+	const [empty, setEmpty] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
 			listPostsbyHashtags(params.hashtag)
 				.then((data) => {
 					setPosts(data.data);
+					if (data.data.length === 0) setEmpty(true);
 				})
-				.catch();
-		}, 2000);
+				.catch((error) => {
+					console.log(error);
+					setErrorServer(true);
+				});
+		}, 500);
 	}, [params.hashtag]);
 
 	return (
@@ -39,7 +45,7 @@ export default function HashtagPage() {
 							/>
 						))
 					) : (
-						<Loading />
+						<Loading error={+errorServer} empty={+empty} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>

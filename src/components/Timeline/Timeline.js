@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { publish, listPosts } from "../../services/linkr";
 import TimelineMainLayout from "./TimelineMainLayout";
 import PostsMainLayout from "../Posts/PostsMainLayout";
 import styled from "styled-components";
 import Loading from "../commom/Loading";
 import { auth } from "../commom/localStorage";
+import UploadContext from "../../Contexts/UploadContext";
 
 function Timeline() {
 	const [url, setUrl] = useState("");
@@ -15,7 +16,7 @@ function Timeline() {
 	const [existPost, setExistPost] = useState(false);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
-	const [upload, setUpload] = useState(true);
+	const { upload, setUpload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -28,7 +29,7 @@ function Timeline() {
 				.catch((error) => {
 					setErrorServer(true);
 				});
-		}, 1000);
+		}, 500);
 	}, [upload]);
 
 	function publishPost(event) {
@@ -212,6 +213,7 @@ const Publish = styled.div`
 			position: absolute;
 			bottom: 5px;
 			right: 5%;
+			cursor: pointer;
 		}
 	}
 	@media screen and (max-width: 768px) {

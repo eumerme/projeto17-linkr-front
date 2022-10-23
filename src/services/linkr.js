@@ -75,6 +75,11 @@ async function getUrlMetadata(url) {
 	return axios.get(`https://api.microlink.io/?url=${url}`);
 }
 
+async function insertHashtag(body) {
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/hashtags`, body, config);
+}
+
 export {
 	register,
 	login,
@@ -89,4 +94,5 @@ export {
 	listUserPosts,
 	likes,
 	getUrlMetadata,
+	insertHashtag,
 };

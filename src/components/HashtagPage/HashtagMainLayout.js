@@ -1,25 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import UploadContext from "../../Contexts/UploadContext";
 import { listHashtags } from "../../services/linkr";
 
 export default function HashtagMainLayout() {
 	const navigate = useNavigate();
-
 	const [posts, setPosts] = useState([]);
+	const { upload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(function () {
-			console.log("entrou hashtag");
 			listHashtags()
 				.then((data) => {
 					setPosts(data.data);
 				})
-				.catch();
-		}, 1000);
-	}, []);
+				.catch((error) => {
+					console.log(error);
+				});
+		}, 500);
+	}, [upload]);
 
-	console.log("posts ", posts);
 	function redirect(text) {
 		navigate(`/hashtag/${text}`);
 	}

@@ -1,5 +1,5 @@
 import { IoIosSearch } from "react-icons/io";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { listUsers } from "../../services/linkr";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ export default function SearchUser() {
 	const [search, setSearch] = useState("");
 	const [userFiltered, setUserFiltered] = useState([]);
 	const navigate = useNavigate();
+	const searchRef = useRef(null);
+	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -44,6 +46,26 @@ export default function SearchUser() {
 		});
 	}
 
+	useEffect(() => {
+		const pageClickEvent = (e) => {
+			const activeElementExists = searchRef.current !== null;
+			const isClickedOutside = !searchRef.current.contains(e.target);
+			console.log({ searchRef, activeElementExists, isClickedOutside });
+			if (activeElementExists && isClickedOutside) {
+				setIsActive(!isActive);
+				setSearch("");
+			}
+		};
+
+		if (isActive) {
+			window.addEventListener("click", pageClickEvent);
+		}
+
+		return () => {
+			window.removeEventListener("click", pageClickEvent);
+		};
+	}, [isActive]);
+
 	return (
 		<Container id="search">
 			<SearchWrapper>
@@ -51,18 +73,24 @@ export default function SearchUser() {
 					type="text"
 					placeholder="Search for people"
 					value={search}
-					onChange={(e) => setSearch(e.target.value)}
+					onChange={(e) => {
+						setSearch(e.target.value);
+						setIsActive(!isActive);
+					}}
 				/>
 
 				<IoIosSearch color="#C6C6C6" />
 			</SearchWrapper>
 			{userFiltered?.length !== 0 ? (
-				<List>
+				<List ref={searchRef}>
 					{userFiltered.map((user, index) => (
 						<li
 							className="list_item"
 							key={index}
-							onClick={() => redirectTo(user.id, user.name)}
+							onClick={() => {
+								setSearch("");
+								redirectTo(user.id, user.name);
+							}}
 						>
 							<img className="list_img" src={user.imageUrl} alt="" />
 							<p className="list_name">{user.name}</p>
@@ -104,15 +132,18 @@ const List = styled.ul`
 	max-width: 490;
 	height: auto;
 	background-color: #e7e7e7;
-	padding: 0 10px;
 	border-radius: 8px;
 
 	.list_item {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		margin: 13px 0;
 		cursor: pointer;
+	}
+
+	.list_item:hover {
+		background-color: #999ba138;
+		transition: 0.4s;
 	}
 
 	.list_img {
@@ -120,7 +151,7 @@ const List = styled.ul`
 		height: 40px;
 		border-radius: 50%;
 		object-fit: cover;
-		margin-right: 10px;
+		margin: 10px;
 	}
 
 	.list_name {
