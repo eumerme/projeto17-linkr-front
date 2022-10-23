@@ -33,6 +33,7 @@ export default function DeleteModal({
   function deletePost() {
     deleteFatalPost(id)
       .then(() => {
+        console.log("chamou");
         setUpload(!upload);
         setIsSucess(true);
         setTimeout(function () {

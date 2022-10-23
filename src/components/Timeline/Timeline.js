@@ -45,13 +45,13 @@ function Timeline() {
     } else {
       publish({ url, comment })
         .then(() => {
-          setMsgBtn("Publish");
-          setIsDisabled(false);
-          setUrl("");
-          setComment("");
+          setUpload(!upload);
           setTimeout(() => {
-            setUpload(!upload);
-          }, 2000);
+            setMsgBtn("Publish");
+            setIsDisabled(false);
+            setUrl("");
+            setComment("");
+          }, 1200);
         })
         .catch((error) => {
           if (error.response.status === 401) {
@@ -189,11 +189,11 @@ const Publish = styled.div`
       border-radius: 5px;
       margin: 0 0 5px 0;
       padding: 0 0 0 13px;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 18px;
+      color: #949494;
       ::placeholder {
-        font-size: 15px;
-        font-weight: 300;
-        line-height: 18px;
-        color: #949494;
       }
       :focus {
         outline: 0;

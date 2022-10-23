@@ -7,12 +7,13 @@ import { listHashtags } from "../../services/linkr";
 export default function HashtagMainLayout() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const { upload } = useContext(UploadContext);
+  const { upload, setUpload } = useContext(UploadContext);
 
   useEffect(() => {
     setTimeout(function () {
       listHashtags()
         .then((data) => {
+          setPosts([]);
           setPosts(data.data);
         })
         .catch((error) => {
