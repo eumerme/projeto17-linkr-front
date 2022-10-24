@@ -49,7 +49,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
         setListLikes(data.data[0]);
         if (data.data[0].likeBy !== null) {
           const nameLike = data.data[0].users.filter(
-            (value) => value === userId
+            (value) => value === auth.id
           )[0];
           if (nameLike) {
             setClickLike({
@@ -104,7 +104,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
     if (clickLike.type === false) {
       likes({
         id,
-        userId,
+        userId: auth.id,
         type: "like",
       })
         .then(() => {
@@ -120,7 +120,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
     } else {
       likes({
         id,
-        userId,
+        userId: auth.id,
         type: "noLike",
       })
         .then(() => {
