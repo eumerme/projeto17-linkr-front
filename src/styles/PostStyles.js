@@ -41,23 +41,31 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
         ).then((data) => {
             setListLikes(data.data[0]);
             if(data.data[0].likeBy !== null){
-                const nameLike = (data.data[0].likeBy.filter(value => value === name))[0];
+                const nameLike = (data.data[0].users.filter(value => value === userId))[0];
                 if(nameLike){
                     setClickLike({
                         draw: <AiFillHeart color='red' size='30px' />,
                         type: true
                     });
                     const names = data.data[0].likeBy.filter(value => value !== name);
-                    setMsg(`Você, ${names[0]} e outras ${(names.length) - 1} pessoas`);
+                    if(names.length !== 0){
+                        if(data.data[0].likeBy.length === 2){
+                            setMsg(`Você e ${names[0]} curtiram!`);
+                        }else{
+                            setMsg(`Você, ${names[0]} e outras ${(names.length) - 1} pessoas`);
+                        }
+                    }else{
+                        setMsg(`Você curtiu!`);
+                    }
                 }else{
                     setClickLike({
                         draw: <AiOutlineHeart color='#FFF' size='30px' />,
                         type: false
                     })
                     if(data.data[0].likeBy.length === 2){
-                        setMsg(`Curtido por ${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]}`);
+                        setMsg(`${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`);
                     }else if(data.data[0].likeBy.length === 1){
-                        setMsg(`Curtido ${data.data[0].likeBy[0]}`);
+                        setMsg(`${data.data[0].likeBy[0]} curtiu!`);
                     }
                     else{
                         setMsg(`${data.data[0].likeBy[0]}, ${data.data[0].likeBy[1]} e outras ${(data.data[0].likes) - 2} pessoas`);
