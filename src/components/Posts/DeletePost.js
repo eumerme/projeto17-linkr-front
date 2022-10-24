@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import { deleteFatalPost } from "../../services/linkr";
-import Loading from "../../styles/Loading";
+import Loading from "../commom/Loading";
 import { useState } from "react";
 
 const customStyles = {
@@ -33,10 +33,12 @@ export default function DeleteModal({
   function deletePost() {
     deleteFatalPost(id)
       .then(() => {
+        console.log("chamou");
         setUpload(!upload);
         setIsSucess(true);
         setTimeout(function () {
           setIsOpen(false);
+          setIsSucess(false);
         }, 2000);
       })
       .catch(() => {

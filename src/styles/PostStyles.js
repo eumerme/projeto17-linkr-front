@@ -35,7 +35,7 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
         }).catch((error) => {
             console.log(error);
         });
-
+        
         listLikes(
             id,
         ).then((data) => {

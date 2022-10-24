@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
-import { publish, listPosts } from "../../services/linkr";
-import TimelineStyles from "../../styles/TimelineStyles";
-import PostStyles from "../../styles/PostStyles";
+import { useState, useEffect, useContext } from "react";
+import { publish, listPosts, insertHashtag } from "../../services/linkr";
+import TimelineMainLayout from "./TimelineMainLayout";
+import PostsMainLayout from "../Posts/PostsMainLayout";
 import styled from "styled-components";
-import Loading from "../../styles/Loading";
+import Loading from "../commom/Loading";
+import { auth } from "../commom/localStorage";
+import UploadContext from "../../Contexts/UploadContext";
 
 function Timeline() {
   const [url, setUrl] = useState("");
@@ -14,8 +16,7 @@ function Timeline() {
   const [existPost, setExistPost] = useState(false);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const [upload, setUpload] = useState(true);
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+  const { upload, setUpload } = useContext(UploadContext);
 
   useEffect(() => {
     setTimeout(function () {
@@ -28,7 +29,7 @@ function Timeline() {
         .catch((error) => {
           setErrorServer(true);
         });
-    }, 2000);
+    }, 500);
   }, [upload]);
 
   function publishPost(event) {
@@ -44,11 +45,25 @@ function Timeline() {
     } else {
       publish({ url, comment })
         .then(() => {
-          setMsgBtn("Publish");
-          setIsDisabled(false);
-          setUrl("");
-          setComment("");
           setUpload(!upload);
+          setTimeout(() => {
+            setMsgBtn("Publish");
+            setIsDisabled(false);
+            setUrl("");
+            setComment("");
+          }, 1200);
+          if (comment.includes("#")) {
+            const hashtag = comment
+              .split(" ")
+              .filter((value) => value.includes("#"));
+
+            hashtag.forEach((value) => {
+              const hashtagText = value.replace("#", "");
+              insertHashtag({ hashtagText })
+                .then(() => setUpload(!upload))
+                .catch((error) => console.log(error));
+            });
+          }
         })
         .catch((error) => {
           if (error.response.status === 401) {
@@ -67,8 +82,8 @@ function Timeline() {
   }
 
   return (
-    <TimelineStyles>
-      <Homescreen onSubmit={publishPost}>
+    <TimelineMainLayout>
+      <Homescreen>
         <Title>timeline</Title>
         <Publish>
           <div>
@@ -98,7 +113,7 @@ function Timeline() {
 
         {existPost ? (
           posts.map((value, index) => (
-            <PostStyles
+            <PostsMainLayout
               key={index}
               upload={upload}
               setUpload={setUpload}
@@ -115,7 +130,7 @@ function Timeline() {
           <Loading error={+errorServer} empty={+empty} />
         )}
       </Homescreen>
-    </TimelineStyles>
+    </TimelineMainLayout>
   );
 }
 
@@ -124,6 +139,10 @@ const Homescreen = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.div`
@@ -134,10 +153,10 @@ const Title = styled.div`
   line-height: 63.73px;
   text-align: justify;
   color: #ffffff;
-  margin: 78px 0 43px 0;
+  padding: 78px 0 43px 0;
   @media screen and (max-width: 768px) {
     width: 100%;
-    margin: 19px 0 19px 17px;
+    padding: 19px 0 19px 17px;
   }
 `;
 
@@ -149,6 +168,7 @@ const Publish = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   font-family: "Lato", sans-serif;
+  margin-bottom: 30px;
   div {
     width: 86px;
     display: flex;
@@ -180,12 +200,12 @@ const Publish = styled.div`
       border: none;
       border-radius: 5px;
       margin: 0 0 5px 0;
+      padding: 0 0 0 13px;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 18px;
+      color: #949494;
       ::placeholder {
-        padding: 0 0 0 13px;
-        font-size: 15px;
-        font-weight: 300;
-        line-height: 18px;
-        color: #949494;
       }
       :focus {
         outline: 0;
@@ -207,6 +227,7 @@ const Publish = styled.div`
       position: absolute;
       bottom: 5px;
       right: 5%;
+      cursor: pointer;
     }
   }
   @media screen and (max-width: 768px) {

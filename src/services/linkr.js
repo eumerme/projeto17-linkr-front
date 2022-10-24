@@ -1,13 +1,11 @@
 import axios from "axios";
+import { auth } from "../components/commom/localStorage";
 
 // const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
-const BASE_URL = `http://localhost:4000`;
+const BASE_URL = 'http://localhost:4000';
 
 function createHeaders() {
-  const auth = JSON.parse(localStorage.getItem("linkr"));
-
   if (auth !== null) {
-    console.log(auth.token);
     const config = {
       headers: {
         Authorization: `Bearer ${auth.token}`,
@@ -31,7 +29,8 @@ async function publish(body) {
 }
 
 async function listPosts() {
-  return axios.get(`${BASE_URL}/timeline/posts`);
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
 async function userLogout() {
@@ -40,11 +39,18 @@ async function userLogout() {
 }
 
 async function listHashtags() {
-  return axios.get(`${BASE_URL}/hashtags`);
+  const config = createHeaders();
+  return await axios.get(`${BASE_URL}/hashtags`, config);
 }
 
 async function listPostsbyHashtags(body) {
-  return axios.get(`${BASE_URL}/hashtags/${body}`);
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/hashtags/${body}`, config);
+}
+
+async function listUsers() {
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/listusers`, config);
 }
 
 async function editPostText(body, id) {
@@ -65,16 +71,34 @@ function listLikes(id){
   return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
 }
 
+async function listUserPosts(id) {
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/url/${id}`, config);
+}
+
+async function getUrlMetadata(url) {
+  return await axios.get(`https://api.microlink.io/?url=${url}`);
+}
+
+async function insertHashtag(body) {
+  const config = createHeaders();
+  return await axios.post(`${BASE_URL}/hashtags`, body, config);
+}
+
 export {
-	register,
-	login,
-	publish,
-	listPosts,
-	userLogout,
-	listHashtags,
-	listPostsbyHashtags,
-	likes,
+  register,
+  login,
+  publish,
+  listPosts,
+  userLogout,
+  listHashtags,
+  listPostsbyHashtags,
+  listUsers,
   editPostText,
   deleteFatalPost,
-  listLikes
+  listUserPosts,
+  likes,
+  listLikes,
+  getUrlMetadata,
+  insertHashtag,
 };

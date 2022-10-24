@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import { editPostText } from "../../services/linkr";
+import { editPostText, insertHashtag } from "../../services/linkr";
 
 export default function EditPost({
   isEditing,
@@ -30,6 +30,18 @@ export default function EditPost({
 
   function changeText(e) {
     if (e.key === "Enter") {
+      if (comment.includes("#")) {
+        const hashtag = comment
+          .split(" ")
+          .filter((value) => value.includes("#"));
+
+        hashtag.forEach((value) => {
+          const hashtagText = value.replace("#", "");
+          insertHashtag({ hashtagText })
+            .then(() => setUpload(!upload))
+            .catch((error) => console.log(error));
+        });
+      }
       setIsDisabled(true);
       editPostText({ comment: comment }, id)
         .then(() => {
