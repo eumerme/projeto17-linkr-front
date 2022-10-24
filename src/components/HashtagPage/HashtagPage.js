@@ -32,18 +32,7 @@ export default function HashtagPage() {
 				<Homescreen>
 					<Title># {params.hashtag}</Title>
 					{posts.length !== 0 ? (
-						posts.map((value, index) => (
-							<PostsMainLayout
-								key={index}
-								id={value.id}
-								img={value.imageUrl}
-								url={value.url}
-								user={value.name}
-								text={value.text}
-								likesUser={value.likes}
-								userId={value.userId}
-							/>
-						))
+						posts.map((value, index) => console.log(value))
 					) : (
 						<Loading error={+errorServer} empty={+empty} />
 					)}

@@ -39,7 +39,7 @@ export default function UserPage() {
 								id={value.id}
 								img={value.imageUrl}
 								url={value.url}
-								user={value.name}
+								name={value.name}
 								text={value.text}
 								likesUser={value.likes}
 								userId={value.userId}

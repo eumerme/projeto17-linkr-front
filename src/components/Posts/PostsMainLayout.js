@@ -134,6 +134,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	}
 
 	function redirectToUserpage() {
+		console.log("post main layout ", userId);
 		navigate(`/user/${userId}`, {
 			replace: false,
 			state: { name },

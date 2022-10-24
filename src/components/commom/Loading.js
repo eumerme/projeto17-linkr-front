@@ -31,6 +31,7 @@ export default function Loading({ error, empty }) {
 
 const Wrapper = styled.div`
 	width: auto;
+	max-width: 600px;
 	height: 276px;
 	margin-top: 40px;
 	display: flex;
