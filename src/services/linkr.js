@@ -1,8 +1,7 @@
 import axios from "axios";
 import { auth } from "../components/commom/localStorage";
 
-// const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
-const BASE_URL = 'http://localhost:4000';
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
 
 function createHeaders() {
   if (auth !== null) {
