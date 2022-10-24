@@ -32,13 +32,15 @@ export default function EditPost({
     if (e.key === "Enter") {
       if (comment.includes("#")) {
         const hashtag = comment
-          .split("\n")
-          .find((value) => value.includes("#"));
+          .split(" ")
+          .filter((value) => value.includes("#"));
 
-        const hashtagText = hashtag.replace("#", "");
-        insertHashtag({ hashtagText })
-          .then(() => setUpload(!upload))
-          .catch((error) => console.log(error));
+        hashtag.forEach((value) => {
+          const hashtagText = value.replace("#", "");
+          insertHashtag({ hashtagText })
+            .then(() => setUpload(!upload))
+            .catch((error) => console.log(error));
+        });
       }
       setIsDisabled(true);
       editPostText({ comment: comment }, id)
