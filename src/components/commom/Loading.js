@@ -30,12 +30,13 @@ export default function Loading({ error, empty }) {
 }
 
 const Wrapper = styled.div`
-	width: 600px;
+	width: auto;
 	height: 276px;
 	margin-top: 40px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 0 10px;
 
 	h1 {
 		text-align: center;
@@ -43,5 +44,6 @@ const Wrapper = styled.div`
 		font-size: 43px;
 		font-weight: 700;
 		color: #fff;
+		word-wrap: break-word;
 	}
 `;

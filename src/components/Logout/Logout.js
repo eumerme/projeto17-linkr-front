@@ -2,7 +2,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { userLogout } from "../../services/linkr.js";
-import { auth } from "../commom/localStorage.js";
 
 function ButtonLogout() {
 	const promise = userLogout();
@@ -17,6 +16,7 @@ function ButtonLogout() {
 export default function Logout() {
 	const dropdownRef = useRef(null);
 	const [isActive, setIsActive] = useState(false);
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	useEffect(() => {
 		const pageClickEvent = (e) => {
