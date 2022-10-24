@@ -55,7 +55,7 @@ export default function PostsMainLayout({
         .split("\n")
         .find((value) => value.includes("#"));
       const hashtagText = hashtag.slice(1, hashtag.length);
-
+      console.log(hashtagText);
       insertHashtag({ hashtagText })
         .then((res) => {
           setThereIsTag(!thereIsTag);

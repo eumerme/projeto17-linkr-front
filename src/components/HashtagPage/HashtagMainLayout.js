@@ -6,21 +6,19 @@ import { listHashtags } from "../../services/linkr";
 
 export default function HashtagMainLayout() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
-  const { upload, setUpload } = useContext(UploadContext);
+  const [hashtags, setHashtags] = useState([]);
+  const { upload } = useContext(UploadContext);
 
   useEffect(() => {
     setTimeout(function () {
       listHashtags()
         .then((data) => {
-          setPosts([]);
-          setPosts(data.data);
+          setHashtags(data.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }, 500);
-    console.log("leu trending top");
   }, [upload]);
 
   function redirect(text) {
@@ -31,7 +29,7 @@ export default function HashtagMainLayout() {
     <Container>
       <h2>trending</h2>
       <ul>
-        {posts.map((value, index) => (
+        {hashtags.map((value, index) => (
           <li key={index} onClick={() => redirect(value.name)}>
             # {value.name}
           </li>
