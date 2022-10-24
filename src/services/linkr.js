@@ -72,7 +72,7 @@ async function listUserPosts(id) {
 }
 
 async function getUrlMetadata(url) {
-  return axios.get(`https://api.microlink.io/?url=${url}`);
+  return await axios.get(`https://api.microlink.io/?url=${url}`);
 }
 
 async function insertHashtag(body) {

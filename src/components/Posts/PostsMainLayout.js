@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useState, useEffect, useRef, useContext } from "react";
-import { getUrlMetadata, insertHashtag, likes } from "../../services/linkr";
+import { useState, useContext, useEffect } from "react";
+import { getUrlMetadata, likes } from "../../services/linkr";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -24,10 +24,8 @@ export default function PostsMainLayout({
   const [isEditing, setIsEditing] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [urlData, setUrlData] = useState({});
-  const [thereIsTag, setThereIsTag] = useState(false);
   const { upload, setUpload } = useContext(UploadContext);
   const navigate = useNavigate();
-  const tag = useRef(null);
 
   function openModal() {
     setIsOpen(true);
