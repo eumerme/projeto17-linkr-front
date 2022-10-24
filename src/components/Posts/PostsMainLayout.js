@@ -49,22 +49,6 @@ export default function PostsMainLayout({
       });
   }, []);
 
-  useEffect(() => {
-    if (tag.current.innerText.includes("#")) {
-      const hashtag = tag.current.innerText
-        .split("\n")
-        .find((value) => value.includes("#"));
-      const hashtagText = hashtag.slice(1, hashtag.length);
-      console.log(hashtagText);
-      insertHashtag({ hashtagText })
-        .then((res) => {
-          setThereIsTag(!thereIsTag);
-          setUpload(!upload);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, []);
-
   const [clickLike, setClickLike] = useState({
     draw: <AiOutlineHeart color="#FFF" size="30px" />,
     type: false,
@@ -166,7 +150,7 @@ export default function PostsMainLayout({
               tagStyle={tagStyle}
               tagClicked={(tag) => redirectToHashtagPage(tag)}
             >
-              <p ref={tag}>{text}</p>
+              <p>{text}</p>
             </ReactTagify>
           )}
           <UrlDatas onClick={() => window.open(url, "_blank")}>

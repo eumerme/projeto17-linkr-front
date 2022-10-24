@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { publish, listPosts } from "../../services/linkr";
+import { publish, listPosts, insertHashtag } from "../../services/linkr";
 import TimelineMainLayout from "./TimelineMainLayout";
 import PostsMainLayout from "../Posts/PostsMainLayout";
 import styled from "styled-components";
@@ -43,6 +43,17 @@ function Timeline() {
         setMsgBtn("Publish");
       }, 1000);
     } else {
+      if (comment.includes("#")) {
+        const hashtag = comment
+          .split("\n")
+          .find((value) => value.includes("#"));
+
+        const hashtagText = hashtag.replace("#", "");
+        insertHashtag({ hashtagText })
+          .then(() => setUpload(!upload))
+          .catch((error) => console.log(error));
+      }
+
       publish({ url, comment })
         .then(() => {
           setUpload(!upload);
