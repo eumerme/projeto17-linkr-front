@@ -177,9 +177,11 @@ export default function PostsMainLayout({
 const Container = styled.div`
 	margin-bottom: 30px;
 	padding: 18px;
-	width: 611px;
+	width: 100%;
+	max-width: 611px;
 	background-color: #171717;
 	height: 276px;
+	max-height: auto;
 	border-radius: 16px;
 	display: flex;
 
@@ -190,7 +192,7 @@ const Container = styled.div`
 `;
 
 const Infos = styled.div`
-	width: 50px;
+	width: auto;
 	height: 100%;
 	margin-right: 15px;
 	display: flex;
@@ -223,6 +225,13 @@ const Infos = styled.div`
 		font-size: 11px;
 		color: #505050;
 	}
+
+	@media screen and (max-width: 330px) {
+		img {
+			width: 40px;
+			height: 40px;
+		}
+	}
 `;
 
 const Description = styled.div`
@@ -239,7 +248,7 @@ const Description = styled.div`
 		margin-bottom: 10px;
 		display: flex;
 		justify-content: space-between;
-		width: 100%;
+		width: auto;
 		h1 {
 			cursor: pointer;
 		}
@@ -267,6 +276,7 @@ const Description = styled.div`
 const UrlDatas = styled.div`
 	width: 100%;
 	height: 180px;
+	max-height: auto;
 	border: 1px solid #4d4d4d;
 	border-radius: 11px;
 	display: flex;
@@ -285,7 +295,6 @@ const UrlDatas = styled.div`
 
 		h1 {
 			height: auto;
-
 			width: 100%;
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
@@ -296,7 +305,6 @@ const UrlDatas = styled.div`
 		p {
 			width: 100%;
 			height: auto;
-
 			font-family: "Lato", sans-serif;
 			font-weight: 400;
 			font-size: 11px;
