@@ -1,7 +1,8 @@
 import axios from "axios";
 import { auth } from "../components/commom/localStorage";
 
-const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
+// const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
+const BASE_URL = 'http://localhost:4000';
 
 function createHeaders() {
   if (auth !== null) {
@@ -62,8 +63,12 @@ async function deleteFatalPost(id) {
   return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
 }
 
-function likes(body) {
-  return axios.post(`${BASE_URL}/timeline/likes`, body);
+function likes(body){
+	return axios.post(`${BASE_URL}/timeline/like`, body);
+}
+
+function listLikes(id){
+  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
 }
 
 async function listUserPosts(id) {
@@ -93,6 +98,7 @@ export {
   deleteFatalPost,
   listUserPosts,
   likes,
+  listLikes,
   getUrlMetadata,
   insertHashtag,
 };
