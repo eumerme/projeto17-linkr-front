@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useState, useContext, useEffect } from "react";
-import { getUrlMetadata, likes } from "../../services/linkr";
+import { getUrlMetadata, likes, listLikes } from "../../services/linkr";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -11,19 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
 
-export default function PostsMainLayout({
-	id,
-	img,
-	user,
-	text,
-	likesUser,
-	url,
-	userId,
-}) {
+export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [urlData, setUrlData] = useState({});
 	const { upload, setUpload } = useContext(UploadContext);
+	const [ListLikes, setListLikes] = useState([]);
+	const [clickLike, setClickLike] = useState({});
+	const [msg, setMsg] = useState("");
 	const navigate = useNavigate();
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
@@ -45,39 +40,91 @@ export default function PostsMainLayout({
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
 
-	const [clickLike, setClickLike] = useState({
-		draw: <AiOutlineHeart color="#FFF" size="30px" />,
-		type: false,
-	});
+		listLikes(id)
+			.then((data) => {
+				setListLikes(data.data[0]);
+				if (data.data[0].likeBy !== null) {
+					const nameLike = data.data[0].users.filter(
+						(value) => value === userId
+					)[0];
+					if (nameLike) {
+						setClickLike({
+							draw: <AiFillHeart color="red" size="30px" />,
+							type: true,
+						});
+						const names = data.data[0].likeBy.filter((value) => value !== name);
+						if (names.length !== 0) {
+							if (data.data[0].likeBy.length === 2) {
+								setMsg(`Você e ${names[0]} curtiram!`);
+							} else {
+								setMsg(
+									`Você, ${names[0]} e outras ${names.length - 1} pessoas`
+								);
+							}
+						} else {
+							setMsg(`Você curtiu!`);
+						}
+					} else {
+						setClickLike({
+							draw: <AiOutlineHeart color="#FFF" size="30px" />,
+							type: false,
+						});
+						if (data.data[0].likeBy.length === 2) {
+							setMsg(
+								`${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`
+							);
+						} else if (data.data[0].likeBy.length === 1) {
+							setMsg(`${data.data[0].likeBy[0]} curtiu!`);
+						} else {
+							setMsg(
+								`${data.data[0].likeBy[0]}, ${
+									data.data[0].likeBy[1]
+								} e outras ${data.data[0].likes - 2} pessoas`
+							);
+						}
+					}
+				} else {
+					setClickLike({
+						draw: <AiOutlineHeart color="#FFF" size="30px" />,
+						type: false,
+					});
+					setMsg("0 curtidas");
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [upload]);
 
 	function like() {
 		if (clickLike.type === false) {
-			setClickLike({
-				draw: <AiFillHeart color="red" size="30px" />,
-				type: true,
-			});
 			likes({
 				id,
+				userId,
 				type: "like",
 			})
 				.then(() => {
+					setClickLike({
+						draw: <AiFillHeart color="red" size="30px" />,
+						type: true,
+					});
 					setUpload(!upload);
 				})
 				.catch((error) => {
 					console.log(error.response.status);
 				});
 		} else {
-			setClickLike({
-				draw: <AiOutlineHeart color="#FFF" size="30px" />,
-				type: false,
-			});
 			likes({
 				id,
+				userId,
 				type: "noLike",
 			})
 				.then(() => {
+					setClickLike({
+						draw: <AiOutlineHeart color="#FFF" size="30px" />,
+						type: false,
+					});
 					setUpload(!upload);
 				})
 				.catch((error) => {
@@ -89,7 +136,7 @@ export default function PostsMainLayout({
 	function redirectToUserpage() {
 		navigate(`/user/${userId}`, {
 			replace: false,
-			state: { name: user },
+			state: { name },
 		});
 	}
 
@@ -112,7 +159,12 @@ export default function PostsMainLayout({
 				<Infos>
 					<img src={img} alt="" />
 					<div onClick={() => like()}>{clickLike.draw}</div>
-					<p data-tip="hello word">{likesUser} likes</p>
+					<p data-tip={msg}>{ListLikes.likes} likes</p>
+					<ReactTooltip
+						backgroundColor="#FFFFFF"
+						className="toopTip"
+						place="bottom"
+					/>
 					<ReactTooltip
 						backgroundColor="#FFFFFF"
 						className="toopTip"
@@ -121,7 +173,7 @@ export default function PostsMainLayout({
 				</Infos>
 				<Description>
 					<span>
-						<h1 onClick={redirectToUserpage}>{user}</h1>
+						<h1 onClick={redirectToUserpage}>{name}</h1>
 						{auth.id === userId ? (
 							<h3>
 								<TiPencil
@@ -184,6 +236,10 @@ const Container = styled.div`
 	max-height: auto;
 	border-radius: 16px;
 	display: flex;
+
+	@media screen and (max-width: 768px) {
+		max-width: 100%;
+	}
 
 	@media screen and (max-width: 768px) {
 		width: 100%;
