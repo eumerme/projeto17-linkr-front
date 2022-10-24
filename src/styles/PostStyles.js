@@ -23,6 +23,7 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
     }
 
     useEffect(() => {
+        console.log('ata');
         axios.get(`https://api.microlink.io/?url=${url}`)
         .then((data) =>  {
             const auxData = data.data.data;
@@ -39,6 +40,7 @@ export default function PostStyles({id, img, user, text, upload, setUpload, url,
         listLikes(
             id,
         ).then((data) => {
+            
             setListLikes(data.data[0]);
             if(data.data[0].likeBy !== null){
                 const nameLike = (data.data[0].users.filter(value => value === userId))[0];
