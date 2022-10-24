@@ -1,10 +1,11 @@
 import { Navigate } from "react-router-dom";
-import { auth } from "../commom/localStorage";
 
 export default function Private({ children }) {
-  if (!auth) {
-    return <Navigate to="/" />;
-  }
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
-  return <>{children}</>;
+	if (!auth) {
+		return <Navigate to="/" />;
+	}
+
+	return <>{children}</>;
 }

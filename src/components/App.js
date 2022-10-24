@@ -6,7 +6,7 @@ import { Timeline } from "./Timeline/Timeline";
 import HashtagPage from "./HashtagPage/HashtagPage";
 import Private from "./Private/Private";
 import UserPage from "./UserPage/UserPage";
-import UploadContext from "../Contexts/UploadContext";
+import UploadContext from "../Contexts/UploadContext.js";
 import { useState } from "react";
 
 export default function App() {
