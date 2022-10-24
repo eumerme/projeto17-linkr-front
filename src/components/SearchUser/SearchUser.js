@@ -50,7 +50,6 @@ export default function SearchUser() {
 		const pageClickEvent = (e) => {
 			const activeElementExists = searchRef.current !== null;
 			const isClickedOutside = !searchRef.current.contains(e.target);
-			console.log({ searchRef, activeElementExists, isClickedOutside });
 			if (activeElementExists && isClickedOutside) {
 				setIsActive(!isActive);
 				setSearch("");
@@ -75,8 +74,8 @@ export default function SearchUser() {
 					value={search}
 					onChange={(e) => {
 						setSearch(e.target.value);
-						setIsActive(!isActive);
 					}}
+					onClick={() => setIsActive(!isActive)}
 				/>
 
 				<IoIosSearch color="#C6C6C6" />
