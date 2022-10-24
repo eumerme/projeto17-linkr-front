@@ -43,17 +43,6 @@ function Timeline() {
         setMsgBtn("Publish");
       }, 1000);
     } else {
-      if (comment.includes("#")) {
-        const hashtag = comment
-          .split("\n")
-          .find((value) => value.includes("#"));
-
-        const hashtagText = hashtag.replace("#", "");
-        insertHashtag({ hashtagText })
-          .then(() => setUpload(!upload))
-          .catch((error) => console.log(error));
-      }
-
       publish({ url, comment })
         .then(() => {
           setUpload(!upload);
@@ -63,6 +52,18 @@ function Timeline() {
             setUrl("");
             setComment("");
           }, 1200);
+          if (comment.includes("#")) {
+            const hashtag = comment
+              .split(" ")
+              .filter((value) => value.includes("#"));
+
+            hashtag.forEach((value) => {
+              const hashtagText = value.replace("#", "");
+              insertHashtag({ hashtagText })
+                .then(() => setUpload(!upload))
+                .catch((error) => console.log(error));
+            });
+          }
         })
         .catch((error) => {
           if (error.response.status === 401) {
