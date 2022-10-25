@@ -117,7 +117,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
               style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}
               onClick={() => setSeeComments(!seeComments)}
             />
-            <p>comments</p>
+            <p>{commentsData.length} comments</p>
           </Infos>
           <Description>
             <span>
@@ -233,6 +233,8 @@ const Infos = styled.div`
     font-weight: 400;
     font-size: 11px;
     cursor: pointer;
+    text-align: center;
+    width: 60px;
   }
 
   .toopTip {
