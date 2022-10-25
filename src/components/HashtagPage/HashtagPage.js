@@ -5,15 +5,12 @@ import PostsMainLayout from "../Posts/PostsMainLayout";
 import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
 import Loading from "../commom/Loading";
-import { useContext } from "react/cjs/react.production.min";
-import UploadContext from "../../Contexts/UploadContext";
 
 export default function HashtagPage() {
 	const params = useParams();
 	const [posts, setPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
-	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(function () {
