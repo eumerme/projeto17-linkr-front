@@ -12,402 +12,402 @@ import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
 
 export default function PostsMainLayout({ id, img, text, name, url, userId }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [urlData, setUrlData] = useState({});
-  const { upload, setUpload } = useContext(UploadContext);
-  const [ListLikes, setListLikes] = useState([]);
-  const [clickLike, setClickLike] = useState({});
-  const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+	const [isEditing, setIsEditing] = useState(false);
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const [urlData, setUrlData] = useState({});
+	const { upload, setUpload } = useContext(UploadContext);
+	const [ListLikes, setListLikes] = useState([]);
+	const [clickLike, setClickLike] = useState({});
+	const [msg, setMsg] = useState("");
+	const navigate = useNavigate();
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
-  function openModal() {
-    setIsOpen(true);
-  }
+	function openModal() {
+		setIsOpen(true);
+	}
 
-  useEffect(() => {
-    getUrlMetadata(url)
-      .then((data) => {
-        const auxData = data.data.data;
-        setUrlData({
-          title: auxData.title,
-          description: auxData.description,
-          image: auxData.image.url,
-          url: auxData.url,
-        });
-        if (!urlData.title) {
-          setUpload(!upload);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+	useEffect(() => {
+		getUrlMetadata(url)
+			.then((data) => {
+				const auxData = data.data.data;
+				setUrlData({
+					title: auxData.title,
+					description: auxData.description,
+					image: auxData.image.url,
+					url: auxData.url,
+				});
+				if (!urlData.title) {
+					setUpload(!upload);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 
-    listLikes(id)
-      .then((data) => {
-        setListLikes(data.data[0]);
-        if (data.data[0].likeBy !== null) {
-          const nameLike = data.data[0].users.filter(
-            (value) => value === auth.id
-          )[0];
-          if (nameLike) {
-            setClickLike({
-              draw: <AiFillHeart color="red" size="30px" />,
-              type: true,
-            });
-            const names = data.data[0].likeBy.filter((value) => value !== name);
-            if (names.length !== 0) {
-              if (data.data[0].likeBy.length === 2) {
-                setMsg(`Você e ${names[0]} curtiram!`);
-              } else {
-                setMsg(
-                  `Você, ${names[0]} e outras ${names.length - 1} pessoas`
-                );
-              }
-            } else {
-              setMsg(`Você curtiu!`);
-            }
-          } else {
-            setClickLike({
-              draw: <AiOutlineHeart color="#FFF" size="30px" />,
-              type: false,
-            });
-            if (data.data[0].likeBy.length === 2) {
-              setMsg(
-                `${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`
-              );
-            } else if (data.data[0].likeBy.length === 1) {
-              setMsg(`${data.data[0].likeBy[0]} curtiu!`);
-            } else {
-              setMsg(
-                `${data.data[0].likeBy[0]}, ${
-                  data.data[0].likeBy[1]
-                } e outras ${data.data[0].likes - 2} pessoas`
-              );
-            }
-          }
-        } else {
-          setClickLike({
-            draw: <AiOutlineHeart color="#FFF" size="30px" />,
-            type: false,
-          });
-          setMsg("0 curtidas");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [upload]);
+		listLikes(id)
+			.then((data) => {
+				setListLikes(data.data[0]);
+				if (data.data[0].likeBy !== null) {
+					const nameLike = data.data[0].users.filter(
+						(value) => value === auth.id
+					)[0];
+					if (nameLike) {
+						setClickLike({
+							draw: <AiFillHeart color="red" size="30px" />,
+							type: true,
+						});
+						const names = data.data[0].likeBy.filter((value) => value !== name);
+						if (names.length !== 0) {
+							if (data.data[0].likeBy.length === 2) {
+								setMsg(`Você e ${names[0]} curtiram!`);
+							} else {
+								setMsg(
+									`Você, ${names[0]} e outras ${names.length - 1} pessoas`
+								);
+							}
+						} else {
+							setMsg(`Você curtiu!`);
+						}
+					} else {
+						setClickLike({
+							draw: <AiOutlineHeart color="#FFF" size="30px" />,
+							type: false,
+						});
+						if (data.data[0].likeBy.length === 2) {
+							setMsg(
+								`${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`
+							);
+						} else if (data.data[0].likeBy.length === 1) {
+							setMsg(`${data.data[0].likeBy[0]} curtiu!`);
+						} else {
+							setMsg(
+								`${data.data[0].likeBy[0]}, ${
+									data.data[0].likeBy[1]
+								} e outras ${data.data[0].likes - 2} pessoas`
+							);
+						}
+					}
+				} else {
+					setClickLike({
+						draw: <AiOutlineHeart color="#FFF" size="30px" />,
+						type: false,
+					});
+					setMsg("0 curtidas");
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [upload]);
 
-  function like() {
-    if (clickLike.type === false) {
-      likes({
-        id,
-        userId: auth.id,
-        type: "like",
-      })
-        .then(() => {
-          setClickLike({
-            draw: <AiFillHeart color="red" size="30px" />,
-            type: true,
-          });
-          setUpload(!upload);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-        });
-    } else {
-      likes({
-        id,
-        userId: auth.id,
-        type: "noLike",
-      })
-        .then(() => {
-          setClickLike({
-            draw: <AiOutlineHeart color="#FFF" size="30px" />,
-            type: false,
-          });
-          setUpload(!upload);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-        });
-    }
-  }
+	function like() {
+		if (clickLike.type === false) {
+			likes({
+				id,
+				userId: auth.id,
+				type: "like",
+			})
+				.then(() => {
+					setClickLike({
+						draw: <AiFillHeart color="red" size="30px" />,
+						type: true,
+					});
+					setUpload(!upload);
+				})
+				.catch((error) => {
+					console.log(error.response.status);
+				});
+		} else {
+			likes({
+				id,
+				userId: auth.id,
+				type: "noLike",
+			})
+				.then(() => {
+					setClickLike({
+						draw: <AiOutlineHeart color="#FFF" size="30px" />,
+						type: false,
+					});
+					setUpload(!upload);
+				})
+				.catch((error) => {
+					console.log(error.response.status);
+				});
+		}
+	}
 
-  function redirectToUserpage() {
-    navigate(`/user/${userId}`, {
-      replace: false,
-      state: { name },
-    });
-  }
+	function redirectToUserpage() {
+		navigate(`/user/${userId}`, {
+			replace: false,
+			state: { name },
+		});
+	}
 
-  function redirectToHashtagPage(tag) {
-    const hashtag = tag.slice(1, tag.length);
-    navigate(`/hashtag/${hashtag}`);
-  }
+	function redirectToHashtagPage(tag) {
+		const hashtag = tag.slice(1, tag.length);
+		navigate(`/hashtag/${hashtag}`);
+	}
 
-  const tagStyle = {
-    fontSize: "17px",
-    fontWeight: 700,
-    color: "#FFFFFF",
-    cursor: "pointer",
-    margin: 0,
-  };
+	const tagStyle = {
+		fontSize: "17px",
+		fontWeight: 700,
+		color: "#FFFFFF",
+		cursor: "pointer",
+		margin: 0,
+	};
 
-  return (
-    <>
-      <Container>
-        <Infos>
-          <img src={img} alt="" />
-          <div onClick={() => like()}>{clickLike.draw}</div>
-          <p data-tip={msg}>{ListLikes.likes} likes</p>
-          <ReactTooltip
-            backgroundColor="#FFFFFF"
-            className="toopTip"
-            place="bottom"
-          />
-          <ReactTooltip
-            backgroundColor="#FFFFFF"
-            className="toopTip"
-            place="bottom"
-          />
-        </Infos>
-        <Description>
-          <span>
-            <h1 onClick={redirectToUserpage}>{name}</h1>
-            {auth.id === userId ? (
-              <h3>
-                <TiPencil
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setIsEditing(!isEditing)}
-                />
-                <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
-              </h3>
-            ) : (
-              ""
-            )}
-          </span>
-          {isEditing ? (
-            <EditPost
-              id={id}
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              text={text}
-              upload={upload}
-              setUpload={setUpload}
-            />
-          ) : (
-            <ReactTagify
-              tagStyle={tagStyle}
-              tagClicked={(tag) => redirectToHashtagPage(tag)}
-            >
-              <p>{text}</p>
-            </ReactTagify>
-          )}
-          <UrlDatas onClick={() => window.open(url, "_blank")}>
-            <div>
-              <h1>{urlData.title}</h1>
-              <p>{urlData.description}</p>
-              <h2>{urlData.url}</h2>
-            </div>
-            <div className="UrlImage">
-              <img src={urlData.image} alt="" />
-            </div>
-          </UrlDatas>
-        </Description>
-      </Container>
-      <DeleteModal
-        upload={upload}
-        setUpload={setUpload}
-        id={id}
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
-      />
-    </>
-  );
+	return (
+		<>
+			<Container>
+				<Infos>
+					<img src={img} alt="" />
+					<div onClick={() => like()}>{clickLike.draw}</div>
+					<p data-tip={msg}>{ListLikes.likes} likes</p>
+					<ReactTooltip
+						backgroundColor="#FFFFFF"
+						className="toopTip"
+						place="bottom"
+					/>
+					<ReactTooltip
+						backgroundColor="#FFFFFF"
+						className="toopTip"
+						place="bottom"
+					/>
+				</Infos>
+				<Description>
+					<span>
+						<h1 onClick={redirectToUserpage}>{name}</h1>
+						{auth.id === userId ? (
+							<h3>
+								<TiPencil
+									style={{ cursor: "pointer" }}
+									onClick={() => setIsEditing(!isEditing)}
+								/>
+								<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+							</h3>
+						) : (
+							""
+						)}
+					</span>
+					{isEditing ? (
+						<EditPost
+							id={id}
+							isEditing={isEditing}
+							setIsEditing={setIsEditing}
+							text={text}
+							upload={upload}
+							setUpload={setUpload}
+						/>
+					) : (
+						<ReactTagify
+							tagStyle={tagStyle}
+							tagClicked={(tag) => redirectToHashtagPage(tag)}
+						>
+							<p>{text}</p>
+						</ReactTagify>
+					)}
+					<UrlDatas onClick={() => window.open(url, "_blank")}>
+						<div>
+							<h1>{urlData.title}</h1>
+							<p>{urlData.description}</p>
+							<h2>{urlData.url}</h2>
+						</div>
+						<div className="UrlImage">
+							<img src={urlData.image} alt="" />
+						</div>
+					</UrlDatas>
+				</Description>
+			</Container>
+			<DeleteModal
+				upload={upload}
+				setUpload={setUpload}
+				id={id}
+				modalIsOpen={modalIsOpen}
+				setIsOpen={setIsOpen}
+			/>
+		</>
+	);
 }
 
 const Container = styled.div`
-  margin-bottom: 30px;
-  padding: 18px;
-  width: 100%;
-  max-width: 611px;
-  background-color: #171717;
-  height: 276px;
-  max-height: auto;
-  border-radius: 16px;
-  display: flex;
+	margin-bottom: 30px;
+	padding: 18px;
+	width: 100%;
+	max-width: 611px;
+	background-color: #171717;
+	height: 276px;
+	max-height: auto;
+	border-radius: 16px;
+	display: flex;
 
-  @media screen and (max-width: 768px) {
-    max-width: 100%;
-  }
+	@media screen and (max-width: 768px) {
+		max-width: 100%;
+	}
 
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    border-radius: 0;
-  }
+	@media screen and (max-width: 768px) {
+		width: 100%;
+		border-radius: 0;
+	}
 `;
 
 const Infos = styled.div`
-  width: auto;
-  height: 100%;
-  margin-right: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  div {
-    cursor: pointer;
-  }
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    object-fit: cover;
-  }
+	width: auto;
+	height: 100%;
+	margin-right: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	div {
+		cursor: pointer;
+	}
+	img {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		margin-bottom: 20px;
+		object-fit: cover;
+	}
 
-  p {
-    margin-top: 5px;
-    font-family: "Lato", sans-serif;
-    color: #ffffff;
-    font-weight: 400;
-    font-size: 11px;
-    cursor: pointer;
-  }
+	p {
+		margin-top: 5px;
+		font-family: "Lato", sans-serif;
+		color: #ffffff;
+		font-weight: 400;
+		font-size: 11px;
+		cursor: pointer;
+	}
 
-  .toopTip {
-    border-radius: 3px;
-    font-family: "Lato", sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    color: #505050;
-  }
+	.toopTip {
+		border-radius: 3px;
+		font-family: "Lato", sans-serif;
+		font-weight: 700;
+		font-size: 11px;
+		color: #505050;
+	}
 
-  @media screen and (max-width: 330px) {
-    img {
-      width: 40px;
-      height: 40px;
-    }
-  }
+	@media screen and (max-width: 330px) {
+		img {
+			width: 40px;
+			height: 40px;
+		}
+	}
 `;
 
 const Description = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 
-  span {
-    font-family: "Lato", sans-serif;
-    font-size: 22px;
-    font-weight: 400;
-    color: #ffffff;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    width: auto;
-    h1 {
-      cursor: pointer;
-    }
-    h3 {
-      width: 50px;
-      display: flex;
-      justify-content: space-between;
-    }
-  }
+	span {
+		font-family: "Lato", sans-serif;
+		font-size: 22px;
+		font-weight: 400;
+		color: #ffffff;
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: space-between;
+		width: auto;
+		h1 {
+			cursor: pointer;
+		}
+		h3 {
+			width: 50px;
+			display: flex;
+			justify-content: space-between;
+		}
+	}
 
-  p {
-    font-family: "Lato", sans-serif;
-    font-size: 17px;
-    font-weight: 400;
-    color: #b7b7b7;
-    margin-bottom: 10px;
-    display: flex;
-    span {
-      width: auto;
-      padding: 0 4px;
-    }
-  }
+	p {
+		font-family: "Lato", sans-serif;
+		font-size: 17px;
+		font-weight: 400;
+		color: #b7b7b7;
+		margin-bottom: 10px;
+		display: flex;
+		span {
+			width: auto;
+			padding: 0 4px;
+		}
+	}
 `;
 
 const UrlDatas = styled.div`
-  width: 100%;
-  height: 180px;
-  max-height: auto;
-  border: 1px solid #4d4d4d;
-  border-radius: 11px;
-  display: flex;
+	width: 100%;
+	height: 180px;
+	max-height: auto;
+	border: 1px solid #4d4d4d;
+	border-radius: 11px;
+	display: flex;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  div {
-    padding: 10px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    overflow: hidden;
+	div {
+		padding: 10px;
+		width: 100%;
+		height: auto;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		overflow: hidden;
 
-    h1 {
-      height: auto;
-      width: 100%;
-      font-family: "Lato", sans-serif;
-      font-weight: 400;
-      font-size: 16px;
-      color: #cecece;
-    }
+		h1 {
+			height: auto;
+			width: 100%;
+			font-family: "Lato", sans-serif;
+			font-weight: 400;
+			font-size: 16px;
+			color: #cecece;
+		}
 
-    p {
-      width: 100%;
-      height: auto;
-      font-family: "Lato", sans-serif;
-      font-weight: 400;
-      font-size: 11px;
-      color: #9b9595;
-    }
+		p {
+			width: 100%;
+			height: auto;
+			font-family: "Lato", sans-serif;
+			font-weight: 400;
+			font-size: 11px;
+			color: #9b9595;
+		}
 
-    h2 {
-      width: 100%;
-      height: auto;
-      font-family: "Lato", sans-serif;
-      font-weight: 400;
-      font-size: 11px;
-      color: #cecece;
-      word-wrap: break-word;
-    }
-  }
+		h2 {
+			width: 100%;
+			height: auto;
+			font-family: "Lato", sans-serif;
+			font-weight: 400;
+			font-size: 11px;
+			color: #cecece;
+			word-wrap: break-word;
+		}
+	}
 
-  .UrlImage {
-    width: 35%;
-    height: 100%;
-    border-left: 1px solid #4d4d4d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+	.UrlImage {
+		width: 35%;
+		height: 100%;
+		border-left: 1px solid #4d4d4d;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 0 10px 10px 0;
-    }
-  }
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 0 10px 10px 0;
+		}
+	}
 
-  @media screen and (max-width: 768px) {
-    justify-content: space-between;
+	@media screen and (max-width: 768px) {
+		justify-content: space-between;
 
-    .UrlImage {
-      width: 25%;
-    }
+		.UrlImage {
+			width: 25%;
+		}
 
-    .UrlImage img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+		.UrlImage img {
+			width: 100%;
+			height: 100%;
+		}
+	}
 `;

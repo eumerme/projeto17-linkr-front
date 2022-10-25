@@ -143,6 +143,7 @@ const List = styled.ul`
 	.list_item:hover {
 		background-color: #999ba138;
 		transition: 0.4s;
+		border-radius: 8px;
 	}
 
 	.list_img {
