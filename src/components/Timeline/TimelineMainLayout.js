@@ -10,6 +10,7 @@ export default function TimelineMainLayout({
 	userpage,
 	timeline,
 	follows,
+	followeeId,
 }) {
 	const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ export default function TimelineMainLayout({
 				userpage={userpage}
 				timeline={timeline}
 				follows={follows}
+				followeeId={followeeId}
 			/>
 			<SearchUser />
 		</Container>

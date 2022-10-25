@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { isFollowing, listUserPosts } from "../../services/linkr";
 import Loading from "../commom/Loading";
 import PostsMainLayout from "../Posts/PostsMainLayout";
 import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function UserPage() {
 	const { id } = useParams();
@@ -14,7 +15,7 @@ export default function UserPage() {
 	const [empty, setEmpty] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [follow, setFollow] = useState(null);
-
+	const { upload } = useContext(UploadContext);
 	useEffect(() => {
 		setTimeout(function () {
 			listUserPosts(id)
@@ -26,21 +27,22 @@ export default function UserPage() {
 					console.log(error);
 					setErrorServer(true);
 				});
-
-			isFollowing({ userId: auth.id, followeeId: Number(id) })
-				.then((res) => {
-					console.log(res);
-					setFollow(res.data.follows);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
 		}, 1000);
 	}, [id]);
 
+	useMemo(() => {
+		isFollowing({ userId: auth.id, followeeId: Number(id) })
+			.then((res) => {
+				setFollow(res.data.follows);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [id, upload]);
+
 	return (
 		<>
-			<TimelineMainLayout userpage={true} follows={follow}>
+			<TimelineMainLayout userpage={true} follows={follow} followeeId={id}>
 				<Homescreen>
 					<Title>{`${state.name}'s posts`}</Title>
 					{posts.length !== 0 ? (

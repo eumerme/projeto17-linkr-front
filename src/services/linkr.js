@@ -90,6 +90,11 @@ async function isFollowing(body) {
 	return await axios.post(`${BASE_URL}/is-following`, body, config);
 }
 
+async function toggleFollow(body) {
+	const config = createHeaders();
+	return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
+}
+
 export {
 	register,
 	login,
@@ -107,4 +112,5 @@ export {
 	getUrlMetadata,
 	insertHashtag,
 	isFollowing,
+	toggleFollow,
 };

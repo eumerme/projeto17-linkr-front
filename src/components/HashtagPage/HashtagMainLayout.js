@@ -2,13 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadContext from "../../Contexts/UploadContext";
-import { listHashtags } from "../../services/linkr";
+import { listHashtags, toggleFollow } from "../../services/linkr";
 
-export default function HashtagMainLayout({ userpage, timeline, follows }) {
+export default function HashtagMainLayout({
+	userpage,
+	timeline,
+	follows,
+	followeeId,
+}) {
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
-	const { upload } = useContext(UploadContext);
-	console.log(follows);
+	const { setUpload, upload } = useContext(UploadContext);
+	const auth = JSON.parse(localStorage.getItem("linkr"));
+
 	useEffect(() => {
 		setTimeout(function () {
 			listHashtags()
@@ -21,6 +27,16 @@ export default function HashtagMainLayout({ userpage, timeline, follows }) {
 		}, 500);
 	}, [upload]);
 
+	const handleFollow = () => {
+		toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
+			.then((data) => {
+				setUpload(!upload);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 	function redirect(text) {
 		navigate(`/hashtag/${text}`);
 	}
@@ -28,7 +44,7 @@ export default function HashtagMainLayout({ userpage, timeline, follows }) {
 	return (
 		<Container timeline={timeline}>
 			{userpage ? (
-				<FollowButton follows={follows}>
+				<FollowButton follows={follows} onClick={handleFollow}>
 					{follows ? "Unfollow" : "Follow"}
 				</FollowButton>
 			) : (
@@ -120,6 +136,7 @@ const FollowButton = styled.div`
 	align-items: center;
 	justify-content: center;
 	color: ${(props) => (props.follows ? "#1877f2" : "#ffffff")};
+	cursor: pointer;
 `;
 
 //const FollowButton = styled``;
