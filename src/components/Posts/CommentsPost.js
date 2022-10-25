@@ -53,21 +53,23 @@ export default function CommentsBox({
   return (
     <>
       <Container ref={dropdownRef} seeComments={seeComments}>
-        {commentsData.map((value, index) => (
-          <CommentArea key={index}>
-            <img src={value.imageUrl} alt="" />
-            <Infos>
-              {value.commentUserId === value.postUserId ? (
-                <p>
-                  {value.name} <strong>• post’s author</strong>
-                </p>
-              ) : (
-                <p>{value.name}</p>
-              )}
-              <span>{value.comment}</span>
-            </Infos>
-          </CommentArea>
-        ))}
+        <AllComents>
+          {commentsData.map((value, index) => (
+            <CommentArea key={index}>
+              <img src={value.imageUrl} alt="" />
+              <Infos>
+                {value.commentUserId === value.postUserId ? (
+                  <p>
+                    {value.name} <strong>• post’s author</strong>
+                  </p>
+                ) : (
+                  <p>{value.name}</p>
+                )}
+                <span>{value.comment}</span>
+              </Infos>
+            </CommentArea>
+          ))}
+        </AllComents>
         <WriterArea>
           <img src={auth.image} alt="" />
           <TextArea>
@@ -122,9 +124,22 @@ const Container = styled.div`
   }
 `;
 
+const AllComents = styled.div`
+  width: 100%;
+  max-height: 285px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const CommentArea = styled.div`
   width: 93%;
-  height: 71px;
+  min-height: 71px;
   border-bottom: 1px solid #353535;
   display: flex;
   justify-content: space-between;
