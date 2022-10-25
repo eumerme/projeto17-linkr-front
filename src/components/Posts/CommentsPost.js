@@ -35,6 +35,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Lato", sans-serif;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -65,6 +66,7 @@ const Infos = styled.div`
     font-size: 14px;
     line-height: 17px;
     color: #f3f3f3;
+    margin: 0 0 5px 0;
   }
 
   span {
