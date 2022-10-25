@@ -5,6 +5,13 @@ export default function CommentsBox({ img }) {
   return (
     <>
       <Container>
+        <CommentArea>
+          <img src={img} alt="" />
+          <Infos>
+            <p>João Avatares</p>
+            <span>Irmão que post foda você jogou</span>
+          </Infos>
+        </CommentArea>
         <WriterArea>
           <img src={img} alt="" />
           <TextArea>
@@ -21,10 +28,13 @@ export default function CommentsBox({ img }) {
 
 const Container = styled.div`
   width: 100%;
+  max-width: 611px;
   height: auto;
-  margin: 20px 0 0 0;
   background: #1e1e1e;
-  border-radius: 16px;
+  border-radius: 0 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -32,8 +42,41 @@ const Container = styled.div`
   }
 `;
 
+const CommentArea = styled.div`
+  width: 93%;
+  height: 71px;
+  border-bottom: 1px solid #353535;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    width: 39px;
+    height: 39px;
+    border-radius: 26.5px;
+  }
+`;
+
+const Infos = styled.div`
+  width: 510px;
+
+  p {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #f3f3f3;
+  }
+
+  span {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #acacac;
+  }
+`;
+
 const WriterArea = styled.div`
-  width: 100%;
+  width: 93%;
   height: 83px;
   display: flex;
   justify-content: space-between;

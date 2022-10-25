@@ -220,9 +220,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
             </UrlDatas>
           </Description>
         </Content>
-        <Comments>
-          <CommentsBox img={img} />
-        </Comments>
+        <CommentsBox img={img} />
       </Container>
       <DeleteModal
         upload={upload}
@@ -237,7 +235,6 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
 const Container = styled.div`
   margin-bottom: 30px;
-  padding: 18px 18px 0 18px;
   width: 100%;
   max-width: 611px;
   background-color: #171717;
@@ -245,6 +242,7 @@ const Container = styled.div`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
@@ -257,13 +255,9 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  width: 100%;
+  width: 93%;
   display: flex;
-`;
-
-const Comments = styled.div`
-  width: 100%;
-  height: auto;
+  margin: 18px 0;
 `;
 
 const Infos = styled.div`
