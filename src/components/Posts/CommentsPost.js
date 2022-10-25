@@ -11,7 +11,7 @@ export default function CommentsBox({
 }) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
-
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   const [isDisabled, setIsDisabled] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -35,6 +35,7 @@ export default function CommentsBox({
         setIsDisabled(false);
       });
   }
+  console.log(auth);
 
   return (
     <>
@@ -55,7 +56,7 @@ export default function CommentsBox({
           </CommentArea>
         ))}
         <WriterArea>
-          <img src={img} alt="" />
+          <img src={auth.image} alt="" />
           <TextArea>
             <input
               placeholder="write a comment..."
