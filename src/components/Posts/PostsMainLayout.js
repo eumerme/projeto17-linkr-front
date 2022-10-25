@@ -10,6 +10,7 @@ import DeleteModal from "./DeletePost";
 import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
+import CommentsBox from "./CommentsPost";
 
 export default function PostsMainLayout({ id, img, text, name, url, userId }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -159,64 +160,69 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
   return (
     <>
       <Container>
-        <Infos>
-          <img src={img} alt="" />
-          <div onClick={() => like()}>{clickLike.draw}</div>
-          <p data-tip={msg}>{ListLikes.likes} likes</p>
-          <ReactTooltip
-            backgroundColor="#FFFFFF"
-            className="toopTip"
-            place="bottom"
-          />
-          <ReactTooltip
-            backgroundColor="#FFFFFF"
-            className="toopTip"
-            place="bottom"
-          />
-        </Infos>
-        <Description>
-          <span>
-            <h1 onClick={redirectToUserpage}>{name}</h1>
-            {auth.id === userId ? (
-              <h3>
-                <TiPencil
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setIsEditing(!isEditing)}
-                />
-                <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
-              </h3>
-            ) : (
-              ""
-            )}
-          </span>
-          {isEditing ? (
-            <EditPost
-              id={id}
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              text={text}
-              upload={upload}
-              setUpload={setUpload}
+        <Content>
+          <Infos>
+            <img src={img} alt="" />
+            <div onClick={() => like()}>{clickLike.draw}</div>
+            <p data-tip={msg}>{ListLikes.likes} likes</p>
+            <ReactTooltip
+              backgroundColor="#FFFFFF"
+              className="toopTip"
+              place="bottom"
             />
-          ) : (
-            <ReactTagify
-              tagStyle={tagStyle}
-              tagClicked={(tag) => redirectToHashtagPage(tag)}
-            >
-              <p>{text}</p>
-            </ReactTagify>
-          )}
-          <UrlDatas onClick={() => window.open(url, "_blank")}>
-            <div>
-              <h1>{urlData.title}</h1>
-              <p>{urlData.description}</p>
-              <h2>{urlData.url}</h2>
-            </div>
-            <div className="UrlImage">
-              <img src={urlData.image} alt="" />
-            </div>
-          </UrlDatas>
-        </Description>
+            <ReactTooltip
+              backgroundColor="#FFFFFF"
+              className="toopTip"
+              place="bottom"
+            />
+          </Infos>
+          <Description>
+            <span>
+              <h1 onClick={redirectToUserpage}>{name}</h1>
+              {auth.id === userId ? (
+                <h3>
+                  <TiPencil
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsEditing(!isEditing)}
+                  />
+                  <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+                </h3>
+              ) : (
+                ""
+              )}
+            </span>
+            {isEditing ? (
+              <EditPost
+                id={id}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                text={text}
+                upload={upload}
+                setUpload={setUpload}
+              />
+            ) : (
+              <ReactTagify
+                tagStyle={tagStyle}
+                tagClicked={(tag) => redirectToHashtagPage(tag)}
+              >
+                <p>{text}</p>
+              </ReactTagify>
+            )}
+            <UrlDatas onClick={() => window.open(url, "_blank")}>
+              <div>
+                <h1>{urlData.title}</h1>
+                <p>{urlData.description}</p>
+                <h2>{urlData.url}</h2>
+              </div>
+              <div className="UrlImage">
+                <img src={urlData.image} alt="" />
+              </div>
+            </UrlDatas>
+          </Description>
+        </Content>
+        <Comments>
+          <CommentsBox img={img} />
+        </Comments>
       </Container>
       <DeleteModal
         upload={upload}
@@ -231,14 +237,14 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
 const Container = styled.div`
   margin-bottom: 30px;
-  padding: 18px;
+  padding: 18px 18px 0 18px;
   width: 100%;
   max-width: 611px;
   background-color: #171717;
-  height: 276px;
-  max-height: auto;
+  min-height: 276px;
   border-radius: 16px;
   display: flex;
+  flex-direction: column;
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
@@ -248,6 +254,16 @@ const Container = styled.div`
     width: 100%;
     border-radius: 0;
   }
+`;
+
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const Comments = styled.div`
+  width: 100%;
+  height: auto;
 `;
 
 const Infos = styled.div`
