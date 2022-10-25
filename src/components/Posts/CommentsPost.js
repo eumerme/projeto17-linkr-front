@@ -43,7 +43,13 @@ export default function CommentsBox({
           <CommentArea key={index}>
             <img src={value.imageUrl} alt="" />
             <Infos>
-              <p>{value.name}</p>
+              {value.commentUserId === value.postUserId ? (
+                <p>
+                  {value.name} <strong>• post’s author</strong>
+                </p>
+              ) : (
+                <p>{value.name}</p>
+              )}
               <span>{value.comment}</span>
             </Infos>
           </CommentArea>
@@ -125,6 +131,11 @@ const Infos = styled.div`
     line-height: 17px;
     color: #f3f3f3;
     margin: 0 0 5px 0;
+
+    strong {
+      color: #565656;
+      font-weight: 400;
+    }
   }
 
   span {
