@@ -21,6 +21,11 @@ export default function CommentsBox({
     }
   }, [seeComments]);
 
+  function sendWithEnter(e) {
+    if (e.key !== "Enter") return;
+    publishComment();
+  }
+
   function publishComment(e) {
     e.preventDefault();
     setIsDisabled(true);
@@ -35,7 +40,6 @@ export default function CommentsBox({
         setIsDisabled(false);
       });
   }
-  console.log(auth);
 
   return (
     <>
@@ -63,6 +67,7 @@ export default function CommentsBox({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               ref={inputRef}
+              onKeyPress={sendWithEnter}
               type="text"
               disabled={isDisabled}
             ></input>
