@@ -5,6 +5,7 @@ import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
+import { AiOutlineComment } from "react-icons/ai";
 import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
   const { upload, setUpload } = useContext(UploadContext);
   const [ListLikes, setListLikes] = useState([]);
   const [clickLike, setClickLike] = useState({});
+  const [seeComments, setSeeComments] = useState(false);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -100,6 +102,11 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
               className="toopTip"
               place="bottom"
             />
+            <AiOutlineComment
+              style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}
+              onClick={() => setSeeComments(!seeComments)}
+            />
+            <p>comments</p>
           </Infos>
           <Description>
             <span>
@@ -145,7 +152,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
             </UrlDatas>
           </Description>
         </Content>
-        <CommentsBox img={img} />
+        <CommentsBox img={img} seeComments={seeComments} />
       </Container>
       <DeleteModal
         upload={upload}
@@ -204,7 +211,7 @@ const Infos = styled.div`
   }
 
   p {
-    margin-top: 5px;
+    margin: 5px 0 10px 0;
     font-family: "Lato", sans-serif;
     color: #ffffff;
     font-weight: 400;

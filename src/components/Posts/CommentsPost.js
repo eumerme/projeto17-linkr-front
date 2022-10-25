@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
+import { useRef } from "react";
 
-export default function CommentsBox({ img }) {
+export default function CommentsBox({ img, seeComments }) {
+  const dropdownRef = useRef(null);
+  console.log(seeComments);
   return (
     <>
-      <Container>
+      <Container ref={dropdownRef} seeComments={seeComments}>
         <CommentArea>
           <img src={img} alt="" />
           <Infos>
@@ -32,10 +35,25 @@ const Container = styled.div`
   height: auto;
   background: #1e1e1e;
   border-radius: 0 0 16px 16px;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   font-family: "Lato", sans-serif;
+  transform: translateY(-3px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+
+  ${(props) => {
+    if (props.seeComments) {
+      return `
+              &&& {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                display: flex;			
+              } 
+            `;
+    }
+  }}
 
   @media screen and (max-width: 768px) {
     width: 100%;
