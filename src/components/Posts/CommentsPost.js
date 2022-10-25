@@ -32,6 +32,9 @@ export default function CommentsBox({
 
   function publishComment(e) {
     if (e) e.preventDefault();
+    if (comment === " ") {
+      alert("É necessário escrever alguma coisa no seu comentário!");
+    }
     setIsDisabled(true);
     const body = { comment, postId };
 
@@ -39,6 +42,7 @@ export default function CommentsBox({
       .then(() => {
         setComment("");
         setUpload(!upload);
+        setIsDisabled(false);
       })
       .catch(() => {
         alert("Ops! Houve um erro com sua requisição, tente novamente");
