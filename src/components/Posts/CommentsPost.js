@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { createNewComment } from "../../services/linkr";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function CommentsBox({
   img,
@@ -12,8 +13,11 @@ export default function CommentsBox({
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const auth = JSON.parse(localStorage.getItem("linkr"));
+
   const [isDisabled, setIsDisabled] = useState(false);
   const [comment, setComment] = useState("");
+
+  const { upload, setUpload } = useContext(UploadContext);
 
   useEffect(() => {
     if (seeComments) {
@@ -27,13 +31,14 @@ export default function CommentsBox({
   }
 
   function publishComment(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setIsDisabled(true);
     const body = { comment, postId };
 
     createNewComment(body)
       .then(() => {
         setComment("");
+        setUpload(!upload);
       })
       .catch(() => {
         alert("Ops! Houve um erro com sua requisição, tente novamente");
