@@ -15,11 +15,13 @@ export default function UserPage() {
 	const [empty, setEmpty] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [follow, setFollow] = useState(null);
-	const { upload } = useContext(UploadContext);
+	const { setUpload, upload } = useContext(UploadContext);
+
 	useEffect(() => {
 		setTimeout(function () {
 			listUserPosts(id)
 				.then((res) => {
+					setUpload(!upload);
 					setPosts(res.data);
 					if (res.data.length === 0) setEmpty(true);
 				})
@@ -59,7 +61,7 @@ export default function UserPage() {
 							/>
 						))
 					) : (
-						<Loading error={+errorServer} empty={+empty} />
+						<Loading error={errorServer} empty={empty} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>

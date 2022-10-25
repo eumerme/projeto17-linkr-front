@@ -1,8 +1,9 @@
 import { IoIosSearch } from "react-icons/io";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { listUsers } from "../../services/linkr";
 import { useNavigate } from "react-router-dom";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function SearchUser() {
 	const [users, setUsers] = useState([]);
@@ -11,6 +12,7 @@ export default function SearchUser() {
 	const navigate = useNavigate();
 	const searchRef = useRef(null);
 	const [isActive, setIsActive] = useState(false);
+	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -26,7 +28,7 @@ export default function SearchUser() {
 		if (search?.length === 0) {
 			setUserFiltered("");
 		}
-	}, [search.length]);
+	}, [search.length, upload]);
 
 	useMemo(() => {
 		if (users.length !== 0 && search.length >= 3) {
@@ -40,6 +42,7 @@ export default function SearchUser() {
 	}, [users.length, search.length]);
 
 	function redirectTo(id, name) {
+		setUpload(!upload);
 		navigate(`/user/${id}`, {
 			replace: false,
 			state: { name },
@@ -49,7 +52,7 @@ export default function SearchUser() {
 	useEffect(() => {
 		const pageClickEvent = (e) => {
 			const activeElementExists = searchRef.current !== null;
-			const isClickedOutside = !searchRef.current.contains(e.target);
+			const isClickedOutside = !searchRef.current?.contains(e.target);
 			if (activeElementExists && isClickedOutside) {
 				setIsActive(!isActive);
 				setSearch("");
@@ -63,7 +66,7 @@ export default function SearchUser() {
 		return () => {
 			window.removeEventListener("click", pageClickEvent);
 		};
-	}, [isActive]);
+	}, [isActive, upload]);
 
 	return (
 		<Container id="search">

@@ -1,7 +1,7 @@
 import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 
-export default function Loading({ error, empty }) {
+export default function Loading({ error, empty, existPost }) {
 	if (error) {
 		return (
 			<Wrapper>
@@ -13,10 +13,25 @@ export default function Loading({ error, empty }) {
 		);
 	}
 
+	if (empty && existPost === null) {
+		return (
+			<Wrapper>
+				<h1>No posts found from your friends</h1>
+			</Wrapper>
+		);
+	}
 	if (empty) {
 		return (
 			<Wrapper>
 				<h1>There are no posts yet</h1>
+			</Wrapper>
+		);
+	}
+
+	if (existPost === false) {
+		return (
+			<Wrapper>
+				<h1>You don't follow anyone yet. Search for new friends!</h1>
 			</Wrapper>
 		);
 	}

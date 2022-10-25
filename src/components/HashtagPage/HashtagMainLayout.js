@@ -49,6 +49,7 @@ export default function HashtagMainLayout({
 
 	function redirect(text) {
 		navigate(`/hashtag/${text}`);
+		setUpload(!upload);
 	}
 
 	return (

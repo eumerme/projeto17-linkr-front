@@ -3,7 +3,8 @@ import Logout from "../Logout/Logout";
 import HashtagMainLayout from "../HashtagPage/HashtagMainLayout";
 import SearchUser from "../SearchUser/SearchUser";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import UploadContext from "../../Contexts/UploadContext.js";
 
 export default function TimelineMainLayout({
 	children,
@@ -13,6 +14,7 @@ export default function TimelineMainLayout({
 	followeeId,
 }) {
 	const navigate = useNavigate();
+	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -23,8 +25,8 @@ export default function TimelineMainLayout({
 	}, []);
 
 	const redirectTo = () => {
+		setUpload(!upload);
 		navigate("/timeline");
-		window.location.reload();
 	};
 
 	return (

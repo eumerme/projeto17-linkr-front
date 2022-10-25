@@ -12,7 +12,7 @@ function Timeline() {
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [msgBtn, setMsgBtn] = useState("Publish");
 	const [posts, setPosts] = useState([]);
-	const [existPost, setExistPost] = useState(false);
+	const [existPost, setExistPost] = useState(null);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
 	const { upload, setUpload } = useContext(UploadContext);
@@ -22,9 +22,14 @@ function Timeline() {
 		setTimeout(function () {
 			listPosts()
 				.then((data) => {
-					setPosts(data.data);
-					if (data.data.length === 0) setEmpty(true);
-					else setExistPost(true);
+					if (data.data.followSomeone === true) {
+						setPosts(data.data.posts);
+						if (data.data.posts.length === 0) setEmpty(true);
+						else setExistPost(true);
+					} else {
+						if (data.data.posts.length === 0) setExistPost(false);
+						else setPosts(data.data.posts);
+					}
 				})
 				.catch((error) => {
 					setErrorServer(true);
@@ -110,7 +115,7 @@ function Timeline() {
 					</form>
 				</Publish>
 
-				{existPost ? (
+				{posts.length !== 0 ? (
 					posts.map((value, index) => (
 						<PostsMainLayout
 							key={index}
@@ -123,7 +128,7 @@ function Timeline() {
 						/>
 					))
 				) : (
-					<Loading error={+errorServer} empty={+empty} />
+					<Loading error={errorServer} empty={empty} existPost={existPost} />
 				)}
 			</Homescreen>
 		</TimelineMainLayout>
