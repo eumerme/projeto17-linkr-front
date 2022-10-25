@@ -64,11 +64,13 @@ async function deleteFatalPost(id) {
 }
 
 function likes(body) {
-  return axios.post(`${BASE_URL}/timeline/like`, body);
+  const config = createHeaders();
+  return axios.post(`${BASE_URL}/timeline/like`, body, config);
 }
 
 function listLikes(id) {
-  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`, config);
 }
 
 async function listUserPosts(id) {
