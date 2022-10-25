@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useState, useContext, useEffect } from "react";
-import { getUrlMetadata, likes, listLikes } from "../../services/linkr";
+import { getUrlMetadata, listLikes } from "../../services/linkr";
+import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
@@ -46,95 +46,14 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
     listLikes(id)
       .then((data) => {
-        setListLikes(data.data[0]);
-        if (data.data[0].likeBy !== null) {
-          const nameLike = data.data[0].users.filter(
-            (value) => value === auth.id
-          )[0];
-          if (nameLike) {
-            setClickLike({
-              draw: <AiFillHeart color="red" size="30px" />,
-              type: true,
-            });
-            const names = data.data[0].likeBy.filter((value) => value !== name);
-            if (names.length !== 0) {
-              if (data.data[0].likeBy.length === 2) {
-                setMsg(`Você e ${names[0]} curtiram!`);
-              } else {
-                setMsg(
-                  `Você, ${names[0]} e outras ${names.length - 1} pessoas`
-                );
-              }
-            } else {
-              setMsg(`Você curtiu!`);
-            }
-          } else {
-            setClickLike({
-              draw: <AiOutlineHeart color="#FFF" size="30px" />,
-              type: false,
-            });
-            if (data.data[0].likeBy.length === 2) {
-              setMsg(
-                `${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`
-              );
-            } else if (data.data[0].likeBy.length === 1) {
-              setMsg(`${data.data[0].likeBy[0]} curtiu!`);
-            } else {
-              setMsg(
-                `${data.data[0].likeBy[0]}, ${
-                  data.data[0].likeBy[1]
-                } e outras ${data.data[0].likes - 2} pessoas`
-              );
-            }
-          }
-        } else {
-          setClickLike({
-            draw: <AiOutlineHeart color="#FFF" size="30px" />,
-            type: false,
-          });
-          setMsg("0 curtidas");
-        }
+        const likesData = data.data[0];
+        renderLikes(likesData, setClickLike, setMsg, auth.id);
+        setListLikes(likesData);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [upload]);
-
-  function like() {
-    if (clickLike.type === false) {
-      likes({
-        id,
-        userId: auth.id,
-        type: "like",
-      })
-        .then(() => {
-          setClickLike({
-            draw: <AiFillHeart color="red" size="30px" />,
-            type: true,
-          });
-          setUpload(!upload);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-        });
-    } else {
-      likes({
-        id,
-        userId: auth.id,
-        type: "noLike",
-      })
-        .then(() => {
-          setClickLike({
-            draw: <AiOutlineHeart color="#FFF" size="30px" />,
-            type: false,
-          });
-          setUpload(!upload);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-        });
-    }
-  }
 
   function redirectToUserpage() {
     navigate(`/user/${userId}`, {
@@ -161,7 +80,9 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
       <Container>
         <Infos>
           <img src={img} alt="" />
-          <div onClick={() => like()}>{clickLike.draw}</div>
+          <div onClick={() => like(clickLike, id, auth.id, setClickLike, setUpload, upload)}>
+            {clickLike.draw}
+          </div>
           <p data-tip={msg}>{ListLikes.likes} likes</p>
           <ReactTooltip
             backgroundColor="#FFFFFF"
