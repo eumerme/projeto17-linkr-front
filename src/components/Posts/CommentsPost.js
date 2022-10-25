@@ -1,10 +1,24 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export default function CommentsBox({ img, seeComments }) {
+export default function CommentsBox({ img, seeComments, setSeeComments }) {
   const dropdownRef = useRef(null);
-  console.log(seeComments);
+  const inputRef = useRef(null);
+
+  const pageClickEvent = (e) => {
+    if (e.keyCode === 27) {
+      window.removeEventListener("keyup", pageClickEvent);
+    }
+  };
+
+  useEffect(() => {
+    if (seeComments) {
+      inputRef.current.focus();
+      window.addEventListener("keyup", pageClickEvent);
+    }
+  }, [seeComments]);
+
   return (
     <>
       <Container ref={dropdownRef} seeComments={seeComments}>
@@ -18,7 +32,7 @@ export default function CommentsBox({ img, seeComments }) {
         <WriterArea>
           <img src={img} alt="" />
           <TextArea>
-            <input placeholder="write a comment..."></input>
+            <input placeholder="write a comment..." ref={inputRef}></input>
             <div>
               <TiLocationArrowOutline />
             </div>

@@ -152,7 +152,11 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
             </UrlDatas>
           </Description>
         </Content>
-        <CommentsBox img={img} seeComments={seeComments} />
+        <CommentsBox
+          img={img}
+          seeComments={seeComments}
+          setSeeComments={setSeeComments}
+        />
       </Container>
       <DeleteModal
         upload={upload}
