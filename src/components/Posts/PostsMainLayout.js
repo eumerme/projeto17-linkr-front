@@ -8,6 +8,7 @@ import {
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
+import { BiRepost } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
 import { AiOutlineComment } from "react-icons/ai";
 import EditPost from "./EditPost";
@@ -118,6 +119,8 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
               onClick={() => setSeeComments(!seeComments)}
             />
             <p>{commentsData.length} comments</p>
+            <BiRepost style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
+            <p>re-posts</p>
           </Infos>
           <Description>
             <span>
