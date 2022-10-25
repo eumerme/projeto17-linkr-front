@@ -3,7 +3,12 @@ import { TiLocationArrowOutline } from "react-icons/ti";
 import { useEffect, useRef, useState } from "react";
 import { createNewComment } from "../../services/linkr";
 
-export default function CommentsBox({ img, seeComments, postId }) {
+export default function CommentsBox({
+  img,
+  seeComments,
+  postId,
+  commentsData,
+}) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -34,13 +39,15 @@ export default function CommentsBox({ img, seeComments, postId }) {
   return (
     <>
       <Container ref={dropdownRef} seeComments={seeComments}>
-        <CommentArea>
-          <img src={img} alt="" />
-          <Infos>
-            <p>João Avatares</p>
-            <span>Irmão que post foda você jogou</span>
-          </Infos>
-        </CommentArea>
+        {commentsData.map((value, index) => (
+          <CommentArea key={index}>
+            <img src={value.imageUrl} alt="" />
+            <Infos>
+              <p>{value.name}</p>
+              <span>{value.comment}</span>
+            </Infos>
+          </CommentArea>
+        ))}
         <WriterArea>
           <img src={img} alt="" />
           <TextArea>

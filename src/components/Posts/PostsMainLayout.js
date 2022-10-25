@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
-import { getUrlMetadata, listLikes } from "../../services/linkr";
+import {
+  getUrlMetadata,
+  listCommentsPost,
+  listLikes,
+} from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
@@ -21,6 +25,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
   const [ListLikes, setListLikes] = useState([]);
   const [clickLike, setClickLike] = useState({});
   const [seeComments, setSeeComments] = useState(false);
+  const [commentsData, setCommentsData] = useState([]);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -56,6 +61,12 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
       .catch((error) => {
         console.log(error);
       });
+
+    listCommentsPost(id)
+      .then((data) => {
+        setCommentsData(data.data);
+      })
+      .catch();
   }, [upload]);
 
   function redirectToUserpage() {
@@ -152,7 +163,12 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
             </UrlDatas>
           </Description>
         </Content>
-        <CommentsBox img={img} seeComments={seeComments} postId={id} />
+        <CommentsBox
+          img={img}
+          seeComments={seeComments}
+          postId={id}
+          commentsData={commentsData}
+        />
       </Container>
       <DeleteModal
         upload={upload}
