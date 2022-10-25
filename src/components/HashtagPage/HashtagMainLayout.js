@@ -14,6 +14,7 @@ export default function HashtagMainLayout({
 	const [hashtags, setHashtags] = useState([]);
 	const { setUpload, upload } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
+	const [isDisabled, setIsDisabled] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -24,17 +25,26 @@ export default function HashtagMainLayout({
 				.catch((error) => {
 					console.log(error);
 				});
-		}, 500);
+		}, 1000);
 	}, [upload]);
 
 	const handleFollow = () => {
-		toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
-			.then((data) => {
-				setUpload(!upload);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		setIsDisabled(true);
+
+		setTimeout(function () {
+			toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
+				.then((data) => {
+					setUpload(!upload);
+					setIsDisabled(false);
+				})
+				.catch((error) => {
+					console.log(error);
+					alert(
+						"Não foi possível executar a operação. Tente novamente em instantes."
+					);
+					setIsDisabled(false);
+				});
+		}, 1000);
 	};
 
 	function redirect(text) {
@@ -44,7 +54,11 @@ export default function HashtagMainLayout({
 	return (
 		<Container timeline={timeline}>
 			{userpage ? (
-				<FollowButton follows={follows} onClick={handleFollow}>
+				<FollowButton
+					follows={follows}
+					onClick={handleFollow}
+					disabled={isDisabled}
+				>
 					{follows ? "Unfollow" : "Follow"}
 				</FollowButton>
 			) : (
@@ -123,7 +137,7 @@ const TrendingBox = styled.div`
 	}
 `;
 
-const FollowButton = styled.div`
+const FollowButton = styled.button`
 	width: 112px;
 	height: 31px;
 	margin-bottom: 50px;
@@ -137,6 +151,9 @@ const FollowButton = styled.div`
 	justify-content: center;
 	color: ${(props) => (props.follows ? "#1877f2" : "#ffffff")};
 	cursor: pointer;
+	outline: inherit;
+	border: inherit;
+	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
 `;
 
 //const FollowButton = styled``;
