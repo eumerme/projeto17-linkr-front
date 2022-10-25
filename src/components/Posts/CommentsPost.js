@@ -1,23 +1,35 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createNewComment } from "../../services/linkr";
 
-export default function CommentsBox({ img, seeComments, setSeeComments }) {
+export default function CommentsBox({ img, seeComments, postId }) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
-  const pageClickEvent = (e) => {
-    if (e.keyCode === 27) {
-      window.removeEventListener("keyup", pageClickEvent);
-    }
-  };
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     if (seeComments) {
       inputRef.current.focus();
-      window.addEventListener("keyup", pageClickEvent);
     }
   }, [seeComments]);
+
+  function publishComment(e) {
+    e.preventDefault();
+    setIsDisabled(true);
+    const body = { comment, postId };
+
+    createNewComment(body)
+      .then(() => {
+        setComment("");
+      })
+      .catch(() => {
+        alert("Ops! Houve um erro com sua requisição, tente novamente");
+        setIsDisabled(false);
+      });
+  }
 
   return (
     <>
@@ -32,9 +44,16 @@ export default function CommentsBox({ img, seeComments, setSeeComments }) {
         <WriterArea>
           <img src={img} alt="" />
           <TextArea>
-            <input placeholder="write a comment..." ref={inputRef}></input>
+            <input
+              placeholder="write a comment..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              ref={inputRef}
+              type="text"
+              disabled={isDisabled}
+            ></input>
             <div>
-              <TiLocationArrowOutline />
+              <TiLocationArrowOutline onClick={publishComment} />
             </div>
           </TextArea>
         </WriterArea>
