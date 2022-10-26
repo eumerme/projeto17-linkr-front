@@ -43,9 +43,9 @@ async function listHashtags() {
   return await axios.get(`${BASE_URL}/hashtags`, config);
 }
 
-async function listPostsbyHashtags(body) {
+async function listPostsbyHashtags(body, limit) {
   const config = createHeaders();
-  return axios.get(`${BASE_URL}/hashtags/${body}`, config);
+  return axios.get(`${BASE_URL}/hashtags/${body}?limit=${limit}`, config);
 }
 
 async function listUsers() {
