@@ -112,6 +112,11 @@ function listReposts(postId){
   return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
 }
 
+function getRepostById(id){
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
+}
+
 export {
   register,
   login,
@@ -132,5 +137,6 @@ export {
   createNewComment,
   listReposts,
   toggleFollow,
-  isFollowing
+  isFollowing,
+  getRepostById
 };
