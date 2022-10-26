@@ -28,13 +28,24 @@ export default function HashtagPage() {
 
 	return (
 		<>
-			<TimelineMainLayout>
+			<TimelineMainLayout hashtag={true}>
 				<Homescreen>
 					<Title># {params.hashtag}</Title>
 					{posts.length !== 0 ? (
-						posts.map((value, index) => console.log(value))
+						posts.map((value, index) => (
+							<PostsMainLayout
+								key={index}
+								id={value.id}
+								img={value.imageUrl}
+								url={value.url}
+								name={value.name}
+								text={value.text}
+								likesUser={value.likes}
+								userId={value.userId}
+							/>
+						))
 					) : (
-						<Loading error={+errorServer} empty={+empty} />
+						<Loading error={errorServer} empty={empty} />
 					)}
 				</Homescreen>
 			</TimelineMainLayout>

@@ -1,15 +1,21 @@
 import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useState, useContext, useEffect } from "react";
-import { getUrlMetadata, likes, listLikes } from "../../services/linkr";
+import {
+	getUrlMetadata,
+	listCommentsPost,
+	listLikes,
+} from "../../services/linkr";
+import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
+import { AiOutlineComment } from "react-icons/ai";
 import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
 import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
+import CommentsBox from "./CommentsPost";
 
 export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +24,8 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	const { upload, setUpload } = useContext(UploadContext);
 	const [ListLikes, setListLikes] = useState([]);
 	const [clickLike, setClickLike] = useState({});
+	const [seeComments, setSeeComments] = useState(false);
+	const [commentsData, setCommentsData] = useState([]);
 	const [msg, setMsg] = useState("");
 	const navigate = useNavigate();
 	const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -36,6 +44,9 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 					image: auxData.image.url,
 					url: auxData.url,
 				});
+				if (!urlData.title) {
+					setUpload(!upload);
+				}
 			})
 			.catch((error) => {
 				console.log(error);
@@ -43,98 +54,23 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
 		listLikes(id)
 			.then((data) => {
-				setListLikes(data.data[0]);
-				if (data.data[0].likeBy !== null) {
-					const nameLike = data.data[0].users.filter(
-						(value) => value === userId
-					)[0];
-					if (nameLike) {
-						setClickLike({
-							draw: <AiFillHeart color="red" size="30px" />,
-							type: true,
-						});
-						const names = data.data[0].likeBy.filter((value) => value !== name);
-						if (names.length !== 0) {
-							if (data.data[0].likeBy.length === 2) {
-								setMsg(`Você e ${names[0]} curtiram!`);
-							} else {
-								setMsg(
-									`Você, ${names[0]} e outras ${names.length - 1} pessoas`
-								);
-							}
-						} else {
-							setMsg(`Você curtiu!`);
-						}
-					} else {
-						setClickLike({
-							draw: <AiOutlineHeart color="#FFF" size="30px" />,
-							type: false,
-						});
-						if (data.data[0].likeBy.length === 2) {
-							setMsg(
-								`${data.data[0].likeBy[0]} e ${data.data[0].likeBy[1]} curtiram!`
-							);
-						} else if (data.data[0].likeBy.length === 1) {
-							setMsg(`${data.data[0].likeBy[0]} curtiu!`);
-						} else {
-							setMsg(
-								`${data.data[0].likeBy[0]}, ${
-									data.data[0].likeBy[1]
-								} e outras ${data.data[0].likes - 2} pessoas`
-							);
-						}
-					}
-				} else {
-					setClickLike({
-						draw: <AiOutlineHeart color="#FFF" size="30px" />,
-						type: false,
-					});
-					setMsg("0 curtidas");
-				}
+				const likesData = data.data[0];
+				renderLikes(likesData, setClickLike, setMsg, auth.id);
+				setListLikes(likesData);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
+
+		listCommentsPost(id)
+			.then((data) => {
+				setCommentsData(data.data);
+			})
+			.catch();
 	}, [upload]);
 
-	function like() {
-		if (clickLike.type === false) {
-			likes({
-				id,
-				userId,
-				type: "like",
-			})
-				.then(() => {
-					setClickLike({
-						draw: <AiFillHeart color="red" size="30px" />,
-						type: true,
-					});
-					setUpload(!upload);
-				})
-				.catch((error) => {
-					console.log(error.response.status);
-				});
-		} else {
-			likes({
-				id,
-				userId,
-				type: "noLike",
-			})
-				.then(() => {
-					setClickLike({
-						draw: <AiOutlineHeart color="#FFF" size="30px" />,
-						type: false,
-					});
-					setUpload(!upload);
-				})
-				.catch((error) => {
-					console.log(error.response.status);
-				});
-		}
-	}
-
 	function redirectToUserpage() {
-		console.log("post main layout ", userId);
+		setUpload(!upload);
 		navigate(`/user/${userId}`, {
 			replace: false,
 			state: { name },
@@ -143,6 +79,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
 	function redirectToHashtagPage(tag) {
 		const hashtag = tag.slice(1, tag.length);
+		setUpload(!upload);
 		navigate(`/hashtag/${hashtag}`);
 	}
 
@@ -157,64 +94,83 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	return (
 		<>
 			<Container>
-				<Infos>
-					<img src={img} alt="" />
-					<div onClick={() => like()}>{clickLike.draw}</div>
-					<p data-tip={msg}>{ListLikes.likes} likes</p>
-					<ReactTooltip
-						backgroundColor="#FFFFFF"
-						className="toopTip"
-						place="bottom"
-					/>
-					<ReactTooltip
-						backgroundColor="#FFFFFF"
-						className="toopTip"
-						place="bottom"
-					/>
-				</Infos>
-				<Description>
-					<span>
-						<h1 onClick={redirectToUserpage}>{name}</h1>
-						{auth.id === userId ? (
-							<h3>
-								<TiPencil
-									style={{ cursor: "pointer" }}
-									onClick={() => setIsEditing(!isEditing)}
-								/>
-								<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
-							</h3>
-						) : (
-							""
-						)}
-					</span>
-					{isEditing ? (
-						<EditPost
-							id={id}
-							isEditing={isEditing}
-							setIsEditing={setIsEditing}
-							text={text}
-							upload={upload}
-							setUpload={setUpload}
-						/>
-					) : (
-						<ReactTagify
-							tagStyle={tagStyle}
-							tagClicked={(tag) => redirectToHashtagPage(tag)}
+				<Content>
+					<Infos>
+						<img src={img} alt="" />
+						<div
+							onClick={() =>
+								like(clickLike, id, auth.id, setClickLike, setUpload, upload)
+							}
 						>
-							<p>{text}</p>
-						</ReactTagify>
-					)}
-					<UrlDatas onClick={() => window.open(url, "_blank")}>
-						<div>
-							<h1>{urlData.title}</h1>
-							<p>{urlData.description}</p>
-							<h2>{urlData.url}</h2>
+							{clickLike.draw}
 						</div>
-						<div className="UrlImage">
-							<img src={urlData.image} alt="" />
-						</div>
-					</UrlDatas>
-				</Description>
+						<p data-tip={msg}>{ListLikes.likes} likes</p>
+						<ReactTooltip
+							backgroundColor="#FFFFFF"
+							className="toopTip"
+							place="bottom"
+						/>
+						<ReactTooltip
+							backgroundColor="#FFFFFF"
+							className="toopTip"
+							place="bottom"
+						/>
+						<AiOutlineComment
+							style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}
+							onClick={() => setSeeComments(!seeComments)}
+						/>
+						<p>{commentsData.length} comments</p>
+					</Infos>
+					<Description>
+						<span>
+							<h1 onClick={redirectToUserpage}>{name}</h1>
+							{auth.id === userId ? (
+								<h3>
+									<TiPencil
+										style={{ cursor: "pointer" }}
+										onClick={() => setIsEditing(!isEditing)}
+									/>
+									<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+								</h3>
+							) : (
+								""
+							)}
+						</span>
+						{isEditing ? (
+							<EditPost
+								id={id}
+								isEditing={isEditing}
+								setIsEditing={setIsEditing}
+								text={text}
+								upload={upload}
+								setUpload={setUpload}
+							/>
+						) : (
+							<ReactTagify
+								tagStyle={tagStyle}
+								tagClicked={(tag) => redirectToHashtagPage(tag)}
+							>
+								<p>{text}</p>
+							</ReactTagify>
+						)}
+						<UrlDatas onClick={() => window.open(url, "_blank")}>
+							<div>
+								<h1>{urlData.title}</h1>
+								<p>{urlData.description}</p>
+								<h2>{urlData.url}</h2>
+							</div>
+							<div className="UrlImage">
+								<img src={urlData.image} alt="" />
+							</div>
+						</UrlDatas>
+					</Description>
+				</Content>
+				<CommentsBox
+					img={img}
+					seeComments={seeComments}
+					postId={id}
+					commentsData={commentsData}
+				/>
 			</Container>
 			<DeleteModal
 				upload={upload}
@@ -229,14 +185,14 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
 const Container = styled.div`
 	margin-bottom: 30px;
-	padding: 18px;
 	width: 100%;
 	max-width: 611px;
 	background-color: #171717;
-	height: 276px;
-	max-height: auto;
+	min-height: 276px;
 	border-radius: 16px;
 	display: flex;
+	flex-direction: column;
+	align-items: center;
 
 	@media screen and (max-width: 768px) {
 		max-width: 100%;
@@ -246,6 +202,12 @@ const Container = styled.div`
 		width: 100%;
 		border-radius: 0;
 	}
+`;
+
+const Content = styled.div`
+	width: 93%;
+	display: flex;
+	margin: 18px 0;
 `;
 
 const Infos = styled.div`
@@ -267,12 +229,14 @@ const Infos = styled.div`
 	}
 
 	p {
-		margin-top: 5px;
+		margin: 5px 0 10px 0;
 		font-family: "Lato", sans-serif;
 		color: #ffffff;
 		font-weight: 400;
 		font-size: 11px;
 		cursor: pointer;
+		text-align: center;
+		width: 60px;
 	}
 
 	.toopTip {
