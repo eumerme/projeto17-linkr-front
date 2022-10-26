@@ -28,7 +28,7 @@ export default function HashtagPage() {
 
 	return (
 		<>
-			<TimelineMainLayout timeline={true}>
+			<TimelineMainLayout hashtag={true}>
 				<Homescreen>
 					<Title># {params.hashtag}</Title>
 					{posts.length !== 0 ? (

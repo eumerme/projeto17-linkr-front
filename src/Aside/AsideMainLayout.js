@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../../Contexts/UploadContext";
-import { listHashtags, toggleFollow } from "../../services/linkr";
+import UploadContext from "../Contexts/UploadContext";
+import { listHashtags, toggleFollow } from "../services/linkr";
 
-export default function HashtagMainLayout({
+export default function AsideMainLayout({
 	userpage,
 	timeline,
 	follows,
 	followeeId,
+	hashtag,
 }) {
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
@@ -67,7 +68,7 @@ export default function HashtagMainLayout({
 			) : (
 				""
 			)}
-			<TrendingBox>
+			<TrendingBox hashtag={hashtag}>
 				<h2>trending</h2>
 				<ul>
 					{hashtags.map((value, index) => (
@@ -86,7 +87,7 @@ const Container = styled.div`
 	height: auto;
 	padding: 103px 0 0 50px;
 	position: sticky;
-	top: ${(props) => (props.timeline ? "155px" : "72px")};
+	top: ${(props) => (props.timeline ? "153px" : "72px")};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
@@ -104,6 +105,7 @@ const TrendingBox = styled.div`
 	height: 406px;
 	border-radius: 16px;
 	background-color: #171717;
+	margin-top: ${(props) => (props.hashtag ? "81px" : "0")};
 
 	h2 {
 		width: 100%;
