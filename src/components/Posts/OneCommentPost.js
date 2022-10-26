@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export default function CommentArea({
@@ -6,19 +7,37 @@ export default function CommentArea({
   postUserId,
   name,
   comment,
+  followee,
 }) {
+  const [commentTag, setCommentTag] = useState(<p>{name}</p>);
+  useEffect(() => {
+    if (followee !== null && commentUserId === postUserId) {
+      setCommentTag(
+        <p>
+          {name} <strong>• following • post’s author</strong>
+        </p>
+      );
+    } else if (commentUserId === postUserId) {
+      setCommentTag(
+        <p>
+          {name} <strong>• post’s author</strong>
+        </p>
+      );
+    } else if (followee !== null) {
+      setCommentTag(
+        <p>
+          {name} <strong>• following</strong>
+        </p>
+      );
+    }
+  }, []);
+
   return (
     <>
       <Container>
         <img src={imageUrl} alt="" />
         <Infos>
-          {commentUserId === postUserId ? (
-            <p>
-              {name} <strong>• post’s author</strong>
-            </p>
-          ) : (
-            <p>{name}</p>
-          )}
+          <p>{commentTag}</p>
           <span>{comment}</span>
         </Infos>
       </Container>

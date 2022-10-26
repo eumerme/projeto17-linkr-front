@@ -58,6 +58,7 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
               postUserId={value.postUserId}
               name={value.name}
               comment={value.comment}
+              followee={value.followee}
             />
           ))}
         </AllComents>
