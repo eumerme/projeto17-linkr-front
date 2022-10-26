@@ -23,12 +23,12 @@ function Timeline() {
 			listPosts()
 				.then((data) => {
 					if (data.data.followSomeone === true) {
-						setPosts(data.data.posts);
+						setPosts(Array.from(data.data.posts));
 						if (data.data.posts.length === 0) setEmpty(true);
 						else setExistPost(true);
 					} else {
 						if (data.data.posts.length === 0) setExistPost(false);
-						else setPosts(data.data.posts);
+						else setPosts(Array.from(data.data.posts));
 					}
 				})
 				.catch((error) => {
