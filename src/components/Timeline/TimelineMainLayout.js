@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logout from "../Logout/Logout";
-import HashtagMainLayout from "../HashtagPage/HashtagMainLayout";
+import AsideMainLayout from "../../Aside/AsideMainLayout";
 import SearchUser from "../SearchUser/SearchUser";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
@@ -12,6 +12,7 @@ export default function TimelineMainLayout({
 	timeline,
 	follows,
 	followeeId,
+	hashtag,
 }) {
 	const navigate = useNavigate();
 	const { setUpload, upload } = useContext(UploadContext);
@@ -36,11 +37,12 @@ export default function TimelineMainLayout({
 				<Logout />
 			</Navbar>
 			{children}
-			<HashtagMainLayout
+			<AsideMainLayout
 				userpage={userpage}
 				timeline={timeline}
 				follows={follows}
 				followeeId={followeeId}
+				hashtag={hashtag}
 			/>
 			<SearchUser />
 		</Container>
