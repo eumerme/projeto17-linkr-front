@@ -85,6 +85,16 @@ async function insertHashtag(body) {
 	return await axios.post(`${BASE_URL}/hashtags`, body, config);
 }
 
+async function listCommentsPost(postId) {
+	const config = createHeaders();
+	return await axios.get(`${BASE_URL}/timeline/comments/${postId}`, config);
+}
+
+async function createNewComment(body) {
+	const config = createHeaders();
+	return await axios.post(`${BASE_URL}/timeline/newcomment`, body, config);
+}
+
 async function isFollowing(body) {
 	const config = createHeaders();
 	return await axios.post(`${BASE_URL}/is-following`, body, config);
@@ -111,6 +121,8 @@ export {
 	listLikes,
 	getUrlMetadata,
 	insertHashtag,
+	listCommentsPost,
+	createNewComment,
 	isFollowing,
 	toggleFollow,
 };
