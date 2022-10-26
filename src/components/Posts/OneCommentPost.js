@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function CommentArea({
   imageUrl,
@@ -9,17 +11,29 @@ export default function CommentArea({
   comment,
   followee,
 }) {
+  const navigate = useNavigate();
+  const { upload, setUpload } = useContext(UploadContext);
+
   const [commentTag, setCommentTag] = useState(<p>{name}</p>);
+
+  function redirectToUserpage() {
+    setUpload(!upload);
+    navigate(`/user/${commentUserId}`, {
+      replace: false,
+      state: { name },
+    });
+  }
+
   useEffect(() => {
     if (commentUserId === postUserId) {
       setCommentTag(
-        <p>
+        <p onClick={redirectToUserpage}>
           {name} <strong>• post’s author</strong>
         </p>
       );
     } else if (followee !== null) {
       setCommentTag(
-        <p>
+        <p onClick={redirectToUserpage}>
           {name} <strong>• following</strong>
         </p>
       );
@@ -31,7 +45,7 @@ export default function CommentArea({
       <Container>
         <img src={imageUrl} alt="" />
         <Infos>
-          <p>{commentTag}</p>
+          {commentTag}
           <span>{comment}</span>
         </Infos>
       </Container>
