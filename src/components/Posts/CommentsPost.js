@@ -3,13 +3,9 @@ import { TiLocationArrowOutline } from "react-icons/ti";
 import { useContext, useEffect, useRef, useState } from "react";
 import { createNewComment } from "../../services/linkr";
 import UploadContext from "../../Contexts/UploadContext";
+import CommentArea from "./OneCommentPost";
 
-export default function CommentsBox({
-  img,
-  seeComments,
-  postId,
-  commentsData,
-}) {
+export default function CommentsBox({ seeComments, postId, commentsData }) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -55,19 +51,15 @@ export default function CommentsBox({
       <Container ref={dropdownRef} seeComments={seeComments}>
         <AllComents>
           {commentsData.map((value, index) => (
-            <CommentArea key={index}>
-              <img src={value.imageUrl} alt="" />
-              <Infos>
-                {value.commentUserId === value.postUserId ? (
-                  <p>
-                    {value.name} <strong>• post’s author</strong>
-                  </p>
-                ) : (
-                  <p>{value.name}</p>
-                )}
-                <span>{value.comment}</span>
-              </Infos>
-            </CommentArea>
+            <CommentArea
+              key={index}
+              imageUrl={value.imageUrl}
+              commentUserId={value.commentUserId}
+              postUserId={value.postUserId}
+              name={value.name}
+              comment={value.comment}
+              followee={value.followee}
+            />
           ))}
         </AllComents>
         <WriterArea>
@@ -135,44 +127,9 @@ const AllComents = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`;
 
-const CommentArea = styled.div`
-  width: 93%;
-  min-height: 71px;
-  border-bottom: 1px solid #353535;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  img {
-    width: 39px;
-    height: 39px;
-    border-radius: 26.5px;
-  }
-`;
-
-const Infos = styled.div`
-  width: 510px;
-
-  p {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 17px;
-    color: #f3f3f3;
-    margin: 0 0 5px 0;
-
-    strong {
-      color: #565656;
-      font-weight: 400;
-    }
-  }
-
-  span {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    color: #acacac;
+  @media screen and (max-width: 610px) {
+    max-height: 244px;
   }
 `;
 
@@ -191,10 +148,11 @@ const WriterArea = styled.div`
 `;
 
 const TextArea = styled.div`
+  width: 89.7%;
   position: relative;
 
   input {
-    width: 510px;
+    width: 100%;
     height: 39px;
     border: none;
     background: #252525;
@@ -204,6 +162,10 @@ const TextArea = styled.div`
     font-size: 14px;
     line-height: 17px;
     padding: 0 0 0 15px;
+
+    :focus {
+      outline: 0;
+    }
   }
 
   div {
@@ -212,5 +174,9 @@ const TextArea = styled.div`
     top: 8px;
     font-size: 25px;
     color: #f3f3f3;
+  }
+
+  @media screen and (max-width: 610px) {
+    width: 85%;
   }
 `;
