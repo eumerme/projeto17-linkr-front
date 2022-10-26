@@ -5,7 +5,8 @@ import {
   getUrlMetadata,
   listCommentsPost,
   listLikes,
-  listReposts
+  listReposts,
+  getRepostById
 } from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
@@ -31,6 +32,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
   const [commentsData, setCommentsData] = useState([]);
   const [reposts, setReposts] = useState(0);
   const [msg, setMsg] = useState("");
+  const [repostName, setRepostName] = useState('');
   const [itsReposts, setItsReposts] = useState(false);
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -81,8 +83,17 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       console.log(error);
     });
 
-    if(repostBy !== null) setItsReposts(true); 
-
+    if(repostBy !== null) {
+      getRepostById(
+        repostBy
+      ).then((data) => {
+        if(data.data.name === auth.name) setRepostName('Re-posted by you');
+        else setRepostName(`Re-posted by ${data.data.name}`);
+      }).catch((error) => {
+        console.log(error);
+      });
+      setItsReposts(true); 
+    }
   }, [upload]);
 
   function redirectToUserpage() {
@@ -111,7 +122,10 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
     <>
     <RePost>
       {itsReposts ? 
-        <BiRepost style={{ color: "#FFFFFF", fontSize: "28px", margin: "7px 13px" }}/>
+        <InfoRePost>
+          <BiRepost style={{ color: "#FFFFFF", fontSize: "28px", margin: "7px 13px" }}/>
+          <p>{repostName}</p>
+        </InfoRePost>
       : <></>}
       <Container>
         <Content>
@@ -415,4 +429,16 @@ const RePost = styled.div`
   justify-content: center;
   flex-direction: column;
   background-color: #1E1E1E;
+`;
+
+const InfoRePost = styled.div`
+  display: flex;
+  align-items: center;
+
+  p{
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #FFFFFF;
+  }
 `;
