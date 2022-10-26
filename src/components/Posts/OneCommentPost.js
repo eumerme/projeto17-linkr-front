@@ -11,13 +11,7 @@ export default function CommentArea({
 }) {
   const [commentTag, setCommentTag] = useState(<p>{name}</p>);
   useEffect(() => {
-    if (followee !== null && commentUserId === postUserId) {
-      setCommentTag(
-        <p>
-          {name} <strong>• following • post’s author</strong>
-        </p>
-      );
-    } else if (commentUserId === postUserId) {
+    if (commentUserId === postUserId) {
       setCommentTag(
         <p>
           {name} <strong>• post’s author</strong>
