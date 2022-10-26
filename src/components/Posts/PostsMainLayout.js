@@ -36,10 +36,9 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 					image: auxData.image.url,
 					url: auxData.url,
 				});
-				setUpload(!upload);
-				/* if (!urlData.title) {
+				if (!urlData.title) {
 					setUpload(!upload);
-				} */
+				}
 			})
 			.catch((error) => {
 				console.log(error);

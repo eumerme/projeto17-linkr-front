@@ -15,7 +15,8 @@ export default function HashtagMainLayout({
 	const { setUpload, upload } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
-
+	const user = Number(followeeId) === auth.id;
+	console.log(timeline);
 	useEffect(() => {
 		setTimeout(function () {
 			listHashtags()
@@ -33,7 +34,7 @@ export default function HashtagMainLayout({
 
 		setTimeout(function () {
 			toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
-				.then((data) => {
+				.then(() => {
 					setUpload(!upload);
 					setIsDisabled(false);
 				})
@@ -48,8 +49,8 @@ export default function HashtagMainLayout({
 	};
 
 	function redirect(text) {
-		navigate(`/hashtag/${text}`);
 		setUpload(!upload);
+		navigate(`/hashtag/${text}`);
 	}
 
 	return (
@@ -59,6 +60,7 @@ export default function HashtagMainLayout({
 					follows={follows}
 					onClick={handleFollow}
 					disabled={isDisabled}
+					user={user}
 				>
 					{follows ? "Unfollow" : "Follow"}
 				</FollowButton>
@@ -155,6 +157,5 @@ const FollowButton = styled.button`
 	outline: inherit;
 	border: inherit;
 	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+	visibility: ${(props) => (props.user ? "hidden" : "visible")}; ;
 `;
-
-//const FollowButton = styled``;
