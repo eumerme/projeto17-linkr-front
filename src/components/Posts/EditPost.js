@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { editPostText, insertHashtag } from "../../services/linkr";
@@ -12,6 +13,7 @@ export default function EditPost({
 }) {
   const [comment, setComment] = useState(text);
   const [isDisabled, setIsDisabled] = useState(false);
+  const auth = JSON.parse(localStorage.getItem("linkr"));
   const inputRef = useRef(null);
 
   const pageClickEvent = (e) => {
@@ -37,7 +39,7 @@ export default function EditPost({
 
         hashtag.forEach((value) => {
           const hashtagText = value.replace("#", "");
-          insertHashtag({ hashtagText })
+          insertHashtag({ hashtagText, id: auth.id })
             .then(() => setUpload(!upload))
             .catch((error) => console.log(error));
         });

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -81,6 +82,7 @@ const Infos = styled.div`
     line-height: 17px;
     color: #f3f3f3;
     margin: 0 0 5px 0;
+    cursor: pointer;
 
     strong {
       color: #565656;
