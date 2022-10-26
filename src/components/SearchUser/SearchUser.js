@@ -95,7 +95,12 @@ export default function SearchUser() {
 							}}
 						>
 							<img className="list_img" src={user.imageUrl} alt="" />
-							<p className="list_name">{user.name}</p>
+							<div className="list_container">
+								<p className="list_name">{user.name}</p>
+								<span className="list_follow">
+									{user.follow.following ? "• following" : ""}
+								</span>
+							</div>
 						</li>
 					))}
 				</List>
@@ -162,6 +167,19 @@ const List = styled.ul`
 		font-size: 19px;
 		font-weight: 400;
 		color: #515151;
+		margin-right: 5px;
+	}
+
+	.list_follow {
+		font-family: "Lato", sans-serif;
+		font-size: 16px;
+		font-weight: 400;
+		color: #c5c5c5;
+	}
+
+	.list_container {
+		display: flex;
+		flex-wrap: wrap;
 	}
 `;
 
