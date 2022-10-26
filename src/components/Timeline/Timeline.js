@@ -155,14 +155,14 @@ const Title = styled.div`
   text-align: justify;
   color: #ffffff;
   padding: 78px 0 43px 0;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 611px) {
     width: 100%;
     padding: 19px 0 19px 17px;
   }
 `;
 
 const Publish = styled.div`
-  max-width: 611px;
+  width: 611px;
   height: 209px;
   border-radius: 16px;
   background-color: #ffffff;
@@ -233,6 +233,7 @@ const Publish = styled.div`
   }
   @media screen and (max-width: 768px) {
     width: 100%;
+    max-width: 611px;
     border-radius: 0px;
     div {
       display: none;
