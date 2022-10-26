@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../../Contexts/UploadContext";
-import { listHashtags, toggleFollow } from "../../services/linkr";
+import UploadContext from "../Contexts/UploadContext";
+import { listHashtags, toggleFollow } from "../services/linkr";
 
-export default function HashtagMainLayout({
+export default function AsideMainLayout({
 	userpage,
 	timeline,
 	follows,
