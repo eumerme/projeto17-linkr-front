@@ -29,12 +29,9 @@ function Timeline() {
         setNeedRender(true);
       })
       .catch((error) => {
-        setNeedRender(true);
         setErrorServer(true);
       });
   }
-
-  console.log(posts.length);
 
   return (
     <TimelineMainLayout timeline={true}>

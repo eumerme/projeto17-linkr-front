@@ -71,9 +71,9 @@ function listLikes(id) {
   return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
 }
 
-async function listUserPosts(id) {
+async function listUserPosts(id, limit) {
   const config = createHeaders();
-  return axios.get(`${BASE_URL}/url/${id}`, config);
+  return axios.get(`${BASE_URL}/url/${id}?limit=${limit}`, config);
 }
 
 async function getUrlMetadata(url) {
