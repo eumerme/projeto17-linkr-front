@@ -16,7 +16,7 @@ export default function HashtagMainLayout({
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const user = Number(followeeId) === auth.id;
-	console.log(timeline);
+
 	useEffect(() => {
 		setTimeout(function () {
 			listHashtags()
