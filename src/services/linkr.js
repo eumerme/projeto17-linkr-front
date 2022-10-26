@@ -97,6 +97,11 @@ async function createNewComment(body) {
   return await axios.post(`${BASE_URL}/timeline/newcomment`, body, config);
 }
 
+function listReposts(postId){
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
+}
+
 export {
   register,
   login,
@@ -115,4 +120,5 @@ export {
   insertHashtag,
   listCommentsPost,
   createNewComment,
+  listReposts
 };

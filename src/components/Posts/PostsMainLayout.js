@@ -4,6 +4,7 @@ import {
   getUrlMetadata,
   listCommentsPost,
   listLikes,
+  listReposts
 } from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
@@ -27,6 +28,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
   const [clickLike, setClickLike] = useState({});
   const [seeComments, setSeeComments] = useState(false);
   const [commentsData, setCommentsData] = useState([]);
+  const [reposts, setReposts] = useState(0);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -68,6 +70,15 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
         setCommentsData(data.data);
       })
       .catch();
+
+    listReposts(
+      id
+    ).then((data) => {
+      setReposts(data.data[0].countReposts);
+    }).catch((error) => {
+      console.log(error);
+    });
+
   }, [upload]);
 
   function redirectToUserpage() {
@@ -120,7 +131,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
             />
             <p>{commentsData.length} comments</p>
             <BiRepost style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
-            <p>re-posts</p>
+            <p>{reposts} re-posts</p>
           </Infos>
           <Description>
             <span>
