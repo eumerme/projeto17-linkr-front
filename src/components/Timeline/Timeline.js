@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { listPosts } from "../../services/linkr";
 import TimelineMainLayout from "./TimelineMainLayout";
 import PostsMainLayout from "../Posts/PostsMainLayout";
@@ -9,14 +9,14 @@ import InfiniteScroll from "react-infinite-scroller";
 
 function Timeline() {
   const [posts, setPosts] = useState([]);
-  const [allPosts, setAllPosts] = useState([]);
   const [needRender, setNeedRender] = useState(true);
   const [existPost, setExistPost] = useState(null);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
 
-  useEffect(() => {
-    listPosts()
+  function loaderPosts() {
+    setNeedRender(false);
+    listPosts(posts.length + 10)
       .then((data) => {
         if (data.data.followSomeone === true) {
           setPosts(Array.from(data.data.posts));
@@ -26,24 +26,16 @@ function Timeline() {
           if (data.data.posts.length === 0) setExistPost(false);
           else setPosts(Array.from(data.data.posts));
         }
+        setNeedRender(true);
       })
       .catch((error) => {
+        setNeedRender(true);
         setErrorServer(true);
       });
-  }, []);
-
-  function loaderPosts() {
-    setNeedRender(false);
-    if (posts.length === 0) setNeedRender(true);
-    setTimeout(() => {
-      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
-      setAllPosts(allPosts.concat(partOfPosts));
-
-      if (posts.length > allPosts.length) {
-        setNeedRender(true);
-      }
-    }, 2000);
   }
+
+  console.log(posts.length);
+
   return (
     <TimelineMainLayout timeline={true}>
       <Homescreen>
@@ -57,8 +49,8 @@ function Timeline() {
             <Loading error={errorServer} empty={empty} existPost={existPost} />
           }
         >
-          {allPosts.length > 0 ? (
-            allPosts.map((value, index) => (
+          {posts.length > 0 ? (
+            posts.map((value, index) => (
               <PostsMainLayout
                 key={index}
                 id={value.id}
@@ -70,7 +62,7 @@ function Timeline() {
               />
             ))
           ) : (
-            <Loading />
+            <Loading error={errorServer} empty={empty} existPost={existPost} />
           )}
         </InfiniteScroll>
       </Homescreen>
