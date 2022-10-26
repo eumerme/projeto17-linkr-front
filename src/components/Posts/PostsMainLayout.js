@@ -166,7 +166,6 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
           </Description>
         </Content>
         <CommentsBox
-          img={img}
           seeComments={seeComments}
           postId={id}
           commentsData={commentsData}
@@ -285,6 +284,7 @@ const Description = styled.div`
     color: #b7b7b7;
     margin-bottom: 10px;
     display: flex;
+    flex-wrap: wrap;
     span {
       width: auto;
       padding: 0 4px;

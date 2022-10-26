@@ -4,12 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { createNewComment } from "../../services/linkr";
 import UploadContext from "../../Contexts/UploadContext";
 
-export default function CommentsBox({
-  img,
-  seeComments,
-  postId,
-  commentsData,
-}) {
+export default function CommentsBox({ seeComments, postId, commentsData }) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -135,6 +130,10 @@ const AllComents = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+
+  @media screen and (max-width: 610px) {
+    max-height: 244px;
+  }
 `;
 
 const CommentArea = styled.div`
@@ -150,10 +149,14 @@ const CommentArea = styled.div`
     height: 39px;
     border-radius: 26.5px;
   }
+
+  @media screen and (max-width: 610px) {
+    min-height: 61px;
+  }
 `;
 
 const Infos = styled.div`
-  width: 510px;
+  width: 89.7%;
 
   p {
     font-weight: 700;
@@ -174,6 +177,9 @@ const Infos = styled.div`
     line-height: 17px;
     color: #acacac;
   }
+  @media screen and (max-width: 610px) {
+    width: 85%;
+  }
 `;
 
 const WriterArea = styled.div`
@@ -191,10 +197,11 @@ const WriterArea = styled.div`
 `;
 
 const TextArea = styled.div`
+  width: 89.7%;
   position: relative;
 
   input {
-    width: 510px;
+    width: 100%;
     height: 39px;
     border: none;
     background: #252525;
@@ -204,6 +211,10 @@ const TextArea = styled.div`
     font-size: 14px;
     line-height: 17px;
     padding: 0 0 0 15px;
+
+    :focus {
+      outline: 0;
+    }
   }
 
   div {
@@ -212,5 +223,9 @@ const TextArea = styled.div`
     top: 8px;
     font-size: 25px;
     color: #f3f3f3;
+  }
+
+  @media screen and (max-width: 610px) {
+    width: 85%;
   }
 `;
