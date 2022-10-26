@@ -28,7 +28,7 @@ async function publish(body) {
 	return axios.post(`${BASE_URL}/timeline/publish`, body, config);
 }
 
-async function listPosts() {
+function listPosts() {
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
