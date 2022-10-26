@@ -33,7 +33,6 @@ function Timeline() {
   }, []);
 
   function loaderPosts() {
-    console.log("chamou");
     setNeedRender(false);
     if (posts.length === 0) setNeedRender(true);
     setTimeout(() => {
