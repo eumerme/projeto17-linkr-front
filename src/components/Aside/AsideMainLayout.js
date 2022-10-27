@@ -248,6 +248,10 @@ const FollowIcon = styled.button`
 	cursor: pointer;
 	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
 	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+	:hover {
+		opacity: 0.6;
+		transition: 0.4s;
+	}
 
 	@media screen and (min-width: 1024px) {
 		display: none;
@@ -263,7 +267,7 @@ const HashtagTrendingMobile = styled.div`
 		place-content: center;
 		position: fixed;
 		top: 19px;
-		left: 150px;
+		left: 147px;
 		z-index: 3;
 		margin-top: 0;
 		font-size: 30px;
