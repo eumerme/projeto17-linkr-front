@@ -24,14 +24,21 @@ function Timeline() {
         .then((data) => {
           if (data.data.followSomeone === true) {
             setPosts(Array.from(data.data.posts));
+            setAllPosts(Array.from(data.data.posts).slice(0, allPosts.length));
             if (data.data.posts.length === 0) setEmpty(true);
             else setExistPost(true);
           } else {
-            if (data.data.posts.length === 0) setExistPost(false);
-            else setPosts(Array.from(data.data.posts));
+            if (data.data.posts.length === 0) {
+              setExistPost(false);
+            } else {
+              setPosts(Array.from(data.data.posts));
+              setAllPosts(
+                Array.from(data.data.posts).slice(0, allPosts.length)
+              );
+            }
           }
         })
-        .catch((error) => {
+        .catch(() => {
           setErrorServer(true);
         });
     }, 500);
