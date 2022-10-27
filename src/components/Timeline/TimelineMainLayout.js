@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logout from "../Logout/Logout";
-import AsideMainLayout from "../../Aside/AsideMainLayout";
+import AsideMainLayout from "../Aside/AsideMainLayout";
 import SearchUser from "../SearchUser/SearchUser";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
@@ -45,6 +45,7 @@ export default function TimelineMainLayout({
 				followeeId={followeeId}
 				hashtag={hashtag}
 			/>
+
 			<SearchUser />
 		</Container>
 	);

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { IoIosSearch } from "react-icons/io";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
