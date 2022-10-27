@@ -10,36 +10,47 @@ import UploadContext from "../../Contexts/UploadContext";
 
 function Timeline() {
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const [needRender, setNeedRender] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
   const [existPost, setExistPost] = useState(null);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
   const { upload } = useContext(UploadContext);
 
-  function loaderPosts() {
-    setNeedRender(false);
-    listPosts(posts.length + 10)
-      .then((data) => {
-        if (data.data.followSomeone === true) {
-          setPosts(Array.from(data.data.posts));
-          if (data.data.posts.length === 0) setEmpty(true);
-          else setExistPost(true);
-        } else {
-          if (data.data.posts.length === 0) setExistPost(false);
-          else setPosts(Array.from(data.data.posts));
-        }
-        if (posts.length < data.data.length) {
-          setNeedRender(true);
-        }
-      })
-      .catch((error) => {
-        setErrorServer(true);
-      });
-  }
-
   useEffect(() => {
-    loaderPosts();
+    setTimeout(function () {
+      listPosts()
+        .then((data) => {
+          if (data.data.followSomeone === true) {
+            setPosts(Array.from(data.data.posts));
+            if (data.data.posts.length === 0) setEmpty(true);
+            else setExistPost(true);
+          } else {
+            if (data.data.posts.length === 0) setExistPost(false);
+            else setPosts(Array.from(data.data.posts));
+          }
+        })
+        .catch((error) => {
+          setErrorServer(true);
+        });
+    }, 500);
   }, [upload]);
+
+  function loaderPosts() {
+    setIsRendering(true);
+    setNeedRender(false);
+    if (posts.length === 0) setNeedRender(true);
+    setTimeout(() => {
+      setIsRendering(false);
+      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
+      setAllPosts(allPosts.concat(partOfPosts));
+
+      if (posts.length > allPosts.length) {
+        setNeedRender(true);
+      }
+    }, 2000);
+  }
 
   return (
     <TimelineMainLayout timeline={true}>
@@ -50,12 +61,10 @@ function Timeline() {
           pageStart={1}
           loadMore={loaderPosts}
           hasMore={needRender}
-          loader={
-            <Loading error={errorServer} empty={empty} existPost={existPost} />
-          }
+          threshold={150}
         >
-          {posts.length > 0 ? (
-            posts.map((value, index) => (
+          <>
+            {allPosts.map((value, index) => (
               <PostsMainLayout
                 key={index}
                 id={value.id}
@@ -65,9 +74,12 @@ function Timeline() {
                 userId={value.userId}
                 name={value.name}
               />
-            ))
-          ) : (
+            ))}
+          </>
+          {isRendering ? (
             <Loading error={errorServer} empty={empty} existPost={existPost} />
+          ) : (
+            <></>
           )}
         </InfiniteScroll>
       </Homescreen>
