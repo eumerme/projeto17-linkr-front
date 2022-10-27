@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { isFollowing, listUserPosts } from "../../services/linkr";
 import Loading from "../commom/Loading";
@@ -7,6 +7,7 @@ import PostsMainLayout from "../Posts/PostsMainLayout";
 import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
 import UploadContext from "../../Contexts/UploadContext";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function UserPage() {
 	const { id } = useParams();
@@ -16,22 +17,22 @@ export default function UserPage() {
 	const [empty, setEmpty] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [follow, setFollow] = useState(null);
+	const [needRender, setNeedRender] = useState(true);
 	const { setUpload, upload } = useContext(UploadContext);
 
-	useEffect(() => {
-		setTimeout(function () {
-			listUserPosts(id)
-				.then((res) => {
-					setUpload(!upload);
-					setPosts(res.data);
-					if (res.data.length === 0) setEmpty(true);
-				})
-				.catch((error) => {
-					console.log(error);
-					setErrorServer(true);
-				});
-		}, 1000);
-	}, [id]);
+	function loaderPosts() {
+		setNeedRender(false);
+		listUserPosts(id, posts.length + 10)
+			.then((res) => {
+				setUpload(!upload);
+				setPosts(res.data);
+				if (res.data.length === 0) setEmpty(true);
+				setNeedRender(true);
+			})
+			.catch((error) => {
+				setErrorServer(true);
+			});
+	}
 
 	useMemo(() => {
 		isFollowing({ userId: auth.id, followeeId: Number(id) })
@@ -48,22 +49,28 @@ export default function UserPage() {
 			<TimelineMainLayout userpage={true} follows={follow} followeeId={id}>
 				<Homescreen>
 					<Title id="title">{`${state.name}'s posts`}</Title>
-					{posts.length !== 0 ? (
-						posts.map((value, index) => (
-							<PostsMainLayout
-								key={index}
-								id={value.id}
-								img={value.imageUrl}
-								url={value.url}
-								name={value.name}
-								text={value.text}
-								likesUser={value.likes}
-								userId={value.userId}
-							/>
-						))
-					) : (
-						<Loading error={errorServer} empty={empty} />
-					)}
+					<InfiniteScroll
+						pageStart={1}
+						loadMore={loaderPosts}
+						hasMore={needRender}
+						loader={<Loading error={errorServer} empty={empty} />}
+					>
+						{posts.length > 0 ? (
+							posts.map((value, index) => (
+								<PostsMainLayout
+									key={index}
+									id={value.id}
+									img={value.imageUrl}
+									url={value.url}
+									text={value.text}
+									userId={value.userId}
+									name={value.name}
+								/>
+							))
+						) : (
+							<Loading error={errorServer} empty={empty} />
+						)}
+					</InfiniteScroll>
 				</Homescreen>
 			</TimelineMainLayout>
 		</>
