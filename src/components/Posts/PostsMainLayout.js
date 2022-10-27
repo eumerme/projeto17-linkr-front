@@ -6,7 +6,8 @@ import {
   listCommentsPost,
   listLikes,
   listReposts,
-  getRepostById
+  getRepostById,
+  newRepost
 } from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
@@ -31,6 +32,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
   const [seeComments, setSeeComments] = useState(false);
   const [commentsData, setCommentsData] = useState([]);
   const [reposts, setReposts] = useState(0);
+  const [newId, setNewId] = useState(id);
   const [msg, setMsg] = useState("");
   const [repostName, setRepostName] = useState('');
   const [itsReposts, setItsReposts] = useState(false);
@@ -58,8 +60,23 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       .catch((error) => {
         console.log(error);
       });
+    
+    if(repostBy !== null) {
+      getRepostById(
+        repostBy
+      ).then((data) => {
+        setNewId(data.data.postId);
+        if(data.data.name === auth.name) setRepostName('Re-posted by you');
+        else setRepostName(`Re-posted by ${data.data.name}`);
+        setItsReposts(true); 
+      }).catch((error) => {
+        setItsReposts(false);
+        console.log(error);
+      });
 
-    listLikes(id)
+    }
+
+    listLikes(newId)
       .then((data) => {
         const likesData = data.data[0];
         renderLikes(likesData, setClickLike, setMsg, auth.id);
@@ -69,31 +86,20 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
         console.log(error);
       });
 
-    listCommentsPost(id)
+    listCommentsPost(newId)
       .then((data) => {
         setCommentsData(data.data);
       })
       .catch();
 
     listReposts(
-      id
+      newId
     ).then((data) => {
       setReposts(data.data[0].countReposts);
     }).catch((error) => {
       console.log(error);
     });
 
-    if(repostBy !== null) {
-      getRepostById(
-        repostBy
-      ).then((data) => {
-        if(data.data.name === auth.name) setRepostName('Re-posted by you');
-        else setRepostName(`Re-posted by ${data.data.name}`);
-      }).catch((error) => {
-        console.log(error);
-      });
-      setItsReposts(true); 
-    }
   }, [upload]);
 
   function redirectToUserpage() {
@@ -108,6 +114,17 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
     const hashtag = tag.slice(1, tag.length);
     setUpload(!upload);
     navigate(`/hashtag/${hashtag}`);
+  }
+
+  function repost(){
+    newRepost({
+      postId: id,
+      userId: auth.id
+    }).then(() => {
+      setUpload(!upload);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   const tagStyle = {
@@ -154,18 +171,20 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
               onClick={() => setSeeComments(!seeComments)}
             />
             <p>{commentsData.length} comments</p>
-            <BiRepost style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
+            <BiRepost onClick={() => repost()} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
             <p>{reposts} re-posts</p>
           </Infos>
-          <Description>
+          <Description itsReposts={itsReposts}>
             <span>
               <h1 onClick={redirectToUserpage}>{name}</h1>
               {auth.id === userId ? (
                 <h3>
+                  {itsReposts ? <></> 
+                  :                   
                   <TiPencil
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setIsEditing(!isEditing)}
-                  />
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setIsEditing(!isEditing)}
+                  />}
                   <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
                 </h3>
               ) : (
@@ -307,7 +326,7 @@ const Description = styled.div`
       cursor: pointer;
     }
     h3 {
-      width: 50px;
+      width: ${props => props.itsReposts ? "": "50px"};
       display: flex;
       justify-content: space-between;
     }

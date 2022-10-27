@@ -33,12 +33,13 @@ export default function DeleteModal({
 	function deletePost() {
 		deleteFatalPost(id)
 			.then(() => {
-				setUpload(!upload);
+				
 				setIsSucess(true);
 				setTimeout(function () {
 					setIsOpen(false);
 					setIsSucess(false);
 				}, 2000);
+				setUpload(!upload);
 			})
 			.catch(() => {
 				alert("Houve um problema com a sua requisição, tente novamente!");
