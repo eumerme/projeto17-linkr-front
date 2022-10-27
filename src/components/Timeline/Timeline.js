@@ -7,6 +7,7 @@ import Loading from "../commom/Loading";
 import PublishBox from "./PublishBox";
 import InfiniteScroll from "react-infinite-scroller";
 import UploadContext from "../../Contexts/UploadContext";
+import HasNewPost from "./HasNewPost";
 
 function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -64,6 +65,7 @@ function Timeline() {
       <Homescreen>
         <Title id="title">timeline</Title>
         <PublishBox />
+        <HasNewPost />
         <InfiniteScroll
           pageStart={1}
           loadMore={loaderPosts}
