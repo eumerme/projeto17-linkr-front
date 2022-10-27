@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../Contexts/UploadContext";
-import { listHashtags, toggleFollow } from "../services/linkr";
+import UploadContext from "../../Contexts/UploadContext";
+import { listHashtags, toggleFollow } from "../../services/linkr";
 import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
 
 export default function AsideMainLayout({
@@ -12,12 +12,14 @@ export default function AsideMainLayout({
 	followeeId,
 	hashtag,
 }) {
+	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
 	const { setUpload, upload } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const user = Number(followeeId) === auth.id;
+	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -50,10 +52,30 @@ export default function AsideMainLayout({
 		}, 1000);
 	};
 
+	useEffect(() => {
+		const pageClickEvent = (e) => {
+			const activeElementExists = dropdownTrending.current !== null;
+			const isClickedOutside = !dropdownTrending.current.contains(e.target);
+
+			if (activeElementExists && isClickedOutside) {
+				setIsActive(!isActive);
+			}
+		};
+
+		if (isActive) {
+			window.addEventListener("click", pageClickEvent);
+		}
+
+		return () => {
+			window.removeEventListener("click", pageClickEvent);
+		};
+	}, [isActive]);
+
 	function redirect(text) {
 		setUpload(!upload);
 		navigate(`/hashtag/${text}`);
 	}
+	console.log({ isActive, dropdownTrending });
 
 	return (
 		<Container timeline={timeline}>
@@ -74,7 +96,7 @@ export default function AsideMainLayout({
 			) : (
 				""
 			)}
-			<TrendingBox hashtag={hashtag}>
+			<TrendingBox hashtag={hashtag} isActive={isActive} ref={dropdownTrending}>
 				<h2>trending</h2>
 				<ul>
 					{hashtags.map((value, index) => (
@@ -84,6 +106,14 @@ export default function AsideMainLayout({
 					))}
 				</ul>
 			</TrendingBox>
+			<HashtagTrendingMobile
+				isActive={isActive}
+				onClick={() => {
+					setIsActive(!isActive);
+				}}
+			>
+				#
+			</HashtagTrendingMobile>
 		</Container>
 	);
 }
@@ -149,7 +179,37 @@ const TrendingBox = styled.div`
 	}
 
 	@media screen and (max-width: 1024px) {
-		display: none;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-3px);
+		transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+		position: fixed;
+		top: 72px;
+		left: 50px;
+		margin-top: 0;
+
+		${(props) => {
+			if (props.isActive) {
+				return `
+              &&& {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);				
+              } 
+            `;
+			}
+		}}
+	}
+
+	@media screen and (max-width: 611px) {
+		top: 72px;
+		left: 0;
+		border-radius: 0 0 16px 16px;
+	}
+
+	@media screen and (max-width: 339px) {
+		width: 100%;
+		border-radius: 0 0 16px 16px;
 	}
 `;
 
@@ -191,5 +251,32 @@ const FollowIcon = styled.button`
 
 	@media screen and (min-width: 1024px) {
 		display: none;
+	}
+`;
+
+const HashtagTrendingMobile = styled.div`
+	@media screen and (max-width: 1024px) {
+		width: 35px;
+		height: 35px;
+		border-radius: 50%;
+		display: grid;
+		place-content: center;
+		position: fixed;
+		top: 19px;
+		left: 150px;
+		z-index: 3;
+		margin-top: 0;
+		font-size: 30px;
+		font-weight: 700;
+		color: ${(props) => (props.isActive ? "#1877f2" : "#ffffff")};
+		cursor: pointer;
+		:hover {
+			opacity: 0.6;
+			transition: 0.4s;
+		}
+	}
+
+	@media screen and (max-width: 339px) {
+		left: 125px;
 	}
 `;

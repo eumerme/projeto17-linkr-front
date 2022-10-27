@@ -64,6 +64,10 @@ const GlobalStyle = createGlobalStyle`
         border-radius: 20px;
         border: 3px solid #171717;
     }
+    
+    img{
+        object-fit: cover;
+    }
 `;
 
 export default GlobalStyle;
