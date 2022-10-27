@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { TfiReload } from "react-icons/tfi";
 import useInterval from "use-interval";
 import { listsPostsInterval } from "../../services/linkr";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function HasNewPost({ renderPosts }) {
   const [number, setNumber] = useState(0);
+  const { upload, setUpload } = useContext(UploadContext);
 
   useInterval(() => {
     listsPostsInterval()
@@ -13,12 +15,17 @@ export default function HasNewPost({ renderPosts }) {
         setNumber(res.data.posts.length - renderPosts);
       })
       .catch(() => {});
-  }, 3000);
+  }, 15000);
+
+  function renderNewPosts() {
+    setNumber(0);
+    setUpload(!upload);
+  }
 
   return (
     <>
       {number !== 0 ? (
-        <Container>
+        <Container onClick={renderNewPosts}>
           <p>
             {number} new posts, load more! <TfiReload className="Icon" />
           </p>
@@ -41,6 +48,7 @@ const Container = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin: 0 0 17px 0;
+  cursor: pointer;
 
   p {
     font-family: "Lato", sans-serif;
