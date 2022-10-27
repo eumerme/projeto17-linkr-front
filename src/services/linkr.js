@@ -105,6 +105,11 @@ async function toggleFollow(body) {
   return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
 }
 
+async function listsPostsInterval() {
+  const config = createHeaders();
+  return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
+}
+
 export {
   register,
   login,
@@ -122,6 +127,7 @@ export {
   getUrlMetadata,
   insertHashtag,
   listCommentsPost,
+  listsPostsInterval,
   createNewComment,
   isFollowing,
   toggleFollow,

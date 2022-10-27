@@ -65,7 +65,7 @@ function Timeline() {
       <Homescreen>
         <Title id="title">timeline</Title>
         <PublishBox />
-        <HasNewPost />
+        <HasNewPost renderPosts={posts.length} />
         <InfiniteScroll
           pageStart={1}
           loadMore={loaderPosts}
