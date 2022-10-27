@@ -23,10 +23,10 @@ export default function HashtagPage() {
       listPostsbyHashtags(params.hashtag)
         .then((data) => {
           setPosts(data.data);
+          setAllPosts(data.data.slice(0, allPosts.length));
           if (data.data.length === 0) setEmpty(true);
         })
         .catch((error) => {
-          console.log(error);
           setErrorServer(true);
         });
     }, 500);

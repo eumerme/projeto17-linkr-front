@@ -23,11 +23,13 @@ export default function UserPage() {
   const { setUpload, upload } = useContext(UploadContext);
 
   useEffect(() => {
+    console.log("chamei");
     setTimeout(function () {
       listUserPosts(id)
         .then((res) => {
           setUpload(!upload);
           setPosts(res.data);
+          setAllPosts(res.data.slice(0, allPosts.length));
           if (res.data.length === 0) setEmpty(true);
         })
         .catch((error) => {
