@@ -41,7 +41,7 @@ export default function EditPost({
           const hashtagText = value.replace("#", "");
           insertHashtag({ hashtagText, id: auth.id })
             .then(() => setUpload(!upload))
-            .catch((error) => console.log(error));
+            .catch();
         });
       }
       setIsDisabled(true);

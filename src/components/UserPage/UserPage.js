@@ -41,9 +41,7 @@ export default function UserPage() {
       .then((res) => {
         setFollow(res.data.follows);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch();
   }, [id, upload]);
 
   return (
