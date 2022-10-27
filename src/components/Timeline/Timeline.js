@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { listPosts } from "../../services/linkr";
 import TimelineMainLayout from "./TimelineMainLayout";
 import PostsMainLayout from "../Posts/PostsMainLayout";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Loading from "../commom/Loading";
 import PublishBox from "./PublishBox";
 import InfiniteScroll from "react-infinite-scroller";
+import UploadContext from "../../Contexts/UploadContext";
 
 function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -13,6 +14,7 @@ function Timeline() {
   const [existPost, setExistPost] = useState(null);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
+  const { upload } = useContext(UploadContext);
 
   function loaderPosts() {
     setNeedRender(false);
@@ -34,6 +36,10 @@ function Timeline() {
         setErrorServer(true);
       });
   }
+
+  useEffect(() => {
+    loaderPosts();
+  }, [upload]);
 
   return (
     <TimelineMainLayout timeline={true}>

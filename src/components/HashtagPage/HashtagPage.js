@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { listPostsbyHashtags } from "../../services/linkr";
 import PostsMainLayout from "../Posts/PostsMainLayout";
@@ -6,6 +6,7 @@ import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
 import Loading from "../commom/Loading";
 import InfiniteScroll from "react-infinite-scroller";
+import UploadContext from "../../Contexts/UploadContext";
 
 export default function HashtagPage() {
   const params = useParams();
@@ -13,6 +14,7 @@ export default function HashtagPage() {
   const [needRender, setNeedRender] = useState(true);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
+  const { upload } = useContext(UploadContext);
 
   function loaderPosts() {
     setNeedRender(false);
@@ -28,6 +30,10 @@ export default function HashtagPage() {
         setErrorServer(true);
       });
   }
+
+  useEffect(() => {
+    loaderPosts();
+  }, [upload]);
 
   return (
     <>

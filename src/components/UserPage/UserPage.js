@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { isFollowing, listUserPosts } from "../../services/linkr";
 import Loading from "../commom/Loading";
@@ -35,6 +35,10 @@ export default function UserPage() {
         setErrorServer(true);
       });
   }
+
+  useEffect(() => {
+    loaderPosts();
+  }, [upload]);
 
   useMemo(() => {
     isFollowing({ userId: auth.id, followeeId: Number(id) })
