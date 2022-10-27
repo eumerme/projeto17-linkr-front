@@ -11,29 +11,41 @@ import UploadContext from "../../Contexts/UploadContext";
 export default function HashtagPage() {
   const params = useParams();
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const [needRender, setNeedRender] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
   const { upload } = useContext(UploadContext);
 
-  function loaderPosts() {
-    setNeedRender(false);
-    listPostsbyHashtags(params.hashtag, posts.length + 10)
-      .then((data) => {
-        setPosts(data.data);
-        if (data.data.length === 0) setEmpty(true);
-        if (posts.length < data.data.length) {
-          setNeedRender(true);
-        }
-      })
-      .catch((error) => {
-        setErrorServer(true);
-      });
-  }
-
   useEffect(() => {
-    loaderPosts();
-  }, [upload]);
+    setTimeout(function () {
+      listPostsbyHashtags(params.hashtag)
+        .then((data) => {
+          setPosts(data.data);
+          if (data.data.length === 0) setEmpty(true);
+        })
+        .catch((error) => {
+          console.log(error);
+          setErrorServer(true);
+        });
+    }, 500);
+  }, [params.hashtag, upload]);
+
+  function loaderPosts() {
+    setIsRendering(true);
+    setNeedRender(false);
+    if (posts.length === 0) setNeedRender(true);
+    setTimeout(() => {
+      setIsRendering(false);
+      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
+      setAllPosts(allPosts.concat(partOfPosts));
+
+      if (posts.length > allPosts.length) {
+        setNeedRender(true);
+      }
+    }, 2000);
+  }
 
   return (
     <>
@@ -44,10 +56,10 @@ export default function HashtagPage() {
             pageStart={1}
             loadMore={loaderPosts}
             hasMore={needRender}
-            loader={<Loading error={errorServer} empty={empty} />}
+            threshold={150}
           >
-            {posts.length > 0 ? (
-              posts.map((value, index) => (
+            <>
+              {allPosts.map((value, index) => (
                 <PostsMainLayout
                   key={index}
                   id={value.id}
@@ -57,9 +69,12 @@ export default function HashtagPage() {
                   userId={value.userId}
                   name={value.name}
                 />
-              ))
-            ) : (
+              ))}
+            </>
+            {isRendering ? (
               <Loading error={errorServer} empty={empty} />
+            ) : (
+              <></>
             )}
           </InfiniteScroll>
         </Homescreen>

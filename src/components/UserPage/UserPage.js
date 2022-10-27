@@ -12,33 +12,29 @@ import InfiniteScroll from "react-infinite-scroller";
 export default function UserPage() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [needRender, setNeedRender] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
   const { state } = useLocation();
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
   const auth = JSON.parse(localStorage.getItem("linkr"));
   const [follow, setFollow] = useState(null);
-  const [needRender, setNeedRender] = useState(true);
   const { setUpload, upload } = useContext(UploadContext);
 
-  function loaderPosts() {
-    setNeedRender(false);
-    listUserPosts(id, posts.length + 10)
-      .then((res) => {
-        setUpload(!upload);
-        setPosts(res.data);
-        if (res.data.length === 0) setEmpty(true);
-        if (posts.length < res.data.length) {
-          setNeedRender(true);
-        }
-      })
-      .catch((error) => {
-        setErrorServer(true);
-      });
-  }
-
   useEffect(() => {
-    loaderPosts();
-  }, [upload]);
+    setTimeout(function () {
+      listUserPosts(id)
+        .then((res) => {
+          setUpload(!upload);
+          setPosts(res.data);
+          if (res.data.length === 0) setEmpty(true);
+        })
+        .catch((error) => {
+          setErrorServer(true);
+        });
+    }, 1000);
+  }, [id]);
 
   useMemo(() => {
     isFollowing({ userId: auth.id, followeeId: Number(id) })
@@ -47,6 +43,21 @@ export default function UserPage() {
       })
       .catch();
   }, [id, upload]);
+
+  function loaderPosts() {
+    setIsRendering(true);
+    setNeedRender(false);
+    if (posts.length === 0) setNeedRender(true);
+    setTimeout(() => {
+      setIsRendering(false);
+      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
+      setAllPosts(allPosts.concat(partOfPosts));
+
+      if (posts.length > allPosts.length) {
+        setNeedRender(true);
+      }
+    }, 2000);
+  }
 
   return (
     <>
@@ -57,10 +68,10 @@ export default function UserPage() {
             pageStart={1}
             loadMore={loaderPosts}
             hasMore={needRender}
-            loader={<Loading error={errorServer} empty={empty} />}
+            threshold={150}
           >
-            {posts.length > 0 ? (
-              posts.map((value, index) => (
+            <>
+              {allPosts.map((value, index) => (
                 <PostsMainLayout
                   key={index}
                   id={value.id}
@@ -70,9 +81,12 @@ export default function UserPage() {
                   userId={value.userId}
                   name={value.name}
                 />
-              ))
-            ) : (
+              ))}
+            </>
+            {isRendering ? (
               <Loading error={errorServer} empty={empty} />
+            ) : (
+              <></>
             )}
           </InfiniteScroll>
         </Homescreen>
