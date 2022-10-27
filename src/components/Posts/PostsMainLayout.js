@@ -360,7 +360,7 @@ const UrlDatas = styled.div`
 
 	@media screen and (max-width: 611px) {
 		justify-content: space-between;
-		height: 115px;
+		height: 165px;
 
 		div {
 			h1 {

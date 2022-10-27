@@ -185,6 +185,7 @@ const FollowIcon = styled.button`
 	background-color: inherit;
 	border: inherit;
 	outline: inherit;
+	cursor: pointer;
 	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
 	visibility: ${(props) => (props.user ? "hidden" : "visible")};
 
