@@ -19,9 +19,10 @@ export default function TimelineMainLayout({
 
 	useEffect(() => {
 		setTimeout(() => {
-			document
-				.getElementById("search")
-				.scrollIntoView({ block: "center", behavior: "smooth" });
+			const title = document.getElementById("title");
+			if (title) {
+				title.scrollIntoView({ block: "center", behavior: "smooth" });
+			}
 		}, 500);
 	}, []);
 
@@ -61,7 +62,7 @@ const Container = styled.div`
 	padding-bottom: 60px;
 	position: relative;
 
-	@media screen and (max-width: 768px) {
+	@media screen and (max-width: 611px) {
 		padding-top: 130px;
 	}
 `;
@@ -97,7 +98,7 @@ const Navbar = styled.div`
 		width: 53px;
 		height: 53px;
 		border-radius: 27px;
-		margin: 0 0 0 17px;
+		margin-left: 20px;
 		object-fit: cover;
 	}
 `;

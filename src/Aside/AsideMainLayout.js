@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadContext from "../Contexts/UploadContext";
 import { listHashtags, toggleFollow } from "../services/linkr";
+import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
 
 export default function AsideMainLayout({
 	userpage,
@@ -57,14 +58,19 @@ export default function AsideMainLayout({
 	return (
 		<Container timeline={timeline}>
 			{userpage ? (
-				<FollowButton
-					follows={follows}
-					onClick={handleFollow}
-					disabled={isDisabled}
-					user={user}
-				>
-					{follows ? "Unfollow" : "Follow"}
-				</FollowButton>
+				<>
+					<FollowButton
+						follows={follows}
+						onClick={handleFollow}
+						disabled={isDisabled}
+						user={user}
+					>
+						{follows ? "Unfollow" : "Follow"}
+					</FollowButton>
+					<FollowIcon onClick={handleFollow} disabled={isDisabled} user={user}>
+						{follows ? <BsFillPersonCheckFill /> : <BsFillPersonPlusFill />}
+					</FollowIcon>
+				</>
 			) : (
 				""
 			)}
@@ -93,10 +99,15 @@ const Container = styled.div`
 	align-items: flex-end;
 
 	@media screen and (max-width: 1024px) {
-		display: none;
-		/* position: absolute;
+		position: fixed;
 		padding: 0;
-		top: 200px; */
+		top: 22px;
+		right: 140px;
+		z-index: 3;
+	}
+
+	@media screen and (max-width: 400px) {
+		right: 125px;
 	}
 `;
 
@@ -159,5 +170,26 @@ const FollowButton = styled.button`
 	outline: inherit;
 	border: inherit;
 	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
-	visibility: ${(props) => (props.user ? "hidden" : "visible")}; ;
+	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+
+	@media screen and (max-width: 1024px) {
+		display: none;
+	}
+`;
+
+const FollowIcon = styled.button`
+	width: auto;
+	height: auto;
+	font-size: 25px;
+	color: #f3f3f3;
+	background-color: inherit;
+	border: inherit;
+	outline: inherit;
+	cursor: pointer;
+	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+
+	@media screen and (min-width: 1024px) {
+		display: none;
+	}
 `;
