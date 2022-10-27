@@ -5,7 +5,7 @@ import { createNewComment } from "../../services/linkr";
 import UploadContext from "../../Contexts/UploadContext";
 import CommentArea from "./OneCommentPost";
 
-export default function CommentsBox({ seeComments, postId, commentsData }) {
+export default function CommentsBox({ seeComments, postId, commentsData, itsReposts }) {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -16,7 +16,7 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
   const { upload, setUpload } = useContext(UploadContext);
 
   useEffect(() => {
-    if (seeComments) {
+    if (seeComments && !itsReposts) {
       inputRef.current.focus();
     }
   }, [seeComments]);
@@ -62,6 +62,8 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
             />
           ))}
         </AllComents>
+        {itsReposts ? <></> 
+        :
         <WriterArea>
           <img src={auth.image} alt="" />
           <TextArea>
@@ -79,6 +81,7 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
             </div>
           </TextArea>
         </WriterArea>
+      } 
       </Container>
     </>
   );

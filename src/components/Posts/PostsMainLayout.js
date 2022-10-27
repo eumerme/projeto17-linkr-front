@@ -149,8 +149,9 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
           <Infos>
             <img src={img} alt="" />
             <div
-              onClick={() =>
-                like(clickLike, id, auth.id, setClickLike, setUpload, upload)
+              onClick={() => {
+                if(!itsReposts) like(clickLike, id, auth.id, setClickLike, setUpload, upload)
+                }
               }
             >
               {clickLike.draw}
@@ -171,7 +172,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
               onClick={() => setSeeComments(!seeComments)}
             />
             <p>{commentsData.length} comments</p>
-            <BiRepost onClick={() => repost()} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
+            <BiRepost onClick={() => {if(!itsReposts) repost()}} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
             <p>{reposts} re-posts</p>
           </Infos>
           <Description itsReposts={itsReposts}>
@@ -224,6 +225,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
           seeComments={seeComments}
           postId={id}
           commentsData={commentsData}
+          itsReposts={itsReposts}
         />
       </Container>
       </RePost>
