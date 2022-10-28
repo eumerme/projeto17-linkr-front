@@ -17,14 +17,16 @@ import { FaTrash } from "react-icons/fa";
 import { AiOutlineComment } from "react-icons/ai";
 import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
+import RepostModal from "./Repost";
 import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
 import CommentsBox from "./CommentsPost";
 
-export default function PostsMainLayout({ id, img, text, name, url, userId, repostBy }) {
+export default function PostsMainLayout({ id, img, text, name, url, userId, repostBy}) {
   const [isEditing, setIsEditing] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalRepost, setModalRepost] = useState(false);
   const [urlData, setUrlData] = useState({});
   const { upload, setUpload } = useContext(UploadContext);
   const [ListLikes, setListLikes] = useState([]);
@@ -32,7 +34,6 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
   const [seeComments, setSeeComments] = useState(false);
   const [commentsData, setCommentsData] = useState([]);
   const [reposts, setReposts] = useState(0);
-  const [newId, setNewId] = useState(id);
   const [msg, setMsg] = useState("");
   const [repostName, setRepostName] = useState('');
   const [itsReposts, setItsReposts] = useState(false);
@@ -43,7 +44,12 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
     setIsOpen(true);
   }
 
+  function openModalRepost(){
+    setModalRepost(true);
+  }
+
   useEffect(() => {
+
     getUrlMetadata(url)
       .then((data) => {
         const auxData = data.data.data;
@@ -65,7 +71,31 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       getRepostById(
         repostBy
       ).then((data) => {
-        setNewId(data.data.postId);
+
+        listLikes(data.data.postId)
+        .then((data) => {
+          const likesData = data.data[0];
+          renderLikes(likesData, setClickLike, setMsg, auth.id);
+          setListLikes(likesData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    
+        listCommentsPost(data.data.postId)
+          .then((data) => {
+            setCommentsData(data.data);
+          })
+          .catch();
+    
+        listReposts(
+          data.data.postId
+        ).then((data) => {
+          setReposts(data.data[0].countReposts);
+        }).catch((error) => {
+          console.log(error);
+        });
+
         if(data.data.name === auth.name) setRepostName('Re-posted by you');
         else setRepostName(`Re-posted by ${data.data.name}`);
         setItsReposts(true); 
@@ -73,10 +103,8 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
         setItsReposts(false);
         console.log(error);
       });
-
-    }
-
-    listLikes(newId)
+    }else{
+      listLikes(id)
       .then((data) => {
         const likesData = data.data[0];
         renderLikes(likesData, setClickLike, setMsg, auth.id);
@@ -86,21 +114,23 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
         console.log(error);
       });
 
-    listCommentsPost(newId)
-      .then((data) => {
-        setCommentsData(data.data);
-      })
-      .catch();
+      listCommentsPost(id)
+        .then((data) => {
+          setCommentsData(data.data);
+        })
+        .catch();
 
-    listReposts(
-      newId
-    ).then((data) => {
-      setReposts(data.data[0].countReposts);
-    }).catch((error) => {
-      console.log(error);
-    });
+      listReposts(
+        id
+      ).then((data) => {
+        setReposts(data.data[0].countReposts);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
 
   }, [upload]);
+
 
   function redirectToUserpage() {
     setUpload(!upload);
@@ -114,17 +144,6 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
     const hashtag = tag.slice(1, tag.length);
     setUpload(!upload);
     navigate(`/hashtag/${hashtag}`);
-  }
-
-  function repost(){
-    newRepost({
-      postId: id,
-      userId: auth.id
-    }).then(() => {
-      setUpload(!upload);
-    }).catch((error) => {
-      console.log(error);
-    });
   }
 
   const tagStyle = {
@@ -172,7 +191,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
               onClick={() => setSeeComments(!seeComments)}
             />
             <p>{commentsData.length} comments</p>
-            <BiRepost onClick={() => {if(!itsReposts) repost()}} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
+            <BiRepost onClick={() => {if(!itsReposts) openModalRepost()}} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
             <p>{reposts} re-posts</p>
           </Infos>
           <Description itsReposts={itsReposts}>
@@ -230,11 +249,15 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       </Container>
       </RePost>
       <DeleteModal
-        upload={upload}
-        setUpload={setUpload}
         id={id}
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
+      />
+      <RepostModal
+      modalRepost={modalRepost}
+      setModalRepost={setModalRepost}
+      postId={id}
+      userId={auth.id}
       />
     </>
   );
