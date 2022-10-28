@@ -28,7 +28,7 @@ function Timeline() {
 				}
 				setNeedRender(true);
 			})
-			.catch((error) => {
+			.catch(() => {
 				setErrorServer(true);
 			});
 	}

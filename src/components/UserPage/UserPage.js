@@ -29,7 +29,7 @@ export default function UserPage() {
 				if (res.data.length === 0) setEmpty(true);
 				setNeedRender(true);
 			})
-			.catch((error) => {
+			.catch(() => {
 				setErrorServer(true);
 			});
 	}
