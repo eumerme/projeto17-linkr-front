@@ -28,9 +28,9 @@ async function publish(body) {
   return axios.post(`${BASE_URL}/timeline/publish`, body, config);
 }
 
-async function listPosts(limit) {
+async function listPosts() {
   const config = createHeaders();
-  return axios.get(`${BASE_URL}/timeline/posts?limit=${limit}`, config);
+  return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
 async function userLogout() {
@@ -71,9 +71,9 @@ function listLikes(id) {
   return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
 }
 
-async function listUserPosts(id, limit) {
+async function listUserPosts(id) {
   const config = createHeaders();
-  return axios.get(`${BASE_URL}/url/${id}?limit=${limit}`, config);
+  return axios.get(`${BASE_URL}/url/${id}`, config);
 }
 
 async function getUrlMetadata(url) {
@@ -105,6 +105,11 @@ async function toggleFollow(body) {
   return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
 }
 
+async function listsPostsInterval() {
+  const config = createHeaders();
+  return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
+}
+
 export {
   register,
   login,
@@ -122,6 +127,7 @@ export {
   getUrlMetadata,
   insertHashtag,
   listCommentsPost,
+  listsPostsInterval,
   createNewComment,
   isFollowing,
   toggleFollow,
