@@ -6,8 +6,7 @@ import {
   listCommentsPost,
   listLikes,
   listReposts,
-  getRepostById,
-  newRepost
+  getRepostById
 } from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
@@ -66,8 +65,9 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       .catch((error) => {
         console.log(error);
       });
-    
+
     if(repostBy !== null) {
+    
       getRepostById(
         repostBy
       ).then((data) => {
