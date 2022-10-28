@@ -8,7 +8,7 @@ export default function PublishBox() {
   const [comment, setComment] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [msgBtn, setMsgBtn] = useState("Publish");
-  const { upload, setUpload } = useContext(UploadContext);
+  const { upload, setUpload, reload, setReload } = useContext(UploadContext);
   const auth = JSON.parse(localStorage.getItem("linkr"));
 
   function publishPost(event) {
@@ -24,7 +24,7 @@ export default function PublishBox() {
     } else {
       publish({ url, comment })
         .then(() => {
-          setUpload(!upload);
+          setReload(!reload);
           setTimeout(() => {
             setMsgBtn("Publish");
             setIsDisabled(false);
