@@ -82,7 +82,9 @@ function Timeline() {
                 text={value.text}
                 userId={value.userId}
                 name={value.name}
-                repostBy={value.repostBy}
+                namePost={value.namePost}
+                nameRepost={value.nameRepost}
+                postId={value.postId}
               />
             ))}
           </>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { deleteFatalPost } from "../../services/linkr";
+import { deleteFatalPost, deleteReposts } from "../../services/linkr";
 import Loading from "../commom/Loading";
 import { useState, useContext } from "react";
 import UploadContext from "../../Contexts/UploadContext";
@@ -18,7 +18,12 @@ const customStyles = {
   },
 };
 
-export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
+export default function DeleteModal({
+	modalIsOpen,
+	setIsOpen,
+	id,
+	itsReposts
+}) {
   const [isSucess, setIsSucess] = useState(false);
   const { reload, setReload } = useContext(UploadContext);
 
@@ -26,21 +31,37 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
     setIsOpen(false);
   }
 
-  function deletePost() {
-    deleteFatalPost(id)
-      .then(() => {
-        setReload(!reload);
-        setIsSucess(true);
-        setTimeout(function () {
-          setIsOpen(false);
-          setIsSucess(false);
-        }, 2000);
-      })
-      .catch(() => {
-        alert("Houve um problema com a sua requisição, tente novamente!");
-        setIsOpen(false);
-      });
-  }
+	function deletePost() {
+		if(itsReposts){
+			deleteReposts(id)
+				.then(() => {
+					setIsSucess(true);
+					setTimeout(function () {
+						setIsOpen(false);
+						setIsSucess(false);
+					}, 2000);
+          setReload(!reload);
+				})
+				.catch(() => {
+					alert("Houve um problema com a sua requisição, tente novamente!");
+					setIsOpen(false);
+				});
+		}else{
+			deleteFatalPost(id)
+				.then(() => {
+					setIsSucess(true);
+					setTimeout(function () {
+						setIsOpen(false);
+						setIsSucess(false);
+					}, 2000);
+          setReload(!reload);
+				})
+				.catch(() => {
+					alert("Houve um problema com a sua requisição, tente novamente!");
+					setIsOpen(false);
+				});
+		}
+	}
 
   return (
     <>
