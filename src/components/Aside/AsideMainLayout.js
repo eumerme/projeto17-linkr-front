@@ -7,7 +7,7 @@ import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
 
 export default function AsideMainLayout({
 	userpage,
-	timeline,
+	pageTitle,
 	follows,
 	followeeId,
 	hashtag,
@@ -77,7 +77,7 @@ export default function AsideMainLayout({
 	console.log({ isActive, dropdownTrending });
 
 	return (
-		<Container timeline={timeline}>
+		<Container pageTitle={pageTitle}>
 			{userpage ? (
 				<>
 					<FollowButton
@@ -122,7 +122,7 @@ const Container = styled.div`
 	height: auto;
 	padding: 103px 0 0 50px;
 	position: sticky;
-	top: ${(props) => (props.timeline ? "153px" : "72px")};
+	top: ${(props) => (props.pageTitle === "timeline" ? "153px" : "72px")};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;

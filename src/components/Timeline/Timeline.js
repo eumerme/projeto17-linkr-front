@@ -1,16 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { listPosts } from "../../services/linkr";
-import TimelineMainLayout from "./TimelineMainLayout";
-import PostsMainLayout from "../Posts/PostsMainLayout";
-import styled from "styled-components";
-import Loading from "../commom/Loading";
-import PublishBox from "./PublishBox";
-import InfiniteScroll from "react-infinite-scroller";
 import UploadContext from "../../Contexts/UploadContext";
-import HasNewPost from "./HasNewPost";
+import MainLayout from "../Main/MainLayout";
 
-function Timeline() {
-	const [posts, setPosts] = useState([]);
+import styled from "styled-components";
+
+/* export default */ function Timeline() {
+	/* 	const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [needRender, setNeedRender] = useState(true);
 	const [isRendering, setIsRendering] = useState(true);
@@ -94,6 +90,51 @@ function Timeline() {
 				</InfiniteScroll>
 			</Homescreen>
 		</TimelineMainLayout>
+	); */
+
+	const [posts, setPosts] = useState([]);
+	const [allPosts, setAllPosts] = useState([]);
+	const [existPost, setExistPost] = useState(null);
+	const [errorServer, setErrorServer] = useState(false);
+	const [empty, setEmpty] = useState(false);
+	const { upload } = useContext(UploadContext);
+
+	useEffect(() => {
+		setTimeout(function () {
+			listPosts()
+				.then((data) => {
+					if (data.data.followSomeone === true) {
+						setPosts(Array.from(data.data.posts));
+						setAllPosts(Array.from(data.data.posts).slice(0, allPosts.length));
+						if (data.data.posts.length === 0) setEmpty(true);
+						else setExistPost(true);
+					} else {
+						if (data.data.posts.length === 0) {
+							setExistPost(false);
+						} else {
+							setPosts(Array.from(data.data.posts));
+							setAllPosts(
+								Array.from(data.data.posts).slice(0, allPosts.length)
+							);
+						}
+					}
+				})
+				.catch(() => {
+					setErrorServer(true);
+				});
+		}, 500);
+	}, [upload]);
+
+	return (
+		<MainLayout
+			pageTitle={"timeline"}
+			posts={posts}
+			setAllPosts={setAllPosts}
+			allPosts={allPosts}
+			errorServer={errorServer}
+			empty={empty}
+			existPost={existPost}
+		/>
 	);
 }
 
@@ -123,4 +164,4 @@ const Title = styled.div`
 	}
 `;
 
-export { Timeline, Title, Homescreen };
+export { Timeline, Homescreen, Title };
