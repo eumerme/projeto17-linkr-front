@@ -28,9 +28,9 @@ async function publish(body) {
   return axios.post(`${BASE_URL}/timeline/publish`, body, config);
 }
 
-async function listPosts() {
-  const config = createHeaders();
-  return axios.get(`${BASE_URL}/timeline/posts`, config);
+function listPosts() {
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
 async function userLogout() {
@@ -64,11 +64,13 @@ async function deleteFatalPost(id) {
 }
 
 function likes(body) {
-  return axios.post(`${BASE_URL}/timeline/like`, body);
+  const config = createHeaders();
+  return axios.post(`${BASE_URL}/timeline/like`, body, config);
 }
 
 function listLikes(id) {
-  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`, config);
 }
 
 async function listUserPosts(id) {
@@ -110,6 +112,21 @@ async function listsPostsInterval() {
   return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
 }
 
+function listReposts(postId){
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
+}
+
+function getRepostById(id){
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
+}
+
+function newRepost(body){
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/timeline/reposts`, body, config);
+}
+
 export {
   register,
   login,
@@ -127,8 +144,11 @@ export {
   getUrlMetadata,
   insertHashtag,
   listCommentsPost,
-  listsPostsInterval,
   createNewComment,
-  isFollowing,
+  listReposts,
   toggleFollow,
+  isFollowing,
+  getRepostById,
+  newRepost,
+  listsPostsInterval,
 };

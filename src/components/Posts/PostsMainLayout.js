@@ -5,29 +5,37 @@ import {
   getUrlMetadata,
   listCommentsPost,
   listLikes,
+  listReposts,
+  getRepostById
 } from "../../services/linkr";
 import { renderLikes, like } from "../../services/likes";
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
+import { BiRepost } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa";
 import { AiOutlineComment } from "react-icons/ai";
 import EditPost from "./EditPost";
 import DeleteModal from "./DeletePost";
+import RepostModal from "./Repost";
 import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
 import CommentsBox from "./CommentsPost";
 
-export default function PostsMainLayout({ id, img, text, name, url, userId }) {
+export default function PostsMainLayout({ id, img, text, name, url, userId, repostBy}) {
   const [isEditing, setIsEditing] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalRepost, setModalRepost] = useState(false);
   const [urlData, setUrlData] = useState({});
   const { upload, setUpload } = useContext(UploadContext);
   const [ListLikes, setListLikes] = useState([]);
   const [clickLike, setClickLike] = useState({});
   const [seeComments, setSeeComments] = useState(false);
   const [commentsData, setCommentsData] = useState([]);
+  const [reposts, setReposts] = useState(0);
   const [msg, setMsg] = useState("");
+  const [repostName, setRepostName] = useState('');
+  const [itsReposts, setItsReposts] = useState(false);
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
 
@@ -35,7 +43,12 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
     setIsOpen(true);
   }
 
+  function openModalRepost(){
+    setModalRepost(true);
+  }
+
   useEffect(() => {
+
     getUrlMetadata(url)
       .then((data) => {
         const auxData = data.data.data;
@@ -51,7 +64,45 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
       })
       .catch();
 
-    listLikes(id)
+    if(repostBy !== null) {
+    
+      getRepostById(
+        repostBy
+      ).then((data) => {
+
+        listLikes(data.data.postId)
+        .then((data) => {
+          const likesData = data.data[0];
+          renderLikes(likesData, setClickLike, setMsg, auth.id);
+          setListLikes(likesData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    
+        listCommentsPost(data.data.postId)
+          .then((data) => {
+            setCommentsData(data.data);
+          })
+          .catch();
+    
+        listReposts(
+          data.data.postId
+        ).then((data) => {
+          setReposts(data.data[0].countReposts);
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        if(data.data.name === auth.name) setRepostName('Re-posted by you');
+        else setRepostName(`Re-posted by ${data.data.name}`);
+        setItsReposts(true); 
+      }).catch((error) => {
+        setItsReposts(false);
+        console.log(error);
+      });
+    }else{
+      listLikes(id)
       .then((data) => {
         const likesData = data.data[0];
         renderLikes(likesData, setClickLike, setMsg, auth.id);
@@ -59,12 +110,23 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
       })
       .catch();
 
-    listCommentsPost(id)
-      .then((data) => {
-        setCommentsData(data.data);
-      })
-      .catch();
+      listCommentsPost(id)
+        .then((data) => {
+          setCommentsData(data.data);
+        })
+        .catch();
+
+      listReposts(
+        id
+      ).then((data) => {
+        setReposts(data.data[0].countReposts);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+
   }, [upload]);
+
 
   function redirectToUserpage() {
     setUpload(!upload);
@@ -90,13 +152,21 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 
   return (
     <>
+    <RePost>
+      {itsReposts ? 
+        <InfoRePost>
+          <BiRepost style={{ color: "#FFFFFF", fontSize: "28px", margin: "7px 13px" }}/>
+          <p>{repostName}</p>
+        </InfoRePost>
+      : <></>}
       <Container>
         <Content>
           <Infos>
             <img src={img} alt="" />
             <div
-              onClick={() =>
-                like(clickLike, id, auth.id, setClickLike, setUpload, upload)
+              onClick={() => {
+                if(!itsReposts) like(clickLike, id, auth.id, setClickLike, setUpload, upload)
+                }
               }
             >
               {clickLike.draw}
@@ -117,16 +187,20 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
               onClick={() => setSeeComments(!seeComments)}
             />
             <p>{commentsData.length} comments</p>
+            <BiRepost onClick={() => {if(!itsReposts) openModalRepost()}} style={{ cursor: "pointer", color: "#FFFFFF", fontSize: "28px" }}/>
+            <p>{reposts} re-posts</p>
           </Infos>
-          <Description>
+          <Description itsReposts={itsReposts}>
             <span>
               <h1 onClick={redirectToUserpage}>{name}</h1>
               {auth.id === userId ? (
                 <h3>
+                  {itsReposts ? <></> 
+                  :                   
                   <TiPencil
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setIsEditing(!isEditing)}
-                  />
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setIsEditing(!isEditing)}
+                  />}
                   <FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
                 </h3>
               ) : (
@@ -166,21 +240,26 @@ export default function PostsMainLayout({ id, img, text, name, url, userId }) {
           seeComments={seeComments}
           postId={id}
           commentsData={commentsData}
+          itsReposts={itsReposts}
         />
       </Container>
+      </RePost>
       <DeleteModal
-        upload={upload}
-        setUpload={setUpload}
         id={id}
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
+      />
+      <RepostModal
+      modalRepost={modalRepost}
+      setModalRepost={setModalRepost}
+      postId={id}
+      userId={auth.id}
       />
     </>
   );
 }
 
 const Container = styled.div`
-  margin-bottom: 30px;
   width: 100%;
   max-width: 611px;
   background-color: #171717;
@@ -268,7 +347,7 @@ const Description = styled.div`
       cursor: pointer;
     }
     h3 {
-      width: 50px;
+      width: ${props => props.itsReposts ? "": "50px"};
       display: flex;
       justify-content: space-between;
     }
@@ -378,5 +457,28 @@ const UrlDatas = styled.div`
       width: 100%;
       height: 100%;
     }
+  }
+`;
+
+const RePost = styled.div`
+  width: 100%;
+  min-height: 279px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #1E1E1E;
+`;
+
+const InfoRePost = styled.div`
+  display: flex;
+  align-items: center;
+
+  p{
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #FFFFFF;
   }
 `;
