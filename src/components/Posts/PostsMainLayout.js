@@ -239,6 +239,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, name
       <DeleteModal
         id={id}
         modalIsOpen={modalIsOpen}
+        itsReposts={itsReposts}
         setIsOpen={setIsOpen}
       />
       <RepostModal

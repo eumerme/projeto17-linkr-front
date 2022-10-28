@@ -117,17 +117,18 @@ function listReposts(postId){
   return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
 }
 
-function getRepostById(id){
-	const config = createHeaders();
-	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
-}
-
 function newRepost(body){
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/timeline/reposts`, body, config);
 }
 
+function deleteReposts(id){
+  const config = createHeaders();
+  return axios.delete(`${BASE_URL}/timeline/reposts/delete/${id}`, config);
+}
+
 export {
+  deleteReposts,
   register,
   login,
   publish,
@@ -148,7 +149,6 @@ export {
   listReposts,
   toggleFollow,
   isFollowing,
-  getRepostById,
   newRepost,
   listsPostsInterval,
 };
