@@ -1,18 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { editPostText, insertHashtag } from "../../services/linkr";
+import UploadContext from "../../Contexts/UploadContext";
 
-export default function EditPost({
-  isEditing,
-  setIsEditing,
-  text,
-  id,
-  upload,
-  setUpload,
-}) {
+export default function EditPost({ isEditing, setIsEditing, text, id }) {
   const [comment, setComment] = useState(text);
   const [isDisabled, setIsDisabled] = useState(false);
+  const { upload, setUpload, reload, setReload } = useContext(UploadContext);
   const auth = JSON.parse(localStorage.getItem("linkr"));
   const inputRef = useRef(null);
 
@@ -48,7 +43,7 @@ export default function EditPost({
       editPostText({ comment: comment }, id)
         .then(() => {
           setIsEditing(!isEditing);
-          setUpload(!upload);
+          setReload(!reload);
         })
         .catch(() => {
           alert("Não foi possível salvar suas alterações, tente novamente!");

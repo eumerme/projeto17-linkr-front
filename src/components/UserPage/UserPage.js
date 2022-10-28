@@ -20,7 +20,7 @@ export default function UserPage() {
   const [empty, setEmpty] = useState(false);
   const auth = JSON.parse(localStorage.getItem("linkr"));
   const [follow, setFollow] = useState(null);
-  const { setUpload, upload } = useContext(UploadContext);
+  const { setUpload, upload, reload } = useContext(UploadContext);
 
   useEffect(() => {
     console.log("chamei");
@@ -36,7 +36,7 @@ export default function UserPage() {
           setErrorServer(true);
         });
     }, 1000);
-  }, [id]);
+  }, [id, reload]);
 
   useMemo(() => {
     isFollowing({ userId: auth.id, followeeId: Number(id) })

@@ -17,7 +17,7 @@ function Timeline() {
   const [existPost, setExistPost] = useState(null);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const { upload } = useContext(UploadContext);
+  const { reload } = useContext(UploadContext);
 
   useEffect(() => {
     setTimeout(function () {
@@ -43,7 +43,7 @@ function Timeline() {
           setErrorServer(true);
         });
     }, 500);
-  }, [upload]);
+  }, [reload]);
 
   function loaderPosts() {
     setIsRendering(true);

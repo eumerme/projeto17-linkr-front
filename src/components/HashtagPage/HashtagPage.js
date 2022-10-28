@@ -16,7 +16,7 @@ export default function HashtagPage() {
   const [isRendering, setIsRendering] = useState(true);
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const { upload } = useContext(UploadContext);
+  const { reload } = useContext(UploadContext);
 
   useEffect(() => {
     setTimeout(function () {
@@ -30,7 +30,7 @@ export default function HashtagPage() {
           setErrorServer(true);
         });
     }, 500);
-  }, [params.hashtag, upload]);
+  }, [params.hashtag, reload]);
 
   function loaderPosts() {
     setIsRendering(true);
