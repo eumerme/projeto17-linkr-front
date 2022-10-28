@@ -39,7 +39,6 @@ export default function DeleteModal({
 					setIsOpen(false);
 					setIsSucess(false);
 				}, 2000);
-				window.location.reload();
 			})
 			.catch(() => {
 				alert("Houve um problema com a sua requisição, tente novamente!");

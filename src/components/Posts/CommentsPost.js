@@ -10,10 +10,10 @@ export default function CommentsBox({ seeComments, postId, commentsData, itsRepo
   const inputRef = useRef(null);
   const auth = JSON.parse(localStorage.getItem("linkr"));
 
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [comment, setComment] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
+	const [comment, setComment] = useState("");
 
-  const { upload, setUpload } = useContext(UploadContext);
+	const { upload, setUpload } = useContext(UploadContext);
 
   useEffect(() => {
     if (seeComments && !itsReposts) {
@@ -21,30 +21,30 @@ export default function CommentsBox({ seeComments, postId, commentsData, itsRepo
     }
   }, [seeComments]);
 
-  function sendWithEnter(e) {
-    if (e.key !== "Enter") return;
-    publishComment();
-  }
+	function sendWithEnter(e) {
+		if (e.key !== "Enter") return;
+		publishComment();
+	}
 
-  function publishComment(e) {
-    if (e) e.preventDefault();
-    if (comment === " ") {
-      alert("É necessário escrever alguma coisa no seu comentário!");
-    }
-    setIsDisabled(true);
-    const body = { comment, postId };
+	function publishComment(e) {
+		if (e) e.preventDefault();
+		if (comment === " ") {
+			alert("É necessário escrever alguma coisa no seu comentário!");
+		}
+		setIsDisabled(true);
+		const body = { comment, postId };
 
-    createNewComment(body)
-      .then(() => {
-        setComment("");
-        setUpload(!upload);
-        setIsDisabled(false);
-      })
-      .catch(() => {
-        alert("Ops! Houve um erro com sua requisição, tente novamente");
-        setIsDisabled(false);
-      });
-  }
+		createNewComment(body)
+			.then(() => {
+				setComment("");
+				setUpload(!upload);
+				setIsDisabled(false);
+			})
+			.catch(() => {
+				alert("Ops! Houve um erro com sua requisição, tente novamente");
+				setIsDisabled(false);
+			});
+	}
 
   return (
     <>
@@ -88,21 +88,21 @@ export default function CommentsBox({ seeComments, postId, commentsData, itsRepo
 }
 
 const Container = styled.div`
-  width: 100%;
-  max-width: 611px;
-  height: auto;
-  background: #1e1e1e;
-  border-radius: 0 0 16px 16px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Lato", sans-serif;
-  transform: translateY(-3px);
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+	width: 100%;
+	max-width: 611px;
+	height: auto;
+	background: #1e1e1e;
+	border-radius: 0 0 16px 16px;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	font-family: "Lato", sans-serif;
+	transform: translateY(-3px);
+	transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 
-  ${(props) => {
-    if (props.seeComments) {
-      return `
+	${(props) => {
+		if (props.seeComments) {
+			return `
               &&& {
                 opacity: 1;
                 visibility: visible;
@@ -110,76 +110,81 @@ const Container = styled.div`
                 display: flex;			
               } 
             `;
-    }
-  }}
+		}
+	}}
 
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    border-radius: 0;
-  }
+	@media screen and (max-width: 611px) {
+		width: 100%;
+		border-radius: 0;
+	}
 `;
 
 const AllComents = styled.div`
-  width: 100%;
-  max-height: 285px;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	width: 100%;
+	max-height: 285px;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
+	::-webkit-scrollbar {
+		display: none;
+	}
 
-  @media screen and (max-width: 610px) {
-    max-height: 244px;
-  }
+	@media screen and (max-width: 611px) {
+		max-height: 244px;
+	}
 `;
 
 const WriterArea = styled.div`
-  width: 93%;
-  height: 83px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	width: 93%;
+	height: 83px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-  img {
-    width: 39px;
-    height: 39px;
-    border-radius: 26.5px;
-  }
+	img {
+		width: 39px;
+		height: 39px;
+		border-radius: 26.5px;
+		object-fit: cover;
+	}
 `;
 
 const TextArea = styled.div`
-  width: 89.7%;
-  position: relative;
+	width: 89.7%;
+	position: relative;
 
-  input {
-    width: 100%;
-    height: 39px;
-    border: none;
-    background: #252525;
-    border-radius: 8px;
-    color: #575757;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    padding: 0 0 0 15px;
+	input {
+		width: 100%;
+		height: 39px;
+		border: none;
+		background: #252525;
+		border-radius: 8px;
+		color: #f3f3f3;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 17px;
+		padding: 0 0 0 15px;
 
-    :focus {
-      outline: 0;
-    }
-  }
+		:focus {
+			outline: 0;
+		}
 
-  div {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    font-size: 25px;
-    color: #f3f3f3;
-  }
+		::placeholder {
+			color: #575757;
+		}
+	}
 
-  @media screen and (max-width: 610px) {
-    width: 85%;
-  }
+	div {
+		position: absolute;
+		right: 8px;
+		top: 8px;
+		font-size: 25px;
+		color: #f3f3f3;
+	}
+
+	@media screen and (max-width: 611px) {
+		width: 85%;
+	}
 `;

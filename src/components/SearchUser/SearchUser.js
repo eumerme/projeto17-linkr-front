@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { IoIosSearch } from "react-icons/io";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
@@ -23,7 +22,7 @@ export default function SearchUser() {
           .then((res) => {
             setUsers(res.data);
           })
-          .catch((error) => console.log(error));
+          .catch();
       }
     }, 300);
     if (search?.length === 0) {
@@ -70,7 +69,7 @@ export default function SearchUser() {
   }, [isActive, upload]);
 
   return (
-    <Container id="search">
+    <Container>
       <SearchWrapper>
         <SearchInput
           type="text"
@@ -127,9 +126,9 @@ const Container = styled.div`
   background-color: #e7e7e7;
   border-radius: 8px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 882px) {
     position: absolute;
-    width: 95%;
+    width: 80%;
     top: 90px;
     z-index: 0;
   }

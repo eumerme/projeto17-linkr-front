@@ -62,9 +62,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
           setUpload(!upload);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch();
 
     if(repostBy !== null) {
     
@@ -110,9 +108,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
         renderLikes(likesData, setClickLike, setMsg, auth.id);
         setListLikes(likesData);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch();
 
       listCommentsPost(id)
         .then((data) => {
@@ -273,7 +269,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 611px) {
     width: 100%;
     border-radius: 0;
     min-height: 232px;
@@ -437,9 +433,9 @@ const UrlDatas = styled.div`
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 611px) {
     justify-content: space-between;
-    height: 115px;
+    height: 165px;
 
     div {
       h1 {

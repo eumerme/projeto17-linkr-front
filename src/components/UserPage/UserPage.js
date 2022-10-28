@@ -7,10 +7,14 @@ import PostsMainLayout from "../Posts/PostsMainLayout";
 import TimelineMainLayout from "../Timeline/TimelineMainLayout";
 import { Homescreen, Title } from "../Timeline/Timeline";
 import UploadContext from "../../Contexts/UploadContext";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function UserPage() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [needRender, setNeedRender] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
   const { state } = useLocation();
   const [errorServer, setErrorServer] = useState(false);
   const [empty, setEmpty] = useState(false);
@@ -19,15 +23,16 @@ export default function UserPage() {
   const { setUpload, upload } = useContext(UploadContext);
 
   useEffect(() => {
+    console.log("chamei");
     setTimeout(function () {
       listUserPosts(id)
         .then((res) => {
           setUpload(!upload);
           setPosts(res.data);
+          setAllPosts(res.data.slice(0, allPosts.length));
           if (res.data.length === 0) setEmpty(true);
         })
         .catch((error) => {
-          console.log(error);
           setErrorServer(true);
         });
     }, 1000);
@@ -38,32 +43,55 @@ export default function UserPage() {
       .then((res) => {
         setFollow(res.data.follows);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch();
   }, [id, upload]);
+
+  function loaderPosts() {
+    setIsRendering(true);
+    setNeedRender(false);
+    if (posts.length === 0) setNeedRender(true);
+    setTimeout(() => {
+      setIsRendering(false);
+      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
+      setAllPosts(allPosts.concat(partOfPosts));
+
+      if (posts.length > allPosts.length) {
+        setNeedRender(true);
+      }
+    }, 2000);
+  }
 
   return (
     <>
       <TimelineMainLayout userpage={true} follows={follow} followeeId={id}>
         <Homescreen>
-          <Title>{`${state.name}'s posts`}</Title>
-          {posts.length !== 0 ? (
-            posts.map((value, index) => (
-              <PostsMainLayout
-                key={index}
-                id={value.id}
-                img={value.imageUrl}
-                url={value.url}
-                name={value.name}
-                text={value.text}
-                likesUser={value.likes}
-                userId={value.userId}
-              />
-            ))
-          ) : (
-            <Loading error={errorServer} empty={empty} />
-          )}
+          <Title id="title">{`${state.name}'s posts`}</Title>
+          <InfiniteScroll
+            pageStart={1}
+            loadMore={loaderPosts}
+            hasMore={needRender}
+            threshold={150}
+          >
+            <>
+              {allPosts.map((value, index) => (
+                <PostsMainLayout
+                  key={index}
+                  id={value.id}
+                  img={value.imageUrl}
+                  url={value.url}
+                  text={value.text}
+                  userId={value.userId}
+                  name={value.name}
+                  repostBy={value.repostBy}
+                />
+              ))}
+            </>
+            {isRendering ? (
+              <Loading error={errorServer} empty={empty} />
+            ) : (
+              <></>
+            )}
+          </InfiniteScroll>
         </Homescreen>
       </TimelineMainLayout>
     </>

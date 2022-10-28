@@ -60,6 +60,7 @@ export default function Logout() {
 }
 
 const ToggleArrow = styled.div`
+	font-size: 20px;
 	transform: ${(props) =>
 		props.isActive ? "rotate(-180deg)" : "rotate(0deg)"};
 	transition: all 0.5s ease;
