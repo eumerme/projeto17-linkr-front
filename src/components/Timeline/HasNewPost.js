@@ -13,6 +13,7 @@ export default function HasNewPost({ renderPosts }) {
     listsPostsInterval()
       .then((res) => {
         setNumber(res.data.posts.length - renderPosts);
+        console.log(number);
       })
       .catch(() => {});
   }, 15000);
