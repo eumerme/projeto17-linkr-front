@@ -7,7 +7,7 @@ import UploadContext from "../../Contexts/UploadContext";
 
 export default function HasNewPost({ renderPosts }) {
   const [number, setNumber] = useState(0);
-  const { upload, setUpload } = useContext(UploadContext);
+  const { reload, setReload } = useContext(UploadContext);
 
   useInterval(() => {
     listsPostsInterval()
@@ -19,7 +19,7 @@ export default function HasNewPost({ renderPosts }) {
 
   function renderNewPosts() {
     setNumber(0);
-    setUpload(!upload);
+    setReload(!reload);
   }
 
   return (

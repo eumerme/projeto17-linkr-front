@@ -10,90 +10,90 @@ import UploadContext from "../../Contexts/UploadContext";
 import InfiniteScroll from "react-infinite-scroller";
 
 export default function UserPage() {
-	const { id } = useParams();
-	const [posts, setPosts] = useState([]);
-	const [allPosts, setAllPosts] = useState([]);
-	const [needRender, setNeedRender] = useState(true);
-	const [isRendering, setIsRendering] = useState(true);
-	const { state } = useLocation();
-	const [errorServer, setErrorServer] = useState(false);
-	const [empty, setEmpty] = useState(false);
-	const auth = JSON.parse(localStorage.getItem("linkr"));
-	const [follow, setFollow] = useState(null);
-	const { setUpload, upload } = useContext(UploadContext);
+  const { id } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [needRender, setNeedRender] = useState(true);
+  const [isRendering, setIsRendering] = useState(true);
+  const { state } = useLocation();
+  const [errorServer, setErrorServer] = useState(false);
+  const [empty, setEmpty] = useState(false);
+  const auth = JSON.parse(localStorage.getItem("linkr"));
+  const [follow, setFollow] = useState(null);
+  const { setUpload, upload, reload } = useContext(UploadContext);
 
-	useEffect(() => {
-		console.log("chamei");
-		setTimeout(function () {
-			listUserPosts(id)
-				.then((res) => {
-					setUpload(!upload);
-					setPosts(res.data);
-					setAllPosts(res.data.slice(0, allPosts.length));
-					if (res.data.length === 0) setEmpty(true);
-				})
-				.catch(() => {
-					setErrorServer(true);
-				});
-		}, 1000);
-	}, [id]);
+  useEffect(() => {
+    console.log("chamei");
+    setTimeout(function () {
+      listUserPosts(id)
+        .then((res) => {
+          setUpload(!upload);
+          setPosts(res.data);
+          setAllPosts(res.data.slice(0, allPosts.length));
+          if (res.data.length === 0) setEmpty(true);
+        })
+        .catch(() => {
+          setErrorServer(true);
+        });
+    }, 1000);
+  }, [id, reload]);
 
-	useMemo(() => {
-		isFollowing({ userId: auth.id, followeeId: Number(id) })
-			.then((res) => {
-				setFollow(res.data.follows);
-			})
-			.catch();
-	}, [id, upload]);
+  useMemo(() => {
+    isFollowing({ userId: auth.id, followeeId: Number(id) })
+      .then((res) => {
+        setFollow(res.data.follows);
+      })
+      .catch();
+  }, [id, upload]);
 
-	function loaderPosts() {
-		setIsRendering(true);
-		setNeedRender(false);
-		if (posts.length === 0) setNeedRender(true);
-		setTimeout(() => {
-			setIsRendering(false);
-			const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
-			setAllPosts(allPosts.concat(partOfPosts));
+  function loaderPosts() {
+    setIsRendering(true);
+    setNeedRender(false);
+    if (posts.length === 0) setNeedRender(true);
+    setTimeout(() => {
+      setIsRendering(false);
+      const partOfPosts = posts.slice(allPosts.length, allPosts.length + 10);
+      setAllPosts(allPosts.concat(partOfPosts));
 
-			if (posts.length > allPosts.length) {
-				setNeedRender(true);
-			}
-		}, 2000);
-	}
+      if (posts.length > allPosts.length) {
+        setNeedRender(true);
+      }
+    }, 2000);
+  }
 
-	return (
-		<>
-			<TimelineMainLayout userpage={true} follows={follow} followeeId={id}>
-				<Homescreen>
-					<Title id="title">{`${state.name}'s posts`}</Title>
-					<InfiniteScroll
-						pageStart={1}
-						loadMore={loaderPosts}
-						hasMore={needRender}
-						threshold={150}
-					>
-						<>
-							{allPosts.map((value, index) => (
-								<PostsMainLayout
-									key={index}
-									id={value.id}
-									img={value.imageUrl}
-									url={value.url}
-									text={value.text}
-									userId={value.userId}
-									name={value.name}
-									repostBy={value.repostBy}
-								/>
-							))}
-						</>
-						{isRendering ? (
-							<Loading error={errorServer} empty={empty} />
-						) : (
-							<></>
-						)}
-					</InfiniteScroll>
-				</Homescreen>
-			</TimelineMainLayout>
-		</>
-	);
+  return (
+    <>
+      <TimelineMainLayout userpage={true} follows={follow} followeeId={id}>
+        <Homescreen>
+          <Title id="title">{`${state.name}'s posts`}</Title>
+          <InfiniteScroll
+            pageStart={1}
+            loadMore={loaderPosts}
+            hasMore={needRender}
+            threshold={150}
+          >
+            <>
+              {allPosts.map((value, index) => (
+                <PostsMainLayout
+                  key={index}
+                  id={value.id}
+                  img={value.imageUrl}
+                  url={value.url}
+                  text={value.text}
+                  userId={value.userId}
+                  name={value.name}
+                  repostBy={value.repostBy}
+                />
+              ))}
+            </>
+            {isRendering ? (
+              <Loading error={errorServer} empty={empty} />
+            ) : (
+              <></>
+            )}
+          </InfiniteScroll>
+        </Homescreen>
+      </TimelineMainLayout>
+    </>
+  );
 }
