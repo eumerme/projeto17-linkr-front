@@ -35,12 +35,12 @@ export default function DeleteModal({
 		if(itsReposts){
 			deleteReposts(id)
 				.then(() => {
-					setReload(!reload);
 					setIsSucess(true);
 					setTimeout(function () {
 						setIsOpen(false);
 						setIsSucess(false);
 					}, 2000);
+          setReload(!reload);
 				})
 				.catch(() => {
 					alert("Houve um problema com a sua requisição, tente novamente!");
@@ -49,12 +49,12 @@ export default function DeleteModal({
 		}else{
 			deleteFatalPost(id)
 				.then(() => {
-					setReload(!reload);
 					setIsSucess(true);
 					setTimeout(function () {
 						setIsOpen(false);
 						setIsSucess(false);
 					}, 2000);
+          setReload(!reload);
 				})
 				.catch(() => {
 					alert("Houve um problema com a sua requisição, tente novamente!");
