@@ -43,7 +43,6 @@ export default function AsideMainLayout({
 					setIsDisabled(false);
 				})
 				.catch((error) => {
-					console.log(error);
 					alert(
 						"Não foi possível executar a operação. Tente novamente em instantes."
 					);
@@ -147,6 +146,7 @@ const TrendingBox = styled.div`
 	border-radius: 16px;
 	background-color: #171717;
 	margin-top: ${(props) => (props.hashtag ? "81px" : "0")};
+	margin-bottom: 28px;
 
 	h2 {
 		width: 100%;
@@ -278,6 +278,10 @@ const HashtagTrendingMobile = styled.div`
 			opacity: 0.6;
 			transition: 0.4s;
 		}
+	}
+
+	@media screen and (min-width: 1024px) {
+		display: none;
 	}
 
 	@media screen and (max-width: 339px) {
