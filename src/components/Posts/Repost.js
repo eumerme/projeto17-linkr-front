@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { deleteFatalPost } from "../../services/linkr";
+import { newRepost } from "../../services/linkr";
 import Loading from "../commom/Loading";
 import { useState, useContext } from "react";
 import UploadContext from "../../Contexts/UploadContext";
@@ -18,41 +18,42 @@ const customStyles = {
 	},
 };
 
-export default function DeleteModal({
-	modalIsOpen,
-	setIsOpen,
-	id
+export default function RepostModal({
+	modalRepost,
+	setModalRepost,
+	postId,
+    userId
 }) {
 	const [isSucess, setIsSucess] = useState(false);
 	const { upload, setUpload } = useContext(UploadContext);
 
 	function closeModal() {
-		setIsOpen(false);
+		setModalRepost(false);
 	}
 
-	function deletePost() {
-		deleteFatalPost(id)
-			.then(() => {
-				setUpload(!upload);
-				setIsSucess(true);
-				setTimeout(function () {
-					setIsOpen(false);
-					setIsSucess(false);
-				}, 2000);
-			})
-			.catch(() => {
-				alert("Houve um problema com a sua requisição, tente novamente!");
-				setIsOpen(false);
-			});
-	}
+    function repost(){
+        newRepost({
+          postId,
+          userId
+        }).then(() => {
+          setUpload(!upload);
+          setIsSucess(true);
+          setTimeout(function () {
+              setModalRepost(false);
+              setIsSucess(false);
+          }, 2000);
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
 
 	return (
 		<>
 			<Modal
-				isOpen={modalIsOpen}
+				isOpen={modalRepost}
 				onRequestClose={closeModal}
 				style={customStyles}
-				contentLabel="DeletePostModal"
+				contentLabel="RepostModal"
 			>
 				<Style>
 					{isSucess ? (
@@ -62,11 +63,11 @@ export default function DeleteModal({
 							<p>
 								Are you sure you want
 								<br />
-								to delete this post?
+								to repost this post?
 							</p>
 							<div>
 								<button onClick={closeModal}>No, go back</button>
-								<button onClick={deletePost}>Yes, delete it</button>
+								<button onClick={repost}>Yes, repost it</button>
 							</div>
 						</>
 					)}

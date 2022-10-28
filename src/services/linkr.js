@@ -28,9 +28,9 @@ async function publish(body) {
   return axios.post(`${BASE_URL}/timeline/publish`, body, config);
 }
 
-async function listPosts(limit) {
-  const config = createHeaders();
-  return axios.get(`${BASE_URL}/timeline/posts?limit=${limit}`, config);
+function listPosts() {
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
 async function userLogout() {
@@ -64,16 +64,18 @@ async function deleteFatalPost(id) {
 }
 
 function likes(body) {
-  return axios.post(`${BASE_URL}/timeline/like`, body);
+  const config = createHeaders();
+  return axios.post(`${BASE_URL}/timeline/like`, body, config);
 }
 
 function listLikes(id) {
-  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`);
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`, config);
 }
 
-async function listUserPosts(id, limit) {
+async function listUserPosts(id) {
   const config = createHeaders();
-  return axios.get(`${BASE_URL}/url/${id}?limit=${limit}`, config);
+  return axios.get(`${BASE_URL}/url/${id}`, config);
 }
 
 async function getUrlMetadata(url) {
@@ -105,6 +107,26 @@ async function toggleFollow(body) {
   return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
 }
 
+async function listsPostsInterval() {
+  const config = createHeaders();
+  return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
+}
+
+function listReposts(postId){
+  const config = createHeaders();
+  return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
+}
+
+function getRepostById(id){
+	const config = createHeaders();
+	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
+}
+
+function newRepost(body){
+	const config = createHeaders();
+	return axios.post(`${BASE_URL}/timeline/reposts`, body, config);
+}
+
 export {
   register,
   login,
@@ -123,6 +145,10 @@ export {
   insertHashtag,
   listCommentsPost,
   createNewComment,
-  isFollowing,
+  listReposts,
   toggleFollow,
+  isFollowing,
+  getRepostById,
+  newRepost,
+  listsPostsInterval,
 };
