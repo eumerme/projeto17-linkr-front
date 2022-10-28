@@ -22,7 +22,7 @@ import { ReactTagify } from "react-tagify";
 import UploadContext from "../../Contexts/UploadContext";
 import CommentsBox from "./CommentsPost";
 
-export default function PostsMainLayout({ id, img, text, name, url, userId, repostBy}) {
+export default function PostsMainLayout({ id, img, text, name, url, userId, nameRepost, namePost, postId}) {
   const [isEditing, setIsEditing] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalRepost, setModalRepost] = useState(false);
@@ -35,6 +35,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
   const [reposts, setReposts] = useState(0);
   const [msg, setMsg] = useState("");
   const [repostName, setRepostName] = useState('');
+  const [postName, setPostName] = useState(name);
   const [itsReposts, setItsReposts] = useState(false);
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -48,7 +49,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
   }
 
   useEffect(() => {
-
+    
     getUrlMetadata(url)
       .then((data) => {
         const auxData = data.data.data;
@@ -64,67 +65,58 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
       })
       .catch();
 
-    if(repostBy !== null) {
-    
-      getRepostById(
-        repostBy
-      ).then((data) => {
+      if(nameRepost !== undefined && namePost !== undefined && postId !== undefined){
 
-        listLikes(data.data.postId)
+        setPostName(namePost);
+        if(nameRepost === auth.name) setRepostName('Re-posted by you');
+        else setRepostName(`Re-posted by ${nameRepost}`);
+        setItsReposts(true)
+
+        listLikes(postId)
         .then((data) => {
           const likesData = data.data[0];
           renderLikes(likesData, setClickLike, setMsg, auth.id);
           setListLikes(likesData);
         })
-        .catch((error) => {
-          console.log(error);
-        });
-    
-        listCommentsPost(data.data.postId)
+        .catch();
+
+        listCommentsPost(postId)
           .then((data) => {
             setCommentsData(data.data);
           })
           .catch();
-    
+
         listReposts(
-          data.data.postId
+          postId
         ).then((data) => {
           setReposts(data.data[0].countReposts);
         }).catch((error) => {
           console.log(error);
         });
+      }else{
 
-        if(data.data.name === auth.name) setRepostName('Re-posted by you');
-        else setRepostName(`Re-posted by ${data.data.name}`);
-        setItsReposts(true); 
-      }).catch((error) => {
-        setItsReposts(false);
-        console.log(error);
-      });
-    }else{
-      listLikes(id)
-      .then((data) => {
-        const likesData = data.data[0];
-        renderLikes(likesData, setClickLike, setMsg, auth.id);
-        setListLikes(likesData);
-      })
-      .catch();
-
-      listCommentsPost(id)
+        listLikes(id)
         .then((data) => {
-          setCommentsData(data.data);
+          const likesData = data.data[0];
+          renderLikes(likesData, setClickLike, setMsg, auth.id);
+          setListLikes(likesData);
         })
         .catch();
 
-      listReposts(
-        id
-      ).then((data) => {
-        setReposts(data.data[0].countReposts);
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
+        listCommentsPost(id)
+          .then((data) => {
+            setCommentsData(data.data);
+          })
+          .catch();
 
+        listReposts(
+          id
+        ).then((data) => {
+          setReposts(data.data[0].countReposts);
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
   }, [upload]);
 
 
@@ -192,7 +184,7 @@ export default function PostsMainLayout({ id, img, text, name, url, userId, repo
           </Infos>
           <Description itsReposts={itsReposts}>
             <span>
-              <h1 onClick={redirectToUserpage}>{name}</h1>
+              <h1 onClick={redirectToUserpage}>{postName}</h1>
               {auth.id === userId ? (
                 <h3>
                   {itsReposts ? <></> 
