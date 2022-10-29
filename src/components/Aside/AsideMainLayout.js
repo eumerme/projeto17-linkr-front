@@ -5,13 +5,7 @@ import UploadContext from "../../Contexts/UploadContext";
 import { listHashtags, toggleFollow } from "../../services/linkr";
 import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
 
-export default function AsideMainLayout({
-	userpage,
-	pageTitle,
-	follows,
-	followeeId,
-	hashtag,
-}) {
+export default function AsideMainLayout({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
@@ -74,11 +68,11 @@ export default function AsideMainLayout({
 		setUpload(!upload);
 		navigate(`/hashtag/${text}`);
 	}
-	console.log({ isActive, dropdownTrending });
+	//console.log({ isActive, dropdownTrending });
 
 	return (
 		<Container pageTitle={pageTitle}>
-			{userpage ? (
+			{pageTitle === "userpage" ? (
 				<>
 					<FollowButton
 						follows={follows}
@@ -95,7 +89,11 @@ export default function AsideMainLayout({
 			) : (
 				""
 			)}
-			<TrendingBox hashtag={hashtag} isActive={isActive} ref={dropdownTrending}>
+			<TrendingBox
+				pageTitle={pageTitle}
+				isActive={isActive}
+				ref={dropdownTrending}
+			>
 				<h2>trending</h2>
 				<ul>
 					{hashtags.map((value, index) => (
@@ -145,7 +143,7 @@ const TrendingBox = styled.div`
 	height: 406px;
 	border-radius: 16px;
 	background-color: #171717;
-	margin-top: ${(props) => (props.hashtag ? "81px" : "0")};
+	margin-top: ${(props) => (props.pageTitle === "hashtag" ? "81px" : "0")};
 	margin-bottom: 28px;
 
 	h2 {

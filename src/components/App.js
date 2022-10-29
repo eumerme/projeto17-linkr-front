@@ -2,7 +2,7 @@ import GlobalStyle from "../globalStyles/globalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SingUp from "./Auth/SignUp";
 import SignIn from "./Auth/SignIn";
-import { Timeline } from "./Timeline/Timeline";
+import Timeline from "./Timeline/Timeline";
 import HashtagPage from "./HashtagPage/HashtagPage";
 import Private from "./Private/Private";
 import UserPage from "./UserPage/UserPage";
