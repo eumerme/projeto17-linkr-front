@@ -17,43 +17,7 @@ const Container = styled.div`
 	}
 `;
 
-const Navbar = styled.div`
-	width: 100%;
-	height: 72px;
-	background-color: #151515;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	color: #ffffff;
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 1;
-	padding: 0 28px;
-
-	h1 {
-		font-size: 49px;
-		font-weight: 700;
-		line-height: 53.95px;
-		font-family: "Passion One", cursive;
-		cursor: pointer;
-	}
-	span {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-	}
-	img {
-		width: 53px;
-		height: 53px;
-		border-radius: 27px;
-		margin-left: 20px;
-		object-fit: cover;
-	}
-`;
-
-const Homescreen = styled.div`
+const MainLayout = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -79,4 +43,4 @@ const Title = styled.div`
 	}
 `;
 
-export { Container, Navbar, Homescreen, Title };
+export { Container, MainLayout, Title };

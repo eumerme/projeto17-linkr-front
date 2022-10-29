@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { isFollowing, listUserPosts } from "../../services/linkr";
-import UploadContext from "../../Contexts/UploadContext";
-import MainLayout from "../Main/MainLayout";
+import { isFollowing, listUserPosts } from "../../../../services/linkr.js";
+import UploadContext from "../../../../Contexts/UploadContext.js";
+import Main from "../Main.js";
 
 export default function UserPage() {
 	const { id } = useParams();
@@ -10,7 +10,7 @@ export default function UserPage() {
 	const { setUpload, upload } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
-	const [posts, setPosts] = useState([]);
+	//const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
@@ -38,10 +38,10 @@ export default function UserPage() {
 	}, [id, upload]);
 
 	return (
-		<MainLayout
+		<Main
 			pageTitle={"userpage"}
-			posts={posts}
-			/* setPosts={setPosts} */
+			/* posts={posts}
+			setPosts={setPosts} */
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}

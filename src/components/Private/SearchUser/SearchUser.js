@@ -1,9 +1,9 @@
 import { IoIosSearch } from "react-icons/io";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import { listUsers } from "../../services/linkr";
+import { listUsers } from "../../../services/linkr.js";
 import { useNavigate } from "react-router-dom";
-import UploadContext from "../../Contexts/UploadContext";
+import UploadContext from "../../../Contexts/UploadContext.js";
 
 export default function SearchUser() {
 	const [users, setUsers] = useState([]);
@@ -15,20 +15,22 @@ export default function SearchUser() {
 	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
-		setTimeout(() => {
-			if (search?.length >= 3) {
-				const promise = listUsers();
-				promise
-					.then((res) => {
-						setUsers(res.data);
-					})
-					.catch();
-			}
-		}, 300);
+		/* setTimeout(() => {
+		}, 300); */
+		if (search?.length >= 3) {
+			const promise = listUsers();
+			promise
+				.then((res) => {
+					setUsers(res.data);
+				})
+				.catch();
+		}
 		if (search?.length === 0) {
 			setUserFiltered("");
 		}
 	}, [search.length, upload]);
+
+	//console.log({ search, users, userFiltered });
 
 	useMemo(() => {
 		if (users.length !== 0 && search.length >= 3) {
@@ -39,7 +41,7 @@ export default function SearchUser() {
 				);
 			}, 300);
 		}
-	}, [users.length, search.length]);
+	}, [search.length]);
 
 	//console.log({ users, userFiltered });
 
@@ -86,22 +88,21 @@ export default function SearchUser() {
 			{userFiltered?.length !== 0 ? (
 				<List ref={searchRef}>
 					{userFiltered.map((user, index) => (
-						<li
-							className="list_item"
+						<ListItem
 							key={index}
 							onClick={() => {
 								setSearch("");
 								redirectTo(user.id, user.name);
 							}}
 						>
-							<img className="list_img" src={user.imageUrl} alt="" />
-							<div className="list_container">
-								<p className="list_name">{user.name}</p>
-								<span className="list_follow">
+							<ListImage src={user.imageUrl} alt="" />
+							<ListInfoWrapper>
+								<Username>{user.name}</Username>
+								<Follow className="list_follow">
 									{user.follow.following ? "• following" : ""}
-								</span>
-							</div>
-						</li>
+								</Follow>
+							</ListInfoWrapper>
+						</ListItem>
 					))}
 				</List>
 			) : (
@@ -140,47 +141,45 @@ const List = styled.ul`
 	height: auto;
 	background-color: #e7e7e7;
 	border-radius: 8px;
+`;
 
-	.list_item {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		cursor: pointer;
-	}
+const ListItem = styled.li`
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	cursor: pointer;
 
-	.list_item:hover {
+	:hover {
 		background-color: #999ba138;
 		transition: 0.4s;
 		border-radius: 8px;
 	}
+`;
 
-	.list_img {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		object-fit: cover;
-		margin: 10px;
-	}
+const ListImage = styled.img`
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin: 10px;
+`;
 
-	.list_name {
-		font-family: "Lato", sans-serif;
-		font-size: 19px;
-		font-weight: 400;
-		color: #515151;
-		margin-right: 5px;
-	}
+const ListInfoWrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`;
 
-	.list_follow {
-		font-family: "Lato", sans-serif;
-		font-size: 16px;
-		font-weight: 400;
-		color: #c5c5c5;
-	}
+const Username = styled.p`
+	font-size: 19px;
+	font-weight: 400;
+	color: #515151;
+	margin-right: 5px;
+`;
 
-	.list_container {
-		display: flex;
-		flex-wrap: wrap;
-	}
+const Follow = styled.span`
+	font-size: 16px;
+	font-weight: 400;
+	color: #c5c5c5;
 `;
 
 const SearchWrapper = styled.div`
@@ -189,7 +188,6 @@ const SearchWrapper = styled.div`
 	background-color: #ffffff;
 	border-radius: 8px;
 	padding: 0 8px;
-	font-family: "Lato", sans-serif;
 	font-weight: 400;
 	display: flex;
 	align-items: center;
@@ -205,7 +203,7 @@ const SearchInput = styled.input`
 	border: none;
 	cursor: pointer;
 
-	&::placeholder {
+	::placeholder {
 		color: #9f9f9f;
 	}
 `;

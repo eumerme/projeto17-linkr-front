@@ -1,11 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../../Contexts/UploadContext";
-import { listHashtags, toggleFollow } from "../../services/linkr";
+import UploadContext from "../../../Contexts/UploadContext.js";
+import { listHashtags, toggleFollow } from "../../../services/linkr.js";
 import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
 
-export default function AsideMainLayout({ pageTitle, follows, followeeId }) {
+export default function Aside({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
@@ -68,7 +68,7 @@ export default function AsideMainLayout({ pageTitle, follows, followeeId }) {
 		setUpload(!upload);
 		navigate(`/hashtag/${text}`);
 	}
-	//console.log({ isActive, dropdownTrending });
+	//	console.log({ isActive, dropdownTrending });
 
 	return (
 		<Container pageTitle={pageTitle}>
@@ -133,8 +133,8 @@ const Container = styled.div`
 		z-index: 3;
 	}
 
-	@media screen and (max-width: 400px) {
-		right: 125px;
+	@media screen and (max-width: 352px) {
+		right: 115px;
 	}
 `;
 
@@ -165,7 +165,6 @@ const TrendingBox = styled.div`
 			display: none;
 		}
 		li {
-			font-family: "Lato", sans-serif;
 			overflow-x: hidden;
 			font-size: 19px;
 			font-weight: 700;
@@ -205,7 +204,7 @@ const TrendingBox = styled.div`
 		border-radius: 0 0 16px 16px;
 	}
 
-	@media screen and (max-width: 339px) {
+	@media screen and (max-width: 352px) {
 		width: 100%;
 		border-radius: 0 0 16px 16px;
 	}
@@ -217,7 +216,6 @@ const FollowButton = styled.button`
 	margin-bottom: 50px;
 	border-radius: 5px;
 	background-color: ${(props) => (props.follows ? "#ffffff" : "#1877f2")};
-	font-family: "Lato", sans-serif;
 	font-size: 14px;
 	font-weight: 700;
 	display: flex;
@@ -268,10 +266,11 @@ const HashtagTrendingMobile = styled.div`
 		left: 147px;
 		z-index: 3;
 		margin-top: 0;
-		font-size: 30px;
-		font-weight: 700;
+		font-size: 35px;
+		font-weight: 500;
 		color: ${(props) => (props.isActive ? "#1877f2" : "#ffffff")};
 		cursor: pointer;
+		font-family: "Passion One";
 		:hover {
 			opacity: 0.6;
 			transition: 0.4s;
@@ -282,7 +281,11 @@ const HashtagTrendingMobile = styled.div`
 		display: none;
 	}
 
-	@media screen and (max-width: 339px) {
+	@media screen and (max-width: 352px) {
 		left: 125px;
+	}
+
+	@media screen and (max-width: 306px) {
+		left: 120px;
 	}
 `;

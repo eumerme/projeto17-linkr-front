@@ -1,25 +1,30 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
 import { useContext, useEffect, useRef, useState } from "react";
-import { createNewComment } from "../../services/linkr";
-import UploadContext from "../../Contexts/UploadContext";
-import CommentArea from "./OneCommentPost";
+import { createNewComment } from "../../../../services/linkr.js";
+import UploadContext from "../../../../Contexts/UploadContext.js";
+import CommentArea from "./OneCommentPost.js";
 
-export default function CommentsBox({ seeComments, postId, commentsData, itsReposts }) {
-  const dropdownRef = useRef(null);
-  const inputRef = useRef(null);
-  const auth = JSON.parse(localStorage.getItem("linkr"));
+export default function CommentsBox({
+	seeComments,
+	postId,
+	commentsData,
+	itsReposts,
+}) {
+	const dropdownRef = useRef(null);
+	const inputRef = useRef(null);
+	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [comment, setComment] = useState("");
 
 	const { upload, setUpload } = useContext(UploadContext);
 
-  useEffect(() => {
-    if (seeComments && !itsReposts) {
-      inputRef.current.focus();
-    }
-  }, [seeComments]);
+	useEffect(() => {
+		if (seeComments && !itsReposts) {
+			inputRef.current.focus();
+		}
+	}, [seeComments]);
 
 	function sendWithEnter(e) {
 		if (e.key !== "Enter") return;
@@ -46,45 +51,46 @@ export default function CommentsBox({ seeComments, postId, commentsData, itsRepo
 			});
 	}
 
-  return (
-    <>
-      <Container ref={dropdownRef} seeComments={seeComments}>
-        <AllComents>
-          {commentsData.map((value, index) => (
-            <CommentArea
-              key={index}
-              imageUrl={value.imageUrl}
-              commentUserId={value.commentUserId}
-              postUserId={value.postUserId}
-              name={value.name}
-              comment={value.comment}
-              followee={value.followee}
-            />
-          ))}
-        </AllComents>
-        {itsReposts ? <></> 
-        :
-        <WriterArea>
-          <img src={auth.image} alt="" />
-          <TextArea>
-            <input
-              placeholder="write a comment..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              ref={inputRef}
-              onKeyPress={sendWithEnter}
-              type="text"
-              disabled={isDisabled}
-            ></input>
-            <div>
-              <TiLocationArrowOutline onClick={publishComment} />
-            </div>
-          </TextArea>
-        </WriterArea>
-      } 
-      </Container>
-    </>
-  );
+	return (
+		<>
+			<Container ref={dropdownRef} seeComments={seeComments}>
+				<AllComents>
+					{commentsData.map((value, index) => (
+						<CommentArea
+							key={index}
+							imageUrl={value.imageUrl}
+							commentUserId={value.commentUserId}
+							postUserId={value.postUserId}
+							name={value.name}
+							comment={value.comment}
+							followee={value.followee}
+						/>
+					))}
+				</AllComents>
+				{itsReposts ? (
+					<></>
+				) : (
+					<WriterArea>
+						<img src={auth.image} alt="" />
+						<TextArea>
+							<input
+								placeholder="write a comment..."
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
+								ref={inputRef}
+								onKeyPress={sendWithEnter}
+								type="text"
+								disabled={isDisabled}
+							></input>
+							<div>
+								<TiLocationArrowOutline onClick={publishComment} />
+							</div>
+						</TextArea>
+					</WriterArea>
+				)}
+			</Container>
+		</>
+	);
 }
 
 const Container = styled.div`

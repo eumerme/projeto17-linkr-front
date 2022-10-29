@@ -1,18 +1,16 @@
-import Logout from "../Logout/Logout";
-import AsideMainLayout from "../Aside/AsideMainLayout";
-import SearchUser from "../SearchUser/SearchUser";
-import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import UploadContext from "../../Contexts/UploadContext.js";
+import Aside from "../Aside/Aside.js";
+import SearchUser from "../SearchUser/SearchUser.js";
+import { useEffect, useState } from "react";
 
-import { Container, Navbar, Homescreen, Title } from "./styles";
+import { Container, MainLayout, Title } from "./styles.js";
 //import InfiniteScroll from "react-infinite-scroller";
-import PublishBox from "../Timeline/PublishBox";
-import HasNewPost from "../Timeline/HasNewPost";
-import PostsMainLayout from "../Posts/PostsMainLayout";
-import Loading from "../commom/Loading";
+import PublishBox from "../Main/TimelinePage/PublishBox.js";
+//import HasNewPost from "../Timeline/HasNewPost";
+import PostsMainLayout from "./Posts/PostsMainLayout.js";
+import Loading from "../commom/Loading.js";
+import Navbar from "../Navbar/Navbar.js";
 
-export default function MainLayout({
+export default function Main({
 	userpage,
 	follows,
 	followeeId,
@@ -26,11 +24,9 @@ export default function MainLayout({
 	name,
 	hashtag,
 }) {
-	const navigate = useNavigate();
 	//	const [needRender, setNeedRender] = useState(true);
 	//	const [isRendering, setIsRendering] = useState(true);
 	const [title, setTitle] = useState("timeline");
-	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -61,22 +57,14 @@ export default function MainLayout({
 		}, 2000);
 	} */
 
-	const redirectToTimeline = () => {
-		setUpload(!upload);
-		navigate("/timeline");
-	};
-
 	console.log({ name, title });
 	return (
 		<Container>
-			<Navbar>
-				<h1 onClick={redirectToTimeline}>linkr</h1>
-				<Logout />
-			</Navbar>
-			<Homescreen>
+			<Navbar />
+			<MainLayout>
 				<Title id="title">{title}</Title>
 				{pageTitle === "timeline" ? <PublishBox /> : ""}
-				<HasNewPost renderPosts={posts.length} />
+				{/* <HasNewPost renderPosts={posts.length} /> */}
 				{allPosts.length !== 0 ? (
 					<>
 						{allPosts.map((value, index) => (
@@ -95,8 +83,8 @@ export default function MainLayout({
 				) : (
 					<Loading error={errorServer} empty={empty} existPost={existPost} />
 				)}
-			</Homescreen>
-			<AsideMainLayout
+			</MainLayout>
+			<Aside
 				userpage={userpage}
 				pageTitle={pageTitle}
 				follows={follows}

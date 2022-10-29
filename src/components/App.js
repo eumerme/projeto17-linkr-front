@@ -1,11 +1,11 @@
 import GlobalStyle from "../globalStyles/globalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SingUp from "./Auth/SignUp";
-import SignIn from "./Auth/SignIn";
-import Timeline from "./Timeline/Timeline";
-import HashtagPage from "./HashtagPage/HashtagPage";
+import SingUp from "./Public/SignUp";
+import SignIn from "./Public/SignIn";
+import TimelinePage from "./Private/Main/TimelinePage/TimelinePage";
+import HashtagPage from "./Private/Main/HashtagPage/HashtagPage";
 import Private from "./Private/Private";
-import UserPage from "./UserPage/UserPage";
+import UserPage from "./Private/Main/UserPage/UserPage";
 import UploadContext from "../Contexts/UploadContext.js";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ export default function App() {
 							path="/timeline"
 							element={
 								<Private>
-									<Timeline />
+									<TimelinePage />
 								</Private>
 							}
 						/>

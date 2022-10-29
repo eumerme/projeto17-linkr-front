@@ -1,4 +1,4 @@
-import AuthMainLayout from "./AuthMainLayout.js";
+import AuthLayout from "./AuthLayout.js";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
@@ -34,7 +34,7 @@ export default function SignIn() {
 				);
 				navigate("/timeline");
 			})
-			.catch((error) => {
+			.catch(() => {
 				setIsDisabled(false);
 				setMsgBtn("Log In");
 				alert("Email ou senha incorretos!");
@@ -52,7 +52,7 @@ export default function SignIn() {
 			{auth ? (
 				<Navigate to="/timeline" />
 			) : (
-				<AuthMainLayout onSubmit={loginUser} isDisabled={isDisabled}>
+				<AuthLayout onSubmit={loginUser} isDisabled={isDisabled}>
 					<input
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +74,7 @@ export default function SignIn() {
 						{msgBtn}
 					</button>
 					<p onClick={() => redirect()}>First time? Create an account!</p>
-				</AuthMainLayout>
+				</AuthLayout>
 			)}
 		</>
 	);

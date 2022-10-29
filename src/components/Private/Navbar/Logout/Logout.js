@@ -1,7 +1,7 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { userLogout } from "../../services/linkr.js";
+import { userLogout } from "../../../../services/linkr.js";
 
 function ButtonLogout() {
 	const promise = userLogout();
@@ -38,7 +38,7 @@ export default function Logout() {
 	}, [isActive]);
 
 	return (
-		<span
+		<Wrapper
 			onClick={() => {
 				setIsActive(!isActive);
 			}}
@@ -55,9 +55,33 @@ export default function Logout() {
 			>
 				Logout
 			</ButtonWrapper>
-		</span>
+		</Wrapper>
 	);
 }
+
+const Wrapper = styled.span`
+	width: auto;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	img {
+		width: 53px;
+		height: 53px;
+		border-radius: 50%;
+		margin-left: 20px;
+	}
+
+	@media screen and (max-width: 352px) {
+		img {
+			width: 47px;
+			height: 47px;
+			margin-left: 16px;
+		}
+	}
+`;
 
 const ToggleArrow = styled.div`
 	font-size: 20px;

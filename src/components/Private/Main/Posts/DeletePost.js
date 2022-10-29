@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { newRepost } from "../../services/linkr";
-import Loading from "../commom/Loading";
+import { deleteFatalPost } from "../../../../services/linkr.js";
+import Loading from "../../commom/Loading.js";
 import { useState, useContext } from "react";
-import UploadContext from "../../Contexts/UploadContext";
+import UploadContext from "../../../../Contexts/UploadContext.js";
 
 const customStyles = {
 	content: {
@@ -18,42 +18,37 @@ const customStyles = {
 	},
 };
 
-export default function RepostModal({
-	modalRepost,
-	setModalRepost,
-	postId,
-    userId
-}) {
+export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
 	const [isSucess, setIsSucess] = useState(false);
 	const { upload, setUpload } = useContext(UploadContext);
 
 	function closeModal() {
-		setModalRepost(false);
+		setIsOpen(false);
 	}
 
-    function repost(){
-        newRepost({
-          postId,
-          userId
-        }).then(() => {
-          setUpload(!upload);
-          setIsSucess(true);
-          setTimeout(function () {
-              setModalRepost(false);
-              setIsSucess(false);
-          }, 2000);
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
+	function deletePost() {
+		deleteFatalPost(id)
+			.then(() => {
+				setUpload(!upload);
+				setIsSucess(true);
+				setTimeout(function () {
+					setIsOpen(false);
+					setIsSucess(false);
+				}, 2000);
+			})
+			.catch(() => {
+				alert("Houve um problema com a sua requisição, tente novamente!");
+				setIsOpen(false);
+			});
+	}
 
 	return (
 		<>
 			<Modal
-				isOpen={modalRepost}
+				isOpen={modalIsOpen}
 				onRequestClose={closeModal}
 				style={customStyles}
-				contentLabel="RepostModal"
+				contentLabel="DeletePostModal"
 			>
 				<Style>
 					{isSucess ? (
@@ -63,11 +58,11 @@ export default function RepostModal({
 							<p>
 								Are you sure you want
 								<br />
-								to repost this post?
+								to delete this post?
 							</p>
 							<div>
 								<button onClick={closeModal}>No, go back</button>
-								<button onClick={repost}>Yes, repost it</button>
+								<button onClick={deletePost}>Yes, delete it</button>
 							</div>
 						</>
 					)}

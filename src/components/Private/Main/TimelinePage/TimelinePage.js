@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { listPosts } from "../../services/linkr";
-import UploadContext from "../../Contexts/UploadContext";
-import MainLayout from "../Main/MainLayout";
+import { listPosts } from "../../../../services/linkr.js";
+import UploadContext from "../../../../Contexts/UploadContext.js";
+import Main from "../Main.js";
 
 export default function Timeline() {
-	const [posts, setPosts] = useState([]);
+	//	const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [existPost, setExistPost] = useState(null);
 	const [errorServer, setErrorServer] = useState(false);
@@ -13,7 +13,7 @@ export default function Timeline() {
 
 	const handlePosts = (posts) => {
 		setAllPosts(Array.from(posts));
-		setPosts(Array.from(posts).slice(0, posts.length));
+		//setPosts(Array.from(posts).slice(0, posts.length));
 	};
 
 	useEffect(() => {
@@ -34,10 +34,10 @@ export default function Timeline() {
 	}, [upload]);
 
 	return (
-		<MainLayout
+		<Main
 			pageTitle={"timeline"}
-			posts={posts}
-			/* setPosts={setPosts} */
+			/* posts={posts}
+			setPosts={setPosts} */
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}

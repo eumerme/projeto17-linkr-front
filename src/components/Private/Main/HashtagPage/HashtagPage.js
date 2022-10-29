@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { listPostsbyHashtags } from "../../services/linkr";
-import UploadContext from "../../Contexts/UploadContext";
-import MainLayout from "../Main/MainLayout";
+import { listPostsbyHashtags } from "../../../../services/linkr.js";
+import UploadContext from "../../../../Contexts/UploadContext.js";
+import Main from "../Main.js";
 
 export default function HashtagPage() {
 	const params = useParams();
 
-	const [posts, setPosts] = useState([]);
+	//const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
@@ -26,10 +26,10 @@ export default function HashtagPage() {
 	}, [params.hashtag, upload]);
 
 	return (
-		<MainLayout
+		<Main
 			pageTitle={"hashtag"}
-			posts={posts}
-			/* setPosts={setPosts} */
+			/*posts={posts}
+			 setPosts={setPosts} */
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}
