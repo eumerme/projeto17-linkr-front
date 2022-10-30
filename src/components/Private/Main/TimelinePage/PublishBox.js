@@ -3,88 +3,94 @@ import styled from "styled-components";
 import UploadContext from "../../../../Contexts/UploadContext.js";
 import { insertHashtag, publish } from "../../../../services/linkr.js";
 
+function searchHashtag(comment, auth) {
+	const hashtag = comment.split(" ").filter((value) => value.includes("#"));
+	hashtag.forEach((value) => {
+		const hashtagText = value.replace("#", "");
+		const body = { hashtagText, id: auth.id };
+		insertHashtag(body).then().catch();
+	});
+}
+
 export default function PublishBox() {
-	const [url, setUrl] = useState("");
-	const [comment, setComment] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [msgBtn, setMsgBtn] = useState("Publish");
-	const { upload, setUpload } = useContext(UploadContext);
+	const { uploadPosts, setUploadPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
+	const [publishForm, setPublishForm] = useState({
+		url: "",
+		comment: "",
+	});
 
-	function publishPost(event) {
-		event.preventDefault();
+	const handleInputs = (e) => {
+		setPublishForm({
+			...publishForm,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleForm = (e) => {
+		e.preventDefault();
 		setIsDisabled(true);
 		setMsgBtn("Publishing...");
-		if (url === " ") {
-			setTimeout(function () {
-				alert("É necessário compartilhar uma Url para publicar!");
-				setIsDisabled(false);
-				setMsgBtn("Publish");
-			}, 1000);
-		} else {
-			publish({ url, comment })
-				.then(() => {
-					setUpload(!upload);
-					setTimeout(() => {
-						setMsgBtn("Publish");
-						setIsDisabled(false);
-						setUrl("");
-						setComment("");
-					}, 1200);
-					if (comment.includes("#")) {
-						const hashtag = comment
-							.split(" ")
-							.filter((value) => value.includes("#"));
+		const body = { ...publishForm };
 
-						hashtag.forEach((value) => {
-							const hashtagText = value.replace("#", "");
-							insertHashtag({ hashtagText, id: auth.id })
-								.then(() => setUpload(!upload))
-								.catch();
-						});
-					}
-				})
-				.catch((error) => {
-					if (error.response.status === 401) {
-						alert("Sessão expirada, faça login novamente!");
-						localStorage.clear("linkr");
-						window.location.reload();
-					} else {
-						alert("Houve um erro ao publicar seu link");
-						setMsgBtn("Publish");
-						setUrl("");
-						setComment("");
-						setIsDisabled(false);
-					}
-				});
-		}
-	}
+		publish(body)
+			.then(() => {
+				setUploadPosts(!uploadPosts);
+				if (publishForm.comment.includes("#")) {
+					searchHashtag(publishForm.comment, auth);
+				}
+
+				setTimeout(() => {
+					setMsgBtn("Publish");
+					setIsDisabled(false);
+					setPublishForm({ url: "", comment: "" });
+				}, 1200);
+			})
+			.catch((error) => {
+				if (error.response.status === 401) {
+					alert("Sessão expirada, faça login novamente");
+					localStorage.clear("linkr");
+					window.location.reload();
+				} else {
+					alert("Houve um erro ao publicar seu link");
+					setMsgBtn("Publish");
+					setIsDisabled(false);
+					setPublishForm({ url: "", comment: "" });
+				}
+			});
+	};
 
 	return (
 		<Publish>
 			<div>
-				<img src={auth.image} alt="profileImg"></img>
+				<img src={auth.image} alt="profileImg" />
 			</div>
-			<form onSubmit={publishPost} isDisabled={isDisabled}>
+			<Form onSubmit={handleForm} isDisabled={isDisabled}>
 				<p>What are you going to share today?</p>
 				<input
-					value={url}
-					onChange={(e) => setUrl(e.target.value)}
-					disabled={isDisabled}
-					type="text"
+					type="url"
 					placeholder="http://..."
 					required
-				></input>
-				<input
-					value={comment}
-					onChange={(e) => setComment(e.target.value)}
+					value={publishForm.url}
+					name="url"
+					onChange={handleInputs}
 					disabled={isDisabled}
+				/>
+				<input
 					type="text"
 					placeholder="Awesome article about..."
 					required
-				></input>
-				<button type="onSubmit">{msgBtn}</button>
-			</form>
+					value={publishForm.comment}
+					name="comment"
+					onChange={handleInputs}
+					disabled={isDisabled}
+				/>
+				<button type="onSubmit" disabled={isDisabled}>
+					{msgBtn}
+				</button>
+			</Form>
 		</Publish>
 	);
 }
@@ -96,82 +102,80 @@ const Publish = styled.div`
 	background-color: #ffffff;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	display: flex;
-	font-family: "Lato", sans-serif;
-	margin-bottom: 30px;
+	justify-content: center;
+	align-items: center;
+	padding: 3% 4%;
+	margin-bottom: 35px;
+
 	div {
-		width: 86px;
-		display: flex;
-		justify-content: center;
+		width: auto;
+		height: 100%;
 	}
+
 	img {
 		width: 50px;
 		height: 50px;
-		border-radius: 27px;
-		margin: 16px 0 0 0;
-		object-fit: cover;
 	}
-	form {
-		width: 90%;
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		p {
-			font-size: 20px;
-			font-weight: 300;
-			line-height: 24px;
-			color: #707070;
-			margin: 21px 0 15px 0;
-		}
-		input {
-			width: 95%;
-			height: 30px;
-			background-color: #efefef;
-			border: none;
-			border-radius: 5px;
-			margin: 0 0 5px 0;
-			padding: 0 0 0 13px;
-			font-size: 15px;
-			font-weight: 300;
-			line-height: 18px;
-			color: #949494;
-			::placeholder {
-			}
-			:focus {
-				outline: 0;
-			}
-		}
-		input:nth-child(3) {
-			height: 66px;
-		}
-		button {
-			width: 112px;
-			height: 31px;
-			border-radius: 5px;
-			background-color: #1877f2;
-			border: none;
-			color: #ffffff;
-			font-size: 14px;
-			font-weight: 700;
-			line-height: 16.8px;
-			position: absolute;
-			bottom: 5px;
-			right: 5%;
-			cursor: pointer;
-		}
-	}
+
 	@media screen and (max-width: 611px) {
 		width: 100%;
 		max-width: 611px;
 		border-radius: 0px;
+
 		div {
 			display: none;
 		}
+
 		form {
-			width: 100%;
-			align-items: center;
-			button {
-				right: 2.5%;
-			}
+			padding: 0;
 		}
+	}
+`;
+
+const Form = styled.form`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-end;
+	padding-left: 20px;
+
+	p {
+		width: 100%;
+		font-size: 20px;
+		font-weight: 300;
+		color: #707070;
+		margin-bottom: 15px;
+	}
+
+	input {
+		width: 100%;
+		height: 30px;
+		background-color: #efefef;
+		border: none;
+		outline: none;
+		border-radius: 5px;
+		padding-left: 13px;
+		font-size: 15px;
+		font-weight: 300;
+		opacity: ${(props) => (props.isDisabled ? "0.6" : "1")};
+	}
+	input:nth-child(3) {
+		margin: 7px 0;
+		height: 66px;
+	}
+	button {
+		width: 112px;
+		height: 31px;
+		font-size: 14px;
+		font-weight: 700;
+		color: #ffffff;
+		border: inherit;
+		outline: inherit;
+		border-radius: 5px;
+		background-color: #1877f2;
+		opacity: ${(props) => (props.isDisabled ? "0.6" : "1")};
+		cursor: pointer;
 	}
 `;

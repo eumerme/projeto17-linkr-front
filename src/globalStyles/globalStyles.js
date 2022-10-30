@@ -68,6 +68,7 @@ const GlobalStyle = createGlobalStyle`
     
     img{
         object-fit: cover;
+        border-radius: 50%;
     }
 `;
 

@@ -35,11 +35,7 @@ export default function SingUp() {
 				navigate("/");
 			})
 			.catch((error) => {
-				if (error.response.status === 422) alert("Dados Inválidos!");
-				if (error.response.status === 409) alert("E-mail já cadastrado!");
-
-				//alert(error.response.data[0]);
-				console.log(error);
+				alert(error.response.data.message);
 				setIsDisabled(false);
 				setMsgBtn("Sign Up");
 			});

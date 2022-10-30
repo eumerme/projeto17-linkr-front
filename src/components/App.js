@@ -11,11 +11,14 @@ import { useState } from "react";
 
 export default function App() {
 	const [upload, setUpload] = useState(true);
+	const [uploadPosts, setUploadPosts] = useState(false);
 
 	return (
 		<>
 			<GlobalStyle />
-			<UploadContext.Provider value={{ upload, setUpload }}>
+			<UploadContext.Provider
+				value={{ upload, setUpload, uploadPosts, setUploadPosts }}
+			>
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<SignIn />} />

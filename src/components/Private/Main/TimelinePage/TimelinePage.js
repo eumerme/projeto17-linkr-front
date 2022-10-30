@@ -4,12 +4,13 @@ import UploadContext from "../../../../Contexts/UploadContext.js";
 import Main from "../Main.js";
 
 export default function Timeline() {
+	console.log("chamou timeline");
 	//	const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [existPost, setExistPost] = useState(null);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
-	const { upload } = useContext(UploadContext);
+	const { uploadPosts } = useContext(UploadContext);
 
 	const handlePosts = (posts) => {
 		setAllPosts(Array.from(posts));
@@ -31,7 +32,7 @@ export default function Timeline() {
 				})
 				.catch(() => setErrorServer(true));
 		}, 500);
-	}, [upload]);
+	}, [uploadPosts]);
 
 	return (
 		<Main

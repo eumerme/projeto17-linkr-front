@@ -57,7 +57,7 @@ export default function Main({
 		}, 2000);
 	} */
 
-	console.log({ name, title });
+	console.log("chamoi main");
 	return (
 		<Container>
 			<Navbar />

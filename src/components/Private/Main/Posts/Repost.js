@@ -82,7 +82,8 @@ export default function RepostModal({
 const Style = styled.div`
 	width: 597px;
 	height: 262px;
-	background: #333333;
+	//	background: #333333;
+	background: crimson;
 	border-radius: 50px;
 	font-family: "Lato", sans-serif;
 	display: flex;

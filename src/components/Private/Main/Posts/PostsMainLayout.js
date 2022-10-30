@@ -291,6 +291,7 @@ const Container = styled.div`
 	width: 100%;
 	max-width: 611px;
 	background-color: #171717;
+	//background-color: crimson;
 	min-height: 276px;
 	border-radius: 16px;
 	display: flex;
@@ -496,7 +497,14 @@ const RePost = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	background-color: #1e1e1e;
+	//background-color: #1e1e1e;
+	background-color: blue;
+
+	@media screen and (max-width: 611px) {
+		width: 100%;
+		border-radius: 0;
+		min-height: 232px;
+	}
 `;
 
 const InfoRePost = styled.div`
