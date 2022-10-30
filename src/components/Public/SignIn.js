@@ -6,21 +6,28 @@ import { login } from "../../services/linkr.js";
 
 export default function SignIn() {
 	const navigate = useNavigate();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [msgBtn, setMsgBtn] = useState("Log In");
 	const auth = JSON.parse(localStorage.getItem("linkr"));
+	const [signinForm, setSigninForm] = useState({
+		email: "",
+		password: "",
+	});
 
-	function loginUser(event) {
-		event.preventDefault();
+	const handleInputs = (e) => {
+		setSigninForm({
+			...signinForm,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleForm = (e) => {
+		e.preventDefault();
 		setIsDisabled(true);
 		setMsgBtn(<ThreeDots color="#FFF" height={45} width={45} />);
+		const body = { ...signinForm };
 
-		const promisse = login({
-			email,
-			password,
-		});
+		const promisse = login(body);
 		promisse
 			.then((res) => {
 				localStorage.setItem(
@@ -39,41 +46,39 @@ export default function SignIn() {
 				setMsgBtn("Log In");
 				alert("Email ou senha incorretos!");
 			});
-	}
-
-	function redirect() {
-		if (!isDisabled) {
-			navigate("/sign-up");
-		}
-	}
+	};
 
 	return (
 		<>
 			{auth ? (
 				<Navigate to="/timeline" />
 			) : (
-				<AuthLayout onSubmit={loginUser} isDisabled={isDisabled}>
+				<AuthLayout onSubmit={handleForm} isDisabled={isDisabled}>
 					<input
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
 						type="email"
-						disabled={isDisabled}
 						placeholder="e-mail"
 						required
+						value={signinForm.email}
+						name="email"
+						onChange={handleInputs}
+						disabled={isDisabled}
 					/>
 					<input
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						minLength="3"
 						type="password"
-						disabled={isDisabled}
 						placeholder="password"
 						required
+						value={signinForm.password}
+						name="password"
+						onChange={handleInputs}
+						disabled={isDisabled}
+						minLength="3"
 					/>
 					<button type="submit" disabled={isDisabled}>
 						{msgBtn}
 					</button>
-					<p onClick={() => redirect()}>First time? Create an account!</p>
+					<p onClick={() => navigate("/sign-up")}>
+						First time? Create an account!
+					</p>
 				</AuthLayout>
 			)}
 		</>

@@ -26,7 +26,6 @@ export default function SingUp() {
 		e.preventDefault();
 		setIsDisabled(true);
 		setMsgBtn(<ThreeDots color="#FFF" height={45} width={45} />);
-
 		const body = { ...signupForm };
 
 		const promise = register(body);
@@ -44,13 +43,6 @@ export default function SingUp() {
 				setIsDisabled(false);
 				setMsgBtn("Sign Up");
 			});
-	};
-	console.log(signupForm);
-
-	const redirectToSignin = () => {
-		if (!isDisabled) {
-			navigate("/");
-		}
 	};
 
 	return (
@@ -94,7 +86,7 @@ export default function SingUp() {
 					disabled={isDisabled}
 				/>
 				<button disabled={isDisabled}>{msgBtn}</button>
-				<p onClick={() => redirectToSignin()}>Switch back to log in</p>
+				<p onClick={() => navigate("/")}>Switch back to log in</p>
 			</AuthLayout>
 		</>
 	);

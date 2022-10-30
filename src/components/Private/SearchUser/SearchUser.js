@@ -17,7 +17,7 @@ export default function SearchUser() {
 	useEffect(() => {
 		/* setTimeout(() => {
 		}, 300); */
-		if (search?.length >= 3) {
+		if (search?.length > 0) {
 			const promise = listUsers();
 			promise
 				.then((res) => {
@@ -26,6 +26,7 @@ export default function SearchUser() {
 				.catch();
 		}
 		if (search?.length === 0) {
+			//	setUsers("");
 			setUserFiltered("");
 		}
 	}, [search.length, upload]);
@@ -33,9 +34,9 @@ export default function SearchUser() {
 	//console.log({ search, users, userFiltered });
 
 	useMemo(() => {
-		if (users.length !== 0 && search.length >= 3) {
+		if (users.length !== 0 && search.length > 2) {
+			const lowerSearch = search.toLowerCase();
 			setTimeout(() => {
-				const lowerSearch = search.toLowerCase();
 				setUserFiltered(
 					users.filter((user) => user.name.toLowerCase().includes(lowerSearch))
 				);
