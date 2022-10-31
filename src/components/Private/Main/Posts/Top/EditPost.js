@@ -1,7 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { editPostText, insertHashtag } from "../../../../../services/linkr.js";
+import UploadContext from "../../../../../Contexts/UploadContext.js";
+import searchHashtag from "../../../commom/searchHashtag.js";
 
 export default function EditPost({
 	isEditing,
@@ -15,6 +16,12 @@ export default function EditPost({
 	const [isDisabled, setIsDisabled] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const inputRef = useRef(null);
+	const {
+		setUploadHashtagTrending,
+		uploadHashtagTrending,
+		setUploadPosts,
+		uploadPosts,
+	} = useContext(UploadContext);
 
 	const pageClickEvent = (e) => {
 		if (e.keyCode === 27) {
@@ -30,38 +37,32 @@ export default function EditPost({
 		}
 	}, [isEditing]);
 
-	function changeText(e) {
+	const textEdited = (e) => {
 		if (e.key === "Enter") {
-			if (comment.includes("#")) {
-				const hashtag = comment
-					.split(" ")
-					.filter((value) => value.includes("#"));
-
-				hashtag.forEach((value) => {
-					const hashtagText = value.replace("#", "");
-					insertHashtag({ hashtagText, id: auth.id })
-						.then(() => setUpload(!upload))
-						.catch();
-				});
-			}
 			setIsDisabled(true);
-			editPostText({ comment: comment }, id)
+			searchHashtag({
+				userId: auth.id,
+				comment,
+				uploadHashtagTrending,
+				setUploadHashtagTrending,
+			});
+			editPostText({ comment, id })
 				.then(() => {
 					setIsEditing(!isEditing);
-					setUpload(!upload);
+					setUploadPosts(!uploadPosts);
 				})
 				.catch(() => {
 					alert("Não foi possível salvar suas alterações, tente novamente!");
 					setIsDisabled(false);
 				});
 		}
-	}
+	};
 
 	return (
 		<EditText
 			value={comment}
 			onChange={(e) => setComment(e.target.value)}
-			onKeyPress={changeText}
+			onKeyPress={textEdited}
 			ref={inputRef}
 			type="text"
 			disabled={isDisabled}
@@ -72,12 +73,14 @@ export default function EditPost({
 
 const EditText = styled.input`
 	width: 100%;
-	border: none;
+	height: auto;
+	border: inherit;
+	outline: inherit;
+	border-radius: 8px;
 	cursor: pointer;
 	margin-bottom: 10px;
 	padding: 4px 9px;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 17px;
 	color: #4c4c4c;
 `;

@@ -37,8 +37,8 @@ export default function PublishBox() {
 				setUploadPosts(!uploadPosts);
 				if (publishForm.comment.includes("#")) {
 					searchHashtag({
-						comment: publishForm.comment,
 						userId: auth.id,
+						comment: publishForm.comment,
 						uploadHashtagTrending,
 						setUploadHashtagTrending,
 					});

@@ -1,8 +1,8 @@
 import { insertHashtag } from "../../../services/linkr.js";
 
 export default function searchHashtag({
-	comment,
 	userId,
+	comment,
 	uploadHashtagTrending,
 	setUploadHashtagTrending,
 }) {
