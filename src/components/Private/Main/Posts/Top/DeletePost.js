@@ -20,18 +20,18 @@ const customStyles = {
 
 export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 	const [isSucess, setIsSucess] = useState(false);
-	const { upload, setUpload } = useContext(UploadContext);
+	const { uploadPosts, setUploadPosts } = useContext(UploadContext);
 
-	function closeModal() {
+	const closeModal = () => {
 		setIsOpen(false);
-	}
+	};
 
-	function deletePost() {
+	const deletePost = () => {
 		deleteFatalPost(postId)
 			.then(() => {
-				setUpload(!upload);
+				setUploadPosts(!uploadPosts);
 				setIsSucess(true);
-				setTimeout(function () {
+				setTimeout(() => {
 					setIsOpen(false);
 					setIsSucess(false);
 				}, 2000);
@@ -40,7 +40,7 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 				alert("Houve um problema com a sua requisição, tente novamente!");
 				setIsOpen(false);
 			});
-	}
+	};
 
 	return (
 		<>
@@ -55,11 +55,7 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 						<Loading />
 					) : (
 						<>
-							<p>
-								Are you sure you want
-								<br />
-								to delete this post?
-							</p>
+							<p>Are you sure you want to delete this post?</p>
 							<div>
 								<button onClick={closeModal}>No, go back</button>
 								<button onClick={deletePost}>Yes, delete it</button>
@@ -77,37 +73,36 @@ const Style = styled.div`
 	height: 262px;
 	background: #333333;
 	border-radius: 50px;
-	font-family: "Lato", sans-serif;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-evenly;
+	padding: 5% 10%;
 
 	p {
 		font-weight: 700;
 		font-size: 34px;
-		line-height: 41px;
+		line-height: 40px;
 		text-align: center;
 		color: #ffffff;
-		padding: 39px 0;
 	}
 
 	div {
-		width: 80%;
+		width: 100%;
 		display: flex;
 		justify-content: space-evenly;
 
 		button {
-			width: 134px;
-			height: 37px;
+			width: auto;
+			height: auto;
 			background: #ffffff;
 			border: none;
 			border-radius: 5px;
 			font-weight: 700;
 			font-size: 18px;
-			line-height: 22px;
 			color: #1877f2;
 			cursor: pointer;
+			padding: 10px;
 		}
 
 		button:nth-child(2) {
@@ -117,14 +112,19 @@ const Style = styled.div`
 	}
 	@media screen and (max-width: 645px) {
 		width: 300px;
+		height: 200px;
 		p {
 			font-size: 20px;
-			line-height: 30px;
+			line-height: 25px;
+		}
+		button:nth-child(1) {
+			margin-right: 2.5px;
+		}
+		button:nth-child(2) {
+			margin-left: 2.5px;
 		}
 		button:nth-child(1),
 		button:nth-child(2) {
-			width: 80px;
-			height: 50px;
 			font-size: 14px;
 		}
 	}

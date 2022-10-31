@@ -12,18 +12,19 @@ import EditPost from "./EditPost.js";
 import { useNavigate } from "react-router-dom";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 
+const tagStyle = {
+	fontSize: "17px",
+	fontWeight: 700,
+	color: "#FFFFFF",
+	cursor: "pointer",
+	margin: 0,
+};
+
 export default function Top({ userId, name, authId, postId, text, openModal }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
-	const { upload, setUpload } = useContext(UploadContext);
-
-	const tagStyle = {
-		fontSize: "17px",
-		fontWeight: 700,
-		color: "#FFFFFF",
-		cursor: "pointer",
-		margin: 0,
-	};
+	const { upload, setUpload, uploadPosts, setUploadPosts } =
+		useContext(UploadContext);
 
 	return (
 		<>
@@ -60,8 +61,8 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 					isEditing={isEditing}
 					setIsEditing={setIsEditing}
 					text={text}
-					upload={upload}
-					setUpload={setUpload}
+					upload={uploadPosts}
+					setUpload={setUploadPosts}
 				/>
 			) : (
 				<ReactTagify
