@@ -1,4 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadContext from "../../../Contexts/UploadContext.js";
@@ -10,37 +16,40 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
-	const { setUpload, upload } = useContext(UploadContext);
+	const {
+		setUpload,
+		upload,
+		uploadHashtagTrending,
+		uploadFollowButton,
+		setUploadFollowButton,
+	} = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const user = Number(followeeId) === auth.id;
 	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
-		setTimeout(function () {
-			listHashtags()
-				.then((data) => {
-					setHashtags(data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}, 1000);
-	}, [upload]);
+		listHashtags()
+			.then((data) => {
+				setHashtags(data.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [uploadHashtagTrending]);
 
 	const handleFollow = () => {
 		setIsDisabled(true);
 
-		setTimeout(function () {
-			toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
+		setTimeout(() => {
+			const body = { userId: auth.id, followeeId: Number(followeeId) };
+			toggleFollow(body)
 				.then(() => {
-					setUpload(!upload);
+					//setUpload(!upload);
+					setUploadFollowButton(!uploadFollowButton);
 					setIsDisabled(false);
 				})
 				.catch((error) => {
-					alert(
-						"Não foi possível executar a operação. Tente novamente em instantes."
-					);
 					setIsDisabled(false);
 				});
 		}, 1000);

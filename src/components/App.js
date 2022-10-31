@@ -13,6 +13,9 @@ export default function App() {
 	const [upload, setUpload] = useState(true);
 	const [uploadPosts, setUploadPosts] = useState(false);
 	const [uploadComments, setUploadComments] = useState(false);
+	const [uploadHashtagTrending, setUploadHashtagTrending] = useState(false);
+	const [uploadFollowButton, setUploadFollowButton] = useState(false);
+
 	return (
 		<>
 			<GlobalStyle />
@@ -24,6 +27,10 @@ export default function App() {
 					setUploadPosts,
 					uploadComments,
 					setUploadComments,
+					uploadHashtagTrending,
+					setUploadHashtagTrending,
+					uploadFollowButton,
+					setUploadFollowButton,
 				}}
 			>
 				<BrowserRouter>

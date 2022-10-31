@@ -1,21 +1,18 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import UploadContext from "../../../../Contexts/UploadContext.js";
-import { insertHashtag, publish } from "../../../../services/linkr.js";
-
-function searchHashtag(comment, auth) {
-	const hashtag = comment.split(" ").filter((value) => value.includes("#"));
-	hashtag.forEach((value) => {
-		const hashtagText = value.replace("#", "");
-		const body = { hashtagText, id: auth.id };
-		insertHashtag(body).then().catch();
-	});
-}
+import { publish } from "../../../../services/linkr.js";
+import searchHashtag from "../../commom/searchHashtag.js";
 
 export default function PublishBox() {
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [msgBtn, setMsgBtn] = useState("Publish");
-	const { uploadPosts, setUploadPosts } = useContext(UploadContext);
+	const {
+		uploadPosts,
+		setUploadPosts,
+		uploadHashtagTrending,
+		setUploadHashtagTrending,
+	} = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [publishForm, setPublishForm] = useState({
 		url: "",
@@ -39,7 +36,12 @@ export default function PublishBox() {
 			.then(() => {
 				setUploadPosts(!uploadPosts);
 				if (publishForm.comment.includes("#")) {
-					searchHashtag(publishForm.comment, auth);
+					searchHashtag({
+						comment: publishForm.comment,
+						userId: auth.id,
+						uploadHashtagTrending,
+						setUploadHashtagTrending,
+					});
 				}
 
 				setTimeout(() => {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { isFollowing, listUserPosts } from "../../../../services/linkr.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
@@ -7,7 +7,7 @@ import Main from "../Main.js";
 export default function UserPage() {
 	const { id } = useParams();
 	const { state } = useLocation();
-	const { setUpload, uploaPosts } = useContext(UploadContext);
+	const { uploadFollowButton, uploaPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	//const [posts, setPosts] = useState([]);
@@ -29,14 +29,14 @@ export default function UserPage() {
 		}, 1000);
 	}, [id, uploaPosts]);
 
-	useMemo(() => {
+	useLayoutEffect(() => {
 		const body = { userId: auth.id, followeeId: Number(id) };
 		isFollowing(body)
 			.then((res) => {
 				setFollow(res.data.follows);
 			})
 			.catch();
-	}, [id]);
+	}, [id, uploadFollowButton]);
 
 	return (
 		<Main
