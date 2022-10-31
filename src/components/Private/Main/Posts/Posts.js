@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect, useMemo } from "react";
 import {
-	getUrlMetadata,
 	listCommentsPost,
 	listLikes,
 	listReposts,
@@ -10,16 +9,24 @@ import {
 import { renderLikes, like } from "../../../../services/likes.js";
 
 import DeleteModal from "./Top/DeletePost.js";
-import { useNavigate } from "react-router-dom";
 import UploadContext from "../../../../Contexts/UploadContext.js";
 import CommentsBox from "./Comments/CommentsBox.js";
 
 import AsideActions from "./AsideActions/AsideActions.js";
 import Top from "./Top/Top.js";
 
-export default function Posts({ postId, img, text, name, url, userId }) {
+export default function Posts({
+	userId,
+	name,
+	postId,
+	img,
+	text,
+	url,
+	urlTitle,
+	urlImage,
+	urlDescription,
+}) {
 	const [modalIsOpen, setIsOpen] = useState(false);
-	const [urlData, setUrlData] = useState({});
 	const { upload, setUpload, uploadComments } = useContext(UploadContext);
 	const [ListLikes, setListLikes] = useState([]);
 	const [clickLike, setClickLike] = useState({});
@@ -33,21 +40,6 @@ export default function Posts({ postId, img, text, name, url, userId }) {
 	}
 
 	useEffect(() => {
-		getUrlMetadata(url)
-			.then((data) => {
-				const auxData = data.data.data;
-				setUrlData({
-					title: auxData.title,
-					description: auxData.description,
-					image: auxData.image.url,
-					url: auxData.url,
-				});
-				if (!urlData.title) {
-					setUpload(!upload);
-				}
-			})
-			.catch();
-
 		listLikes(postId)
 			.then((data) => {
 				const likesData = data.data[0];
@@ -90,12 +82,12 @@ export default function Posts({ postId, img, text, name, url, userId }) {
 
 						<UrlDatas onClick={() => window.open(url, "_blank")}>
 							<div>
-								<h1>{urlData.title}</h1>
-								<p>{urlData.description}</p>
-								<h2>{urlData.url}</h2>
+								<h1>{urlTitle}</h1>
+								<p>{urlDescription}</p>
+								<h2>{url}</h2>
 							</div>
 							<div className="UrlImage">
-								<img src={urlData.image} alt="" />
+								<img src={urlImage} alt="" />
 							</div>
 						</UrlDatas>
 					</Description>
@@ -182,7 +174,7 @@ const Description = styled.div`
 			//background-color: #b7b7b7;
 			span {
 				width: auto;
-				padding: 4px;
+				padding: 0 4px;
 			}
 		}
 	}
@@ -245,7 +237,7 @@ const UrlDatas = styled.div`
 		img {
 			width: 100%;
 			height: 100%;
-			border-radius: 0 10px 10px 0;
+			border-radius: 0 11px 11px 0;
 		}
 	}
 
@@ -267,11 +259,6 @@ const UrlDatas = styled.div`
 
 		.UrlImage {
 			min-width: 32%;
-		}
-
-		.UrlImage img {
-			width: 100%;
-			height: 100%;
 		}
 	}
 `;

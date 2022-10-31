@@ -62,6 +62,7 @@ export default function Main({
 	} */
 
 	console.log("chamoi main");
+	console.log(allPosts);
 	return (
 		<Container>
 			<Navbar />
@@ -74,13 +75,15 @@ export default function Main({
 						{allPosts.map((value, index) => (
 							<Posts
 								key={index}
-								postId={value.id}
-								img={value.imageUrl}
-								url={value.url}
-								text={value.text}
 								userId={value.userId}
 								name={value.name}
-								repostBy={value.repostBy}
+								postId={value.id}
+								img={value.imageUrl}
+								text={value.text}
+								url={value.url}
+								urlTitle={value.urlTitle}
+								urlImage={value.urlImage}
+								urlDescription={value.urlDescription}
 							/>
 						))}
 					</>
