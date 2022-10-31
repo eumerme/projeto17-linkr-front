@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { deleteFatalPost } from "../../../../services/linkr.js";
-import Loading from "../../commom/Loading.js";
+import { deleteFatalPost } from "../../../../../services/linkr.js";
+import Loading from "../../../commom/Loading.js";
 import { useState, useContext } from "react";
-import UploadContext from "../../../../Contexts/UploadContext.js";
+import UploadContext from "../../../../../Contexts/UploadContext.js";
 
 const customStyles = {
 	content: {
@@ -18,7 +18,7 @@ const customStyles = {
 	},
 };
 
-export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
+export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 	const [isSucess, setIsSucess] = useState(false);
 	const { upload, setUpload } = useContext(UploadContext);
 
@@ -27,7 +27,7 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, id }) {
 	}
 
 	function deletePost() {
-		deleteFatalPost(id)
+		deleteFatalPost(postId)
 			.then(() => {
 				setUpload(!upload);
 				setIsSucess(true);

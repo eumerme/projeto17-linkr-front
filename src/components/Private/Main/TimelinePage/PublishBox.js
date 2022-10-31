@@ -86,6 +86,7 @@ export default function PublishBox() {
 					name="comment"
 					onChange={handleInputs}
 					disabled={isDisabled}
+					maxLength={200}
 				/>
 				<button type="onSubmit" disabled={isDisabled}>
 					{msgBtn}

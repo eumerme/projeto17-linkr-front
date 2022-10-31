@@ -6,7 +6,7 @@ import { Container, MainLayout, Title } from "./styles.js";
 //import InfiniteScroll from "react-infinite-scroller";
 import PublishBox from "../Main/TimelinePage/PublishBox.js";
 //import HasNewPost from "../Timeline/HasNewPost";
-import PostsMainLayout from "./Posts/PostsMainLayout.js";
+import Posts from "./Posts/Posts.js";
 import Loading from "../commom/Loading.js";
 import Navbar from "../Navbar/Navbar.js";
 //import UploadContext from "../../../Contexts/UploadContext.js";
@@ -72,9 +72,9 @@ export default function Main({
 				{allPosts.length !== 0 ? (
 					<>
 						{allPosts.map((value, index) => (
-							<PostsMainLayout
+							<Posts
 								key={index}
-								id={value.id}
+								postId={value.id}
 								img={value.imageUrl}
 								url={value.url}
 								text={value.text}

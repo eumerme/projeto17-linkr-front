@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import { editPostText, insertHashtag } from "../../../../services/linkr.js";
+import { editPostText, insertHashtag } from "../../../../../services/linkr.js";
 
 export default function EditPost({
 	isEditing,
