@@ -6,44 +6,29 @@ import UploadContext from "../../../../../Contexts/UploadContext.js";
 import Comment from "./Comment.js";
 
 export default function CommentsBox({ seeComments, postId, commentsData }) {
-	const inputRef = useRef(null);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
-
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [comment, setComment] = useState("");
+	const { uploadComments, setUploadComments } = useContext(UploadContext);
 
-	const { upload, setUpload } = useContext(UploadContext);
-
-	useEffect(() => {
-		if (seeComments) {
-			inputRef.current.focus();
-		}
-	}, [seeComments]);
-
-	function sendWithEnter(e) {
-		if (e.key !== "Enter") return;
-		publishComment();
-	}
-
-	function publishComment(e) {
+	const publishComment = (e) => {
 		if (e) e.preventDefault();
-		if (comment === " ") {
-			alert("É necessário escrever alguma coisa no seu comentário!");
-		}
 		setIsDisabled(true);
 		const body = { comment, postId };
 
 		createNewComment(body)
 			.then(() => {
 				setComment("");
-				setUpload(!upload);
 				setIsDisabled(false);
+				setUploadComments(!uploadComments);
 			})
 			.catch(() => {
 				alert("Ops! Houve um erro com sua requisição, tente novamente");
 				setIsDisabled(false);
 			});
-	}
+	};
+
+	console.log(uploadComments);
 
 	return (
 		<>
@@ -64,18 +49,18 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
 
 				<WriterArea>
 					<img src={auth.image} alt="" />
-					<TextArea>
+					<TextArea onSubmit={publishComment}>
 						<input
 							placeholder="write a comment..."
 							value={comment}
 							onChange={(e) => setComment(e.target.value)}
-							ref={inputRef}
-							onKeyPress={sendWithEnter}
 							type="text"
 							disabled={isDisabled}
+							required
+							autoFocus
 						></input>
-						<SendIcon>
-							<TiLocationArrowOutline onClick={publishComment} />
+						<SendIcon type="onSubmity" disabled={isDisabled}>
+							<TiLocationArrowOutline />
 						</SendIcon>
 					</TextArea>
 				</WriterArea>
@@ -88,21 +73,20 @@ const Container = styled.div`
 	width: 100%;
 	max-width: 611px;
 	height: auto;
-	background: #1e1e1e;
+	background-color: #1e1e1e;
 	border-radius: 0 0 16px 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 
 	@media screen and (max-width: 611px) {
-		width: 100%;
 		border-radius: 0;
 	}
 `;
 
 const AllComents = styled.div`
 	width: 100%;
-	max-height: 285px;
+	max-height: 320px;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
@@ -113,10 +97,6 @@ const AllComents = styled.div`
 	::-webkit-scrollbar {
 		display: none;
 	}
-
-	@media screen and (max-width: 611px) {
-		max-height: 244px;
-	}
 `;
 
 const WriterArea = styled.div`
@@ -125,6 +105,7 @@ const WriterArea = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	border-top: 1px solid #353535;
 
 	img {
 		width: 50px;
@@ -140,9 +121,8 @@ const WriterArea = styled.div`
 	}
 `;
 
-const TextArea = styled.div`
+const TextArea = styled.form`
 	width: 89.7%;
-	//position: relative;
 	display: flex;
 	align-items: center;
 	background-color: #252525;
@@ -171,8 +151,12 @@ const TextArea = styled.div`
 	}
 `;
 
-const SendIcon = styled.div`
+const SendIcon = styled.button`
+	background-color: inherit;
+	outline: inherit;
+	border: inherit;
 	font-size: 25px;
 	color: #f3f3f3;
 	padding-right: 5px;
+	padding-top: 5px;
 `;

@@ -12,12 +12,19 @@ import { useState } from "react";
 export default function App() {
 	const [upload, setUpload] = useState(true);
 	const [uploadPosts, setUploadPosts] = useState(false);
-
+	const [uploadComments, setUploadComments] = useState(false);
 	return (
 		<>
 			<GlobalStyle />
 			<UploadContext.Provider
-				value={{ upload, setUpload, uploadPosts, setUploadPosts }}
+				value={{
+					upload,
+					setUpload,
+					uploadPosts,
+					setUploadPosts,
+					uploadComments,
+					setUploadComments,
+				}}
 			>
 				<BrowserRouter>
 					<Routes>

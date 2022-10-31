@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
-import { redirectToHashtagPage } from "../../../commom/resirectTo.js";
+import { redirectToUserpage } from "../../../commom/resirectTo.js";
 
 export default function Comment({
 	imageUrl,
@@ -17,7 +16,7 @@ export default function Comment({
 	const { upload, setUpload } = useContext(UploadContext);
 	const [commentTag, setCommentTag] = useState(<p>{name}</p>);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (commentUserId === postUserId) {
 			setCommentTag("• post’s author");
 		}
@@ -31,9 +30,9 @@ export default function Comment({
 			<Container>
 				<img src={imageUrl} alt="" />
 				<Infos>
-					<p
+					<h1
 						onClick={() => {
-							redirectToHashtagPage({
+							redirectToUserpage({
 								setUpload,
 								upload,
 								name,
@@ -43,7 +42,7 @@ export default function Comment({
 						}}
 					>
 						{name} <strong>{commentTag}</strong>
-					</p>
+					</h1>
 					<span>{comment}</span>
 				</Infos>
 			</Container>
@@ -53,25 +52,25 @@ export default function Comment({
 
 const Container = styled.div`
 	width: 93%;
-	min-height: 50px;
-	max-height: auto;
-	line-height: 17px;
+	min-height: 80px;
 	border-bottom: 1px solid #353535;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: flex-start;
-	padding: 10px 0;
+	padding-top: 10px;
+	overflow-y: scroll;
+
+	::-webkit-scrollbar {
+		display: none;
+	}
 
 	//background-color: blueviolet;
 
 	img {
+		position: sticky;
+		top: 4px;
 		width: 50px;
 		height: 50px;
-		border-radius: 26.5px;
-	}
-
-	@media screen and (max-width: 611px) {
-		min-height: 61px;
 	}
 
 	@media screen and (max-width: 352px) {
@@ -84,18 +83,19 @@ const Container = styled.div`
 
 const Infos = styled.div`
 	width: 100%;
-	min-height: 50px;
-	max-height: auto;
+	height: auto;
 	padding-left: 10px;
+	padding-bottom: 10px;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
 	word-wrap: break-word;
 	word-break: break-all;
+	line-height: 20px;
 
-	//background-color: lightgreen;
+	//background-color: blue;
 
-	p {
+	h1 {
 		font-weight: 700;
 		font-size: 14px;
 		color: #f3f3f3;
@@ -113,8 +113,5 @@ const Infos = styled.div`
 		font-size: 14px;
 		color: #acacac;
 		padding-top: 5px;
-	}
-	@media screen and (max-width: 611px) {
-		width: 85%;
 	}
 `;

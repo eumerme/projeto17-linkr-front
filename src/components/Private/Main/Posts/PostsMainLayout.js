@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import {
 	getUrlMetadata,
 	listCommentsPost,
@@ -25,20 +25,12 @@ import {
 	redirectToUserpage,
 } from "../../commom/resirectTo.js";
 
-export default function PostsMainLayout({
-	id,
-	img,
-	text,
-	name,
-	url,
-	userId,
-	repostBy,
-}) {
+export default function PostsMainLayout({ id, img, text, name, url, userId }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	//	const [modalRepost, setModalRepost] = useState(false);
 	const [urlData, setUrlData] = useState({});
-	const { upload, setUpload } = useContext(UploadContext);
+	const { upload, setUpload, uploadComments } = useContext(UploadContext);
 	const [ListLikes, setListLikes] = useState([]);
 	const [clickLike, setClickLike] = useState({});
 	const [seeComments, setSeeComments] = useState(false);
@@ -81,13 +73,15 @@ export default function PostsMainLayout({
 				setListLikes(likesData);
 			})
 			.catch();
+	}, [upload]);
 
+	useMemo(() => {
 		listCommentsPost(id)
 			.then((data) => {
 				setCommentsData(data.data);
 			})
 			.catch();
-	}, [upload]);
+	}, [uploadComments]);
 
 	const tagStyle = {
 		fontSize: "17px",
@@ -411,14 +405,13 @@ const UrlDatas = styled.div`
 `;
 
 const CommentsWrapper = styled.div`
-	background-color: crimson;
-	width: auto;
+	width: 100%;
 	height: auto;
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(5px);
 	transition: opacity 1s ease, transform 1s ease, visibility 1s;
-
+	background-color: crimson;
 	${(props) => {
 		if (props.seeComments) {
 			return `

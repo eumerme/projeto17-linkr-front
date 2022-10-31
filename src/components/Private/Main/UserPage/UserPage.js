@@ -7,7 +7,7 @@ import Main from "../Main.js";
 export default function UserPage() {
 	const { id } = useParams();
 	const { state } = useLocation();
-	//const { setUpload, upload } = useContext(UploadContext);
+	const { setUpload, uploaPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	//const [posts, setPosts] = useState([]);
@@ -27,7 +27,7 @@ export default function UserPage() {
 				})
 				.catch(() => setErrorServer(true));
 		}, 1000);
-	}, [id]);
+	}, [id, uploaPosts]);
 
 	useMemo(() => {
 		const body = { userId: auth.id, followeeId: Number(id) };
