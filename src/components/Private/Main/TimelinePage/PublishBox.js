@@ -147,6 +147,7 @@ const Form = styled.form`
 		font-weight: 300;
 		color: #707070;
 		margin-bottom: 15px;
+		padding-left: 5px;
 	}
 
 	input {

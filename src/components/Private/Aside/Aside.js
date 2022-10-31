@@ -4,6 +4,7 @@ import styled from "styled-components";
 import UploadContext from "../../../Contexts/UploadContext.js";
 import { listHashtags, toggleFollow } from "../../../services/linkr.js";
 import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
+import { redirectToHashtagPage } from "../commom/resirectTo.js";
 
 export default function Aside({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
@@ -64,10 +65,6 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 		};
 	}, [isActive]);
 
-	function redirect(text) {
-		setUpload(!upload);
-		navigate(`/hashtag/${text}`);
-	}
 	//	console.log({ isActive, dropdownTrending });
 
 	return (
@@ -97,7 +94,17 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 				<h2>trending</h2>
 				<ul>
 					{hashtags.map((value, index) => (
-						<li key={index} onClick={() => redirect(value.name)}>
+						<li
+							key={index}
+							onClick={() =>
+								redirectToHashtagPage({
+									setUpload,
+									upload,
+									navigate,
+									tag: value.name,
+								})
+							}
+						>
 							# {value.name}
 						</li>
 					))}

@@ -1,6 +1,6 @@
 import Aside from "../Aside/Aside.js";
 import SearchUser from "../SearchUser/SearchUser.js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 
 import { Container, MainLayout, Title } from "./styles.js";
 //import InfiniteScroll from "react-infinite-scroller";
@@ -9,13 +9,14 @@ import PublishBox from "../Main/TimelinePage/PublishBox.js";
 import PostsMainLayout from "./Posts/PostsMainLayout.js";
 import Loading from "../commom/Loading.js";
 import Navbar from "../Navbar/Navbar.js";
+//import UploadContext from "../../../Contexts/UploadContext.js";
 
 export default function Main({
 	userpage,
 	follows,
 	followeeId,
-	posts,
-	/* setPosts, */
+	/* posts,
+	setPosts, */
 	allPosts,
 	errorServer,
 	empty,
@@ -26,6 +27,7 @@ export default function Main({
 }) {
 	//	const [needRender, setNeedRender] = useState(true);
 	//	const [isRendering, setIsRendering] = useState(true);
+	//	const { upload } = useContext(UploadContext);
 	const [title, setTitle] = useState("timeline");
 
 	useEffect(() => {
@@ -35,10 +37,12 @@ export default function Main({
 				title.scrollIntoView({ block: "center", behavior: "smooth" });
 			}
 		}, 500);
+	}, []);
 
+	useLayoutEffect(() => {
 		if (pageTitle === "userpage") setTitle(`${name}'s posts`);
 		if (pageTitle === "hashtag") setTitle(`# ${hashtag}`);
-	}, []);
+	}, [hashtag, setTitle]);
 
 	/* function loaderPosts() {
 		setIsRendering(true);

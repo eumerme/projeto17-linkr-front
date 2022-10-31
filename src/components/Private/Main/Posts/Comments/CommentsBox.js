@@ -1,17 +1,11 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
 import { useContext, useEffect, useRef, useState } from "react";
-import { createNewComment } from "../../../../services/linkr.js";
-import UploadContext from "../../../../Contexts/UploadContext.js";
-import CommentArea from "./OneCommentPost.js";
+import { createNewComment } from "../../../../../services/linkr.js";
+import UploadContext from "../../../../../Contexts/UploadContext.js";
+import Comment from "./Comment.js";
 
-export default function CommentsBox({
-	seeComments,
-	postId,
-	commentsData,
-	itsReposts,
-}) {
-	const dropdownRef = useRef(null);
+export default function CommentsBox({ seeComments, postId, commentsData }) {
 	const inputRef = useRef(null);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
@@ -21,7 +15,7 @@ export default function CommentsBox({
 	const { upload, setUpload } = useContext(UploadContext);
 
 	useEffect(() => {
-		if (seeComments && !itsReposts) {
+		if (seeComments) {
 			inputRef.current.focus();
 		}
 	}, [seeComments]);
@@ -53,10 +47,10 @@ export default function CommentsBox({
 
 	return (
 		<>
-			<Container ref={dropdownRef} seeComments={seeComments}>
+			<Container>
 				<AllComents>
 					{commentsData.map((value, index) => (
-						<CommentArea
+						<Comment
 							key={index}
 							imageUrl={value.imageUrl}
 							commentUserId={value.commentUserId}
@@ -67,27 +61,24 @@ export default function CommentsBox({
 						/>
 					))}
 				</AllComents>
-				{itsReposts ? (
-					<></>
-				) : (
-					<WriterArea>
-						<img src={auth.image} alt="" />
-						<TextArea>
-							<input
-								placeholder="write a comment..."
-								value={comment}
-								onChange={(e) => setComment(e.target.value)}
-								ref={inputRef}
-								onKeyPress={sendWithEnter}
-								type="text"
-								disabled={isDisabled}
-							></input>
-							<div>
-								<TiLocationArrowOutline onClick={publishComment} />
-							</div>
-						</TextArea>
-					</WriterArea>
-				)}
+
+				<WriterArea>
+					<img src={auth.image} alt="" />
+					<TextArea>
+						<input
+							placeholder="write a comment..."
+							value={comment}
+							onChange={(e) => setComment(e.target.value)}
+							ref={inputRef}
+							onKeyPress={sendWithEnter}
+							type="text"
+							disabled={isDisabled}
+						></input>
+						<SendIcon>
+							<TiLocationArrowOutline onClick={publishComment} />
+						</SendIcon>
+					</TextArea>
+				</WriterArea>
 			</Container>
 		</>
 	);
@@ -99,25 +90,9 @@ const Container = styled.div`
 	height: auto;
 	background: #1e1e1e;
 	border-radius: 0 0 16px 16px;
-	display: none;
+	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-family: "Lato", sans-serif;
-	transform: translateY(-3px);
-	transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-
-	${(props) => {
-		if (props.seeComments) {
-			return `
-              &&& {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-                display: flex;			
-              } 
-            `;
-		}
-	}}
 
 	@media screen and (max-width: 611px) {
 		width: 100%;
@@ -132,6 +107,8 @@ const AllComents = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	//background-color: coral;
 
 	::-webkit-scrollbar {
 		display: none;
@@ -150,47 +127,52 @@ const WriterArea = styled.div`
 	align-items: center;
 
 	img {
-		width: 39px;
-		height: 39px;
-		border-radius: 26.5px;
-		object-fit: cover;
+		width: 50px;
+		height: 50px;
+		margin-right: 10px;
+	}
+
+	@media screen and (max-width: 352px) {
+		img {
+			width: 45px;
+			height: 45px;
+		}
 	}
 `;
 
 const TextArea = styled.div`
 	width: 89.7%;
-	position: relative;
+	//position: relative;
+	display: flex;
+	align-items: center;
+	background-color: #252525;
+	border-radius: 8px;
 
 	input {
 		width: 100%;
 		height: 39px;
 		border: none;
-		background: #252525;
+		background-color: inherit;
 		border-radius: 8px;
 		color: #f3f3f3;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 17px;
-		padding: 0 0 0 15px;
-
-		:focus {
-			outline: 0;
-		}
+		padding: 0 10px;
+		outline: inherit;
 
 		::placeholder {
 			color: #575757;
 		}
 	}
 
-	div {
-		position: absolute;
-		right: 8px;
-		top: 8px;
-		font-size: 25px;
-		color: #f3f3f3;
-	}
-
 	@media screen and (max-width: 611px) {
 		width: 85%;
 	}
+`;
+
+const SendIcon = styled.div`
+	font-size: 25px;
+	color: #f3f3f3;
+	padding-right: 5px;
 `;

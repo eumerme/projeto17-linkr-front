@@ -7,7 +7,7 @@ import Main from "../Main.js";
 export default function UserPage() {
 	const { id } = useParams();
 	const { state } = useLocation();
-	const { setUpload, upload } = useContext(UploadContext);
+	//const { setUpload, upload } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	//const [posts, setPosts] = useState([]);
@@ -17,7 +17,7 @@ export default function UserPage() {
 	const [follow, setFollow] = useState(null);
 
 	useEffect(() => {
-		setTimeout(function () {
+		setTimeout(() => {
 			listUserPosts(id)
 				.then((res) => {
 					//setUpload(!upload);
@@ -30,12 +30,13 @@ export default function UserPage() {
 	}, [id]);
 
 	useMemo(() => {
-		isFollowing({ userId: auth.id, followeeId: Number(id) })
+		const body = { userId: auth.id, followeeId: Number(id) };
+		isFollowing(body)
 			.then((res) => {
 				setFollow(res.data.follows);
 			})
 			.catch();
-	}, [id, upload]);
+	}, [id]);
 
 	return (
 		<Main

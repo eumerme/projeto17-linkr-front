@@ -93,7 +93,6 @@ const ToggleArrow = styled.div`
 const ButtonWrapper = styled.div`
 	width: 120px;
 	height: 47px;
-	font-family: "Lato", sans-serif;
 	font-weight: 700;
 	font-size: 17px;
 	display: flex;

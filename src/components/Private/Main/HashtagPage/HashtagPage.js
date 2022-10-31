@@ -11,7 +11,7 @@ export default function HashtagPage() {
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
-	const { upload } = useContext(UploadContext);
+	//const { uploadHashtagPosts } = useContext(UploadContext);
 
 	useEffect(() => {
 		setTimeout(function () {
@@ -23,7 +23,7 @@ export default function HashtagPage() {
 				})
 				.catch(() => setErrorServer(true));
 		}, 500);
-	}, [params.hashtag, upload]);
+	}, [params.hashtag]);
 
 	return (
 		<Main
