@@ -2,6 +2,7 @@ import { useContext, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
+import { isFollowing } from "../../../../../services/linkr.js";
 import { redirectToUserpage } from "../../../commom/resirectTo.js";
 
 export default function Comment({
@@ -10,16 +11,19 @@ export default function Comment({
 	postUserId,
 	name,
 	comment,
-	followee,
+	userId,
 }) {
 	const navigate = useNavigate();
 	const { upload, setUpload } = useContext(UploadContext);
-	const [commentTag, setCommentTag] = useState(<p>{name}</p>);
+	const [commentTag, setCommentTag] = useState("");
 
 	useLayoutEffect(() => {
-		if (followee !== null) {
-			setCommentTag("• following");
-		}
+		const body = { userId: userId, followeeId: commentUserId };
+		isFollowing(body).then((res) => {
+			if (res.data.follows === true) {
+				setCommentTag("• following");
+			}
+		});
 		if (commentUserId === postUserId) {
 			setCommentTag("• post’s author");
 		}

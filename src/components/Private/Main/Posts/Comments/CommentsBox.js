@@ -5,7 +5,7 @@ import { createNewComment } from "../../../../../services/linkr.js";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 import Comment from "./Comment.js";
 
-export default function CommentsBox({ seeComments, postId, comments }) {
+export default function CommentsBox({ postId, comments, commentUserId }) {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [comment, setComment] = useState("");
@@ -14,7 +14,7 @@ export default function CommentsBox({ seeComments, postId, comments }) {
 	const publishComment = (e) => {
 		e.preventDefault();
 		setIsDisabled(true);
-		const body = { comment, postId };
+		const body = { comment, postId, commentUserId };
 
 		createNewComment(body)
 			.then(() => {
@@ -25,7 +25,7 @@ export default function CommentsBox({ seeComments, postId, comments }) {
 			.catch(() => setIsDisabled(false));
 	};
 
-	console.log(uploadComments);
+	console.log(comments);
 
 	return (
 		<>
@@ -39,7 +39,7 @@ export default function CommentsBox({ seeComments, postId, comments }) {
 							postUserId={value.postUserId}
 							name={value.name}
 							comment={value.comment}
-							followee={value.followee}
+							userId={auth.id}
 						/>
 					))}
 				</AllComents>

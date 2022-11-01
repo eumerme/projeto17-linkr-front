@@ -58,7 +58,7 @@ export default function Posts({
 			.catch();
 	}, [uploadComments]);
 
-	console.log({ comments });
+	//console.log({ comments });
 
 	return (
 		<>
@@ -100,7 +100,7 @@ export default function Posts({
 						<CommentsBox
 							postId={postId}
 							comments={comments}
-							seeComments={seeComments}
+							commentUserId={auth.id}
 						/>
 					</CommentsWrapper>
 				) : (
