@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect, useMemo } from "react";
 import {
-	listCommentsPost,
+	listComments,
 	listLikes,
 	listReposts,
 	getRepostById,
@@ -27,11 +27,11 @@ export default function Posts({
 	urlDescription,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
-	const { upload, setUpload, uploadComments } = useContext(UploadContext);
+	const { upload, uploadComments } = useContext(UploadContext);
 	const [ListLikes, setListLikes] = useState([]);
 	const [clickLike, setClickLike] = useState({});
 	const [seeComments, setSeeComments] = useState(false);
-	const [commentsData, setCommentsData] = useState([]);
+	const [comments, setComments] = useState([]);
 	const [msg, setMsg] = useState("");
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
@@ -49,13 +49,16 @@ export default function Posts({
 			.catch();
 	}, [upload]);
 
-	useMemo(() => {
-		listCommentsPost(postId)
+	useEffect(() => {
+		console.log({ postId });
+		listComments(postId)
 			.then((data) => {
-				setCommentsData(data.data);
+				setComments(data.data);
 			})
 			.catch();
 	}, [uploadComments]);
+
+	console.log({ comments });
 
 	return (
 		<>
@@ -68,7 +71,7 @@ export default function Posts({
 						msg={msg}
 						setSeeComments={setSeeComments}
 						seeComments={seeComments}
-						commentsLength={commentsData.length}
+						commentsLength={comments.length}
 					/>
 					<Description>
 						<Top
@@ -96,7 +99,7 @@ export default function Posts({
 					<CommentsWrapper seeComments={seeComments}>
 						<CommentsBox
 							postId={postId}
-							commentsData={commentsData}
+							comments={comments}
 							seeComments={seeComments}
 						/>
 					</CommentsWrapper>

@@ -17,11 +17,11 @@ export default function Comment({
 	const [commentTag, setCommentTag] = useState(<p>{name}</p>);
 
 	useLayoutEffect(() => {
-		if (commentUserId === postUserId) {
-			setCommentTag("• post’s author");
-		}
 		if (followee !== null) {
 			setCommentTag("• following");
+		}
+		if (commentUserId === postUserId) {
+			setCommentTag("• post’s author");
 		}
 	}, []);
 

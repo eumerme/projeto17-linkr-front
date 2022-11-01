@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { TiLocationArrowOutline } from "react-icons/ti";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { createNewComment } from "../../../../../services/linkr.js";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 import Comment from "./Comment.js";
 
-export default function CommentsBox({ seeComments, postId, commentsData }) {
+export default function CommentsBox({ seeComments, postId, comments }) {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [comment, setComment] = useState("");
 	const { uploadComments, setUploadComments } = useContext(UploadContext);
 
 	const publishComment = (e) => {
-		if (e) e.preventDefault();
+		e.preventDefault();
 		setIsDisabled(true);
 		const body = { comment, postId };
 
@@ -22,10 +22,7 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
 				setIsDisabled(false);
 				setUploadComments(!uploadComments);
 			})
-			.catch(() => {
-				alert("Ops! Houve um erro com sua requisição, tente novamente");
-				setIsDisabled(false);
-			});
+			.catch(() => setIsDisabled(false));
 	};
 
 	console.log(uploadComments);
@@ -34,7 +31,7 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
 		<>
 			<Container>
 				<AllComents>
-					{commentsData.map((value, index) => (
+					{comments.map((value, index) => (
 						<Comment
 							key={index}
 							imageUrl={value.imageUrl}
@@ -46,7 +43,6 @@ export default function CommentsBox({ seeComments, postId, commentsData }) {
 						/>
 					))}
 				</AllComents>
-
 				<WriterArea>
 					<img src={auth.image} alt="" />
 					<TextArea onSubmit={publishComment}>
@@ -155,6 +151,7 @@ const SendIcon = styled.button`
 	background-color: inherit;
 	outline: inherit;
 	border: inherit;
+	border-radius: 8px;
 	font-size: 25px;
 	color: #f3f3f3;
 	padding-right: 5px;

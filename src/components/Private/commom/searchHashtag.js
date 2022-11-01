@@ -6,7 +6,6 @@ export default function searchHashtag({
 	uploadHashtagTrending,
 	setUploadHashtagTrending,
 }) {
-	console.log(comment, userId, uploadHashtagTrending, setUploadHashtagTrending);
 	const hashtag = comment.split(" ").filter((value) => value.includes("#"));
 	hashtag.forEach((value) => {
 		const hashtagText = value.replace("#", "");

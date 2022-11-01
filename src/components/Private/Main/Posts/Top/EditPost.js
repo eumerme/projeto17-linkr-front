@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState, useContext } from "react";
-import { editPostText, insertHashtag } from "../../../../../services/linkr.js";
+import { editPostText } from "../../../../../services/linkr.js";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 import searchHashtag from "../../../commom/searchHashtag.js";
 

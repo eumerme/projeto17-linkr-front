@@ -30,12 +30,8 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 
 	useEffect(() => {
 		listHashtags()
-			.then((data) => {
-				setHashtags(data.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			.then((data) => setHashtags(data.data))
+			.catch((error) => console.log(error));
 	}, [uploadHashtagTrending]);
 
 	const handleFollow = () => {
@@ -46,12 +42,10 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 			toggleFollow(body)
 				.then(() => {
 					//setUpload(!upload);
+					setIsDisabled(false);
 					setUploadFollowButton(!uploadFollowButton);
-					setIsDisabled(false);
 				})
-				.catch((error) => {
-					setIsDisabled(false);
-				});
+				.catch(() => setIsDisabled(false));
 		}, 1000);
 	};
 
@@ -119,14 +113,12 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 					))}
 				</ul>
 			</TrendingBox>
-			<HashtagTrendingMobile
+			<TrendingBoxMobile
 				isActive={isActive}
-				onClick={() => {
-					setIsActive(!isActive);
-				}}
+				onClick={() => setIsActive(!isActive)}
 			>
 				#
-			</HashtagTrendingMobile>
+			</TrendingBoxMobile>
 		</Container>
 	);
 }
@@ -136,7 +128,7 @@ const Container = styled.div`
 	height: auto;
 	padding: 103px 0 0 50px;
 	position: sticky;
-	top: ${(props) => (props.pageTitle === "timeline" ? "153px" : "72px")};
+	top: ${({ pageTitle }) => (pageTitle === "timeline" ? "153px" : "72px")};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
@@ -159,7 +151,7 @@ const TrendingBox = styled.div`
 	height: 406px;
 	border-radius: 16px;
 	background-color: #171717;
-	margin-top: ${(props) => (props.pageTitle === "hashtag" ? "81px" : "0")};
+	margin-top: ${({ pageTitle }) => (pageTitle === "hashtag" ? "81px" : "0")};
 	margin-bottom: 28px;
 
 	h2 {
@@ -201,15 +193,14 @@ const TrendingBox = styled.div`
 		left: 50px;
 		margin-top: 0;
 
-		${(props) => {
-			if (props.isActive) {
+		${({ isActive }) => {
+			if (isActive) {
 				return `
-              &&& {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);				
-              } 
-            `;
+				&&& {
+					opacity: 1;
+					visibility: visible;
+					transform: translateY(0);				
+				}`;
 			}
 		}}
 	}
@@ -231,18 +222,18 @@ const FollowButton = styled.button`
 	height: 31px;
 	margin-bottom: 50px;
 	border-radius: 5px;
-	background-color: ${(props) => (props.follows ? "#ffffff" : "#1877f2")};
+	background-color: ${({ follows }) => (follows ? "#ffffff" : "#1877f2")};
 	font-size: 14px;
 	font-weight: 700;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: ${(props) => (props.follows ? "#1877f2" : "#ffffff")};
+	color: ${({ follows }) => (follows ? "#1877f2" : "#ffffff")};
 	cursor: pointer;
 	outline: inherit;
 	border: inherit;
-	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
-	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+	opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+	visibility: ${({ user }) => (user ? "hidden" : "visible")};
 
 	@media screen and (max-width: 1024px) {
 		display: none;
@@ -258,8 +249,8 @@ const FollowIcon = styled.button`
 	border: inherit;
 	outline: inherit;
 	cursor: pointer;
-	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
-	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+	opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+	visibility: ${({ user }) => (user ? "hidden" : "visible")};
 	:hover {
 		opacity: 0.6;
 		transition: 0.4s;
@@ -270,7 +261,7 @@ const FollowIcon = styled.button`
 	}
 `;
 
-const HashtagTrendingMobile = styled.div`
+const TrendingBoxMobile = styled.div`
 	@media screen and (max-width: 1024px) {
 		width: 35px;
 		height: 35px;
@@ -284,7 +275,7 @@ const HashtagTrendingMobile = styled.div`
 		margin-top: 0;
 		font-size: 35px;
 		font-weight: 500;
-		color: ${(props) => (props.isActive ? "#1877f2" : "#ffffff")};
+		color: ${({ isActive }) => (isActive ? "#1877f2" : "#ffffff")};
 		cursor: pointer;
 		font-family: "Passion One";
 		:hover {

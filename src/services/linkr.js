@@ -83,7 +83,7 @@ async function insertHashtag(body) {
 	return await axios.post(`${BASE_URL}/hashtags`, body, config);
 }
 
-async function listCommentsPost(postId) {
+async function listComments(postId) {
 	const config = createHeaders();
 	return await axios.get(`${BASE_URL}/timeline/comments/${postId}`, config);
 }
@@ -138,7 +138,7 @@ export {
 	likes,
 	listLikes,
 	insertHashtag,
-	listCommentsPost,
+	listComments,
 	createNewComment,
 	listReposts,
 	toggleFollow,
