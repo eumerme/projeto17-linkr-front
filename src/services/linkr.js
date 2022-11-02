@@ -64,7 +64,8 @@ async function listUsers() {
 	return axios.get(`${BASE_URL}/listusers`, config);
 }
 
-function likes(body) {
+function likeDislike(body) {
+	console.log(body);
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/timeline/like`, body, config);
 }
@@ -136,7 +137,7 @@ export {
 	editPostText,
 	deleteFatalPost,
 	listUserPosts,
-	likes,
+	likeDislike,
 	listLikes,
 	insertHashtag,
 	listComments,

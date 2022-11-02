@@ -1,40 +1,37 @@
 import styled from "styled-components";
-import ReactTooltip from "react-tooltip";
 import { AiOutlineComment } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { likes } from "../../../../../services/linkr";
+import Likes from "../Likes/Likes";
 
 export default function AsideActions({
 	img,
-	clickLike,
-	ListLikes,
-	msg,
+	postId,
+	userId,
+	username,
 	setSeeComments,
 	seeComments,
 	commentsLength,
+	likedByNames,
+	likedByIds,
+	likes,
+	liked,
 }) {
 	return (
 		<Infos>
 			<img src={img} alt="" />
-			<div>{clickLike.draw}</div>
-			<p data-tip={msg}>{ListLikes.likes} likes</p>
-			<ReactTooltip
-				backgroundColor="#FFFFFF"
-				className="toopTip"
-				place="bottom"
+			<Likes
+				postId={postId}
+				userId={userId}
+				likedByNames={likedByNames}
+				likedByIds={likedByIds}
+				likes={likes}
+				liked={liked}
 			/>
-			<ReactTooltip
-				backgroundColor="#FFFFFF"
-				className="toopTip"
-				place="bottom"
-			/>
-			<AiOutlineComment
-				style={{
-					cursor: "pointer",
-					color: "#FFFFFF",
-					fontSize: "28px",
-				}}
-				onClick={() => setSeeComments(!seeComments)}
-			/>
-			<p>{commentsLength} comments</p>
+			<div>
+				<AiOutlineComment onClick={() => setSeeComments(!seeComments)} />
+				<p>{commentsLength} comments</p>
+			</div>
 		</Infos>
 	);
 }
@@ -49,7 +46,13 @@ const Infos = styled.div`
 	//background-color: crimson;
 	div {
 		cursor: pointer;
+		color: #ffffff;
+		font-size: 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
+
 	img {
 		width: 50px;
 		height: 50px;

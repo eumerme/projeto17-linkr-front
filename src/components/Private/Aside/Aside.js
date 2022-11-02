@@ -41,7 +41,6 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 			const body = { userId: auth.id, followeeId: Number(followeeId) };
 			toggleFollow(body)
 				.then(() => {
-					//setUpload(!upload);
 					setIsDisabled(false);
 					setUploadFollowButton(!uploadFollowButton);
 				})

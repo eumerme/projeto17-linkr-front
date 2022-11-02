@@ -1,12 +1,17 @@
 import styled from "styled-components";
-import { useState, useContext, useEffect, useMemo } from "react";
+import {
+	useState,
+	useContext,
+	useEffect,
+	useMemo,
+	useLayoutEffect,
+} from "react";
 import {
 	listComments,
 	listLikes,
 	listReposts,
 	getRepostById,
 } from "../../../../services/linkr.js";
-import { renderLikes, like } from "../../../../services/likes.js";
 
 import DeleteModal from "./Top/DeletePost.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
@@ -27,48 +32,50 @@ export default function Posts({
 	urlDescription,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
-	const { upload, uploadComments } = useContext(UploadContext);
-	const [ListLikes, setListLikes] = useState([]);
-	const [clickLike, setClickLike] = useState({});
+	const { uploadComments, uploadLikes } = useContext(UploadContext);
+	const [likedByNames, setLikedByNames] = useState([]);
+	const [likedByIds, setLikedByIds] = useState([]);
+	const [likes, setLikes] = useState([]);
+	const [liked, setLiked] = useState(null);
+
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
-	const [msg, setMsg] = useState("");
+
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	function openModal() {
 		setIsOpen(true);
 	}
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		listLikes(postId)
-			.then((data) => {
-				const likesData = data.data[0];
-				renderLikes(likesData, setClickLike, setMsg, auth.id);
-				setListLikes(likesData);
+			.then((res) => {
+				setLikedByNames(res.data.likes.likedByNames);
+				setLikedByIds(res.data.likes.likedByIds);
+				setLikes(res.data.likes.likes);
+				setLiked(res.data.liked);
 			})
 			.catch();
-	}, [upload]);
+	}, [uploadLikes]);
 
 	useEffect(() => {
-		console.log({ postId });
 		listComments(postId)
-			.then((data) => {
-				setComments(data.data);
-			})
+			.then((res) => setComments(res.data))
 			.catch();
 	}, [uploadComments]);
-
-	//console.log({ comments });
 
 	return (
 		<>
 			<Container>
 				<Content>
 					<AsideActions
+						postId={postId}
+						userId={auth.id}
 						img={img}
-						clickLike={clickLike}
-						ListLikes={ListLikes}
-						msg={msg}
+						likedByNames={likedByNames}
+						likedByIds={likedByIds}
+						likes={likes}
+						liked={liked}
 						setSeeComments={setSeeComments}
 						seeComments={seeComments}
 						commentsLength={comments.length}

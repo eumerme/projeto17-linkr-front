@@ -15,6 +15,7 @@ export default function App() {
 	const [uploadComments, setUploadComments] = useState(false);
 	const [uploadHashtagTrending, setUploadHashtagTrending] = useState(false);
 	const [uploadFollowButton, setUploadFollowButton] = useState(false);
+	const [uploadLikes, setUploadLikes] = useState(false);
 
 	return (
 		<>
@@ -31,6 +32,8 @@ export default function App() {
 					setUploadHashtagTrending,
 					uploadFollowButton,
 					setUploadFollowButton,
+					uploadLikes,
+					setUploadLikes,
 				}}
 			>
 				<BrowserRouter>

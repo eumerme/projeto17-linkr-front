@@ -35,6 +35,7 @@ export default function PublishBox() {
 		publish(body)
 			.then(() => {
 				setUploadPosts(!uploadPosts);
+
 				if (publishForm.comment.includes("#")) {
 					searchHashtag({
 						userId: auth.id,
@@ -83,7 +84,6 @@ export default function PublishBox() {
 				<input
 					type="text"
 					placeholder="Awesome article about..."
-					required
 					value={publishForm.comment}
 					name="comment"
 					onChange={handleInputs}
