@@ -36,7 +36,7 @@ export default function Posts({
 	const [likedByNames, setLikedByNames] = useState([]);
 	const [likedByIds, setLikedByIds] = useState([]);
 	const [likes, setLikes] = useState([]);
-	const [liked, setLiked] = useState(null);
+	const [liked, setLiked] = useState(false);
 
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
