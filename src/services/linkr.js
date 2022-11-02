@@ -33,6 +33,17 @@ function listPosts() {
 	return axios.get(`${BASE_URL}/timeline/posts`, config);
 }
 
+async function editPostText(body, id) {
+	console.log(body, id);
+	const config = createHeaders();
+	return axios.patch(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
+}
+
+async function deleteFatalPost(id) {
+	const config = createHeaders();
+	return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
+}
+
 async function userLogout() {
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/logout`, {}, config);
@@ -51,16 +62,6 @@ async function listPostsbyHashtags(body, limit) {
 async function listUsers() {
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/listusers`, config);
-}
-
-async function editPostText(body, id) {
-	const config = createHeaders();
-	return axios.put(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
-}
-
-async function deleteFatalPost(id) {
-	const config = createHeaders();
-	return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
 }
 
 function likes(body) {

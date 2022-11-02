@@ -4,14 +4,9 @@ import { editPostText } from "../../../../../services/linkr.js";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 import searchHashtag from "../../../commom/searchHashtag.js";
 
-export default function EditPost({
-	isEditing,
-	setIsEditing,
-	text,
-	id,
-	upload,
-	setUpload,
-}) {
+export default function EditPost({ isEditing, setIsEditing, text, id }) {
+	console.log(isEditing, text, id);
+
 	const [comment, setComment] = useState(text);
 	const [isDisabled, setIsDisabled] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -37,19 +32,25 @@ export default function EditPost({
 		}
 	}, [isEditing]);
 
+	console.log("comment ", comment);
+
 	const textEdited = (e) => {
 		if (e.key === "Enter") {
 			setIsDisabled(true);
-			searchHashtag({
+
+			const body = {
 				userId: auth.id,
 				comment,
 				uploadHashtagTrending,
 				setUploadHashtagTrending,
-			});
-			editPostText({ comment, id })
+			};
+			searchHashtag(body);
+
+			editPostText({ comment }, id)
 				.then(() => {
 					setIsEditing(!isEditing);
 					setUploadPosts(!uploadPosts);
+					setUploadHashtagTrending(!uploadHashtagTrending);
 				})
 				.catch(() => {
 					alert("Não foi possível salvar suas alterações, tente novamente!");

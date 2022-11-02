@@ -20,7 +20,12 @@ const customStyles = {
 
 export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 	const [isSucess, setIsSucess] = useState(false);
-	const { uploadPosts, setUploadPosts } = useContext(UploadContext);
+	const {
+		uploadPosts,
+		setUploadPosts,
+		uploadHashtagTrending,
+		setUploadHashtagTrending,
+	} = useContext(UploadContext);
 
 	const closeModal = () => {
 		setIsOpen(false);
@@ -30,6 +35,7 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 		deleteFatalPost(postId)
 			.then(() => {
 				setUploadPosts(!uploadPosts);
+				setUploadHashtagTrending(!uploadHashtagTrending);
 				setIsSucess(true);
 				setTimeout(() => {
 					setIsOpen(false);

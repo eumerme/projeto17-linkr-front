@@ -61,8 +61,6 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 					isEditing={isEditing}
 					setIsEditing={setIsEditing}
 					text={text}
-					upload={uploadPosts}
-					setUpload={setUploadPosts}
 				/>
 			) : (
 				<ReactTagify
