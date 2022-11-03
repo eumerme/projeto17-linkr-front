@@ -4,6 +4,7 @@ import { deleteFatalPost } from "../../../../../services/linkr.js";
 import Loading from "../../../commom/Loading.js";
 import { useState, useContext } from "react";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
+Modal.setAppElement(document.querySelector(".root"));
 
 const customStyles = {
 	content: {

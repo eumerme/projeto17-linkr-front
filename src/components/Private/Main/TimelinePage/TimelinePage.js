@@ -1,10 +1,9 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { listPosts } from "../../../../services/linkr.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
 import Main from "../Main.js";
 
 export default function Timeline() {
-	console.log("chamou timeline");
 	//	const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [existPost, setExistPost] = useState(null);
@@ -17,8 +16,8 @@ export default function Timeline() {
 		//setPosts(Array.from(posts).slice(0, posts.length));
 	};
 
-	useEffect(() => {
-		setTimeout(function () {
+	useLayoutEffect(() => {
+		setTimeout(() => {
 			listPosts()
 				.then((res) => {
 					if (res.data.followSomeone === true) {

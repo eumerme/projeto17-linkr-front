@@ -1,9 +1,8 @@
 import { IoIosSearch } from "react-icons/io";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { listUsers } from "../../../services/linkr.js";
 import { useNavigate } from "react-router-dom";
-import UploadContext from "../../../Contexts/UploadContext.js";
 
 export default function SearchUser() {
 	const [users, setUsers] = useState([]);
@@ -12,42 +11,36 @@ export default function SearchUser() {
 	const navigate = useNavigate();
 	const searchRef = useRef(null);
 	const [isActive, setIsActive] = useState(false);
-	const { setUpload, upload } = useContext(UploadContext);
 
 	useEffect(() => {
-		/* setTimeout(() => {
-		}, 300); */
-		if (search?.length > 0) {
-			const promise = listUsers();
-			promise
-				.then((res) => {
-					setUsers(res.data);
-				})
-				.catch();
-		}
-		if (search?.length === 0) {
-			//	setUsers("");
-			setUserFiltered("");
-		}
-	}, [search.length, upload]);
+		setTimeout(() => {
+			if (search?.length > 0) {
+				const promise = listUsers();
+				promise
+					.then((res) => {
+						setUsers(res.data);
+					})
+					.catch();
+			}
+		}, 300);
 
-	//console.log({ search, users, userFiltered });
+		if (search?.length === 0) {
+			setUsers([]);
+			setUserFiltered([]);
+		}
+	}, [search]);
 
 	useMemo(() => {
 		if (users.length !== 0 && search.length > 2) {
 			const lowerSearch = search.toLowerCase();
-			setTimeout(() => {
-				setUserFiltered(
-					users.filter((user) => user.name.toLowerCase().includes(lowerSearch))
-				);
-			}, 300);
+			setUserFiltered(
+				users.filter((user) => user.name.toLowerCase().includes(lowerSearch))
+			);
 		}
-	}, [search.length]);
-
-	//console.log({ users, userFiltered });
+	}, [search]);
 
 	function redirectTo(id, name) {
-		setUpload(!upload);
+		setIsActive(!isActive);
 		navigate(`/user/${id}`, {
 			replace: false,
 			state: { name },
@@ -71,7 +64,7 @@ export default function SearchUser() {
 		return () => {
 			window.removeEventListener("click", pageClickEvent);
 		};
-	}, [isActive, upload]);
+	}, [isActive]);
 
 	return (
 		<Container>

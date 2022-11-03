@@ -42,7 +42,7 @@ export default function Main({
 	useLayoutEffect(() => {
 		if (pageTitle === "userpage") setTitle(`${name}'s posts`);
 		if (pageTitle === "hashtag") setTitle(`# ${hashtag}`);
-	}, [hashtag, setTitle]);
+	}, [hashtag, setTitle, name]);
 
 	/* function loaderPosts() {
 		setIsRendering(true);
@@ -61,7 +61,6 @@ export default function Main({
 		}, 2000);
 	} */
 
-	console.log("chamoi main");
 	console.log(allPosts);
 	return (
 		<Container>

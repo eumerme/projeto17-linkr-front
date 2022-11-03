@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import { AiOutlineComment } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { likes } from "../../../../../services/linkr";
 import Likes from "../Likes/Likes";
 
 export default function AsideActions({
 	img,
 	postId,
 	userId,
-	username,
 	setSeeComments,
 	seeComments,
 	commentsLength,

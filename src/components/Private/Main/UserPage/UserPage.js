@@ -9,7 +9,6 @@ export default function UserPage() {
 	const { state } = useLocation();
 	const { uploadFollowButton, uploaPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
-
 	//const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
@@ -20,13 +19,12 @@ export default function UserPage() {
 		setTimeout(() => {
 			listUserPosts(id)
 				.then((res) => {
-					//setUpload(!upload);
 					setAllPosts(res.data);
 					//setPosts(res.data.slice(0, posts.length));
 					if (res.data.length === 0) setEmpty(true);
 				})
 				.catch(() => setErrorServer(true));
-		}, 1000);
+		}, 500);
 	}, [id, uploaPosts]);
 
 	useLayoutEffect(() => {

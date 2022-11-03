@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-	useState,
-	useContext,
-	useEffect,
-	useMemo,
-	useLayoutEffect,
-} from "react";
+import { useState, useContext, useEffect, useLayoutEffect } from "react";
 import {
 	listComments,
 	listLikes,
@@ -37,10 +31,8 @@ export default function Posts({
 	const [likedByIds, setLikedByIds] = useState([]);
 	const [likes, setLikes] = useState([]);
 	const [liked, setLiked] = useState(false);
-
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
-
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 
 	function openModal() {

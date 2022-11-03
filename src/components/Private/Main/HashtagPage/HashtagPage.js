@@ -1,21 +1,20 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { listPostsbyHashtags } from "../../../../services/linkr.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
 import Main from "../Main.js";
 
 export default function HashtagPage() {
-	const params = useParams();
-
+	const { hashtag } = useParams();
 	//const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
-	//const { uploadHashtagPosts } = useContext(UploadContext);
+	const { uploadPosts } = useContext(UploadContext);
 
-	useEffect(() => {
-		setTimeout(function () {
-			listPostsbyHashtags(params.hashtag)
+	useLayoutEffect(() => {
+		setTimeout(() => {
+			listPostsbyHashtags(hashtag)
 				.then((res) => {
 					setAllPosts(res.data);
 					//setPosts(res.data.slice(0, posts.length));
@@ -23,7 +22,7 @@ export default function HashtagPage() {
 				})
 				.catch(() => setErrorServer(true));
 		}, 500);
-	}, [params.hashtag]);
+	}, [hashtag, uploadPosts]);
 
 	return (
 		<Main
@@ -33,7 +32,7 @@ export default function HashtagPage() {
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}
-			hashtag={params.hashtag}
+			hashtag={hashtag}
 		/>
 	);
 }

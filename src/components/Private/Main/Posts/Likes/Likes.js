@@ -16,7 +16,6 @@ export default function Likes({
 	const { uploadLikes, setUploadLikes } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [msg, setMsg] = useState("");
-	const [like, setLike] = useState(false);
 
 	const handleLikes = () => {
 		setIsLiked(!isLiked);
@@ -25,17 +24,9 @@ export default function Likes({
 		likeDislike(body)
 			.then(() => {
 				setUploadLikes(!uploadLikes);
-				setLike(liked);
-				/* const isliked = likedByIds?.filter((value) => value === auth.id);
-				console.log({ isliked });
-				if (isliked.lenght !== 0) {
-					console.log("entrou");
-					setLike(liked);
-				} */
 			})
-			.catch((error) => console.log(error));
+			.catch();
 	};
-	console.log({ isLiked, liked });
 
 	useEffect(() => {
 		const indexUser = likedByIds
