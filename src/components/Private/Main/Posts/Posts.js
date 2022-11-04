@@ -5,7 +5,7 @@ import {
 	listReposts,
 	getRepostById,
 } from "../../../../services/linkr.js";
-import DeleteModal from "./Top/DeletePost.js";
+//import DeletePost from "./Top/DeletePost.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
 import CommentsBox from "./Comments/CommentsBox.js";
 import AsideActions from "./AsideActions/AsideActions.js";
@@ -17,6 +17,7 @@ import {
 	UrlDatas,
 	CommentsWrapper,
 } from "./styles.js";
+import HandleModal from "./Modal/Modal.js";
 
 export default function Posts({
 	userId,
@@ -38,10 +39,12 @@ export default function Posts({
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
+	const [action, setAction] = useState("");
 
-	function openModal() {
+	const openModal = (type) => {
+		setAction(type);
 		setIsOpen(true);
-	}
+	};
 
 	useLayoutEffect(() => {
 		listLikes(postId)
@@ -78,6 +81,7 @@ export default function Posts({
 						setSeeComments={setSeeComments}
 						seeComments={seeComments}
 						commentsLength={comments.length}
+						openModal={openModal}
 					/>
 					<Description>
 						<Top
@@ -112,8 +116,10 @@ export default function Posts({
 					""
 				)}
 			</Container>
-			<DeleteModal
+			<HandleModal
+				action={action}
 				postId={postId}
+				//userId={auth.id}
 				modalIsOpen={modalIsOpen}
 				setIsOpen={setIsOpen}
 			/>
@@ -271,7 +277,7 @@ const InfoRePost = styled.div`
 					/>
 				</Container>
 			</RePost>
-			<DeleteModal id={id} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+			<DeletePost id={id} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
 			<RepostModal
 				modalRepost={modalRepost}
 				setModalRepost={setModalRepost}

@@ -59,7 +59,7 @@ export default function Main({
 		}, 2000);
 	} */
 
-	console.log(allPosts);
+	console.log({ allPosts });
 	return (
 		<Container>
 			<Navbar />

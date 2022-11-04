@@ -34,14 +34,13 @@ function listPosts() {
 }
 
 async function editPostText(body, id) {
-	console.log(body, id);
 	const config = createHeaders();
 	return axios.patch(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
 }
 
-async function deleteFatalPost(id) {
+async function deleteFatalPost(postId) {
 	const config = createHeaders();
-	return axios.delete(`${BASE_URL}/timeline/posts/delete/${id}`, config);
+	return axios.delete(`${BASE_URL}/timeline/posts/delete/${postId}`, config);
 }
 
 async function userLogout() {
@@ -105,24 +104,24 @@ async function toggleFollow(body) {
 	return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
 }
 
-async function listsPostsInterval() {
+/* async function listsPostsInterval() {
 	const config = createHeaders();
 	return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
-}
+} */
 
-function listReposts(postId) {
+/* function listReposts(postId) {
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
-}
+} */
 
-function getRepostById(id) {
+/* function getRepostById(id) {
 	const config = createHeaders();
 	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
-}
+} */
 
-function newRepost(body) {
+function newRepost(id) {
 	const config = createHeaders();
-	return axios.post(`${BASE_URL}/timeline/reposts`, body, config);
+	return axios.post(`${BASE_URL}/timeline/reposts/${id}`, {}, config);
 }
 
 export {
@@ -142,10 +141,10 @@ export {
 	insertHashtag,
 	listComments,
 	createNewComment,
-	listReposts,
+	//listReposts,
 	toggleFollow,
 	isFollowing,
-	getRepostById,
+	//getRepostById,
 	newRepost,
-	listsPostsInterval,
+	//listsPostsInterval,
 };

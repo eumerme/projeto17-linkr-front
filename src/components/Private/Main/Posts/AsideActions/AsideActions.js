@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { AiOutlineComment } from "react-icons/ai";
+import { BiRepost } from "react-icons/bi";
 import Likes from "../Likes/Likes";
 
 export default function AsideActions({
@@ -14,6 +15,7 @@ export default function AsideActions({
 	likes,
 	isLiked,
 	setIsLiked,
+	openModal,
 }) {
 	return (
 		<Infos>
@@ -30,6 +32,9 @@ export default function AsideActions({
 			<div onClick={() => setSeeComments(!seeComments)}>
 				<AiOutlineComment />
 				<p>{commentsLength} comments</p>
+			</div>
+			<div onClick={() => openModal("repost")}>
+				<BiRepost />
 			</div>
 		</Infos>
 	);

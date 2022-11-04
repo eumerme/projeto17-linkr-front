@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import {
 	redirectToHashtagPage,
@@ -10,7 +10,6 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import EditPost from "./EditPost.js";
 import { useNavigate } from "react-router-dom";
-import UploadContext from "../../../../../Contexts/UploadContext.js";
 
 const tagStyle = {
 	fontSize: "17px",
@@ -23,7 +22,6 @@ const tagStyle = {
 export default function Top({ userId, name, authId, postId, text, openModal }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
-	//	const { upload, setUpload } = useContext(UploadContext);
 
 	return (
 		<>
@@ -46,7 +44,10 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 							onClick={() => setIsEditing(!isEditing)}
 						/>
 
-						<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+						<FaTrash
+							style={{ cursor: "pointer" }}
+							onClick={() => openModal("delete")}
+						/>
 					</Options>
 				) : (
 					""
