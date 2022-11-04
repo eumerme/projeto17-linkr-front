@@ -23,8 +23,7 @@ const tagStyle = {
 export default function Top({ userId, name, authId, postId, text, openModal }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
-	const { upload, setUpload, uploadPosts, setUploadPosts } =
-		useContext(UploadContext);
+	const { upload, setUpload } = useContext(UploadContext);
 
 	return (
 		<>
@@ -82,35 +81,3 @@ const Options = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-
-/* const Info = styled.span`
-	width: 100%;
-	font-size: 22px;
-	font-weight: 400;
-	color: #ffffff;
-	margin-bottom: 10px;
-	display: flex;
-	justify-content: space-between;
-	line-height: 20px;
-
-	h1 {
-		cursor: pointer;
-	}
-
-	p {
-		width: 100%;
-		font-size: 17px;
-		font-weight: 400;
-		color: #b7b7b7;
-		margin-bottom: 10px;
-		display: flex;
-		flex-wrap: wrap;
-		word-wrap: break-word;
-		word-break: break-all;
-		//background-color: #b7b7b7;
-		span {
-			width: auto;
-			padding: 4px;
-		}
-	}
-`; */

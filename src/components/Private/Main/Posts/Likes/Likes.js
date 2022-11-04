@@ -17,46 +17,50 @@ export default function Likes({
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [msg, setMsg] = useState("");
 
+	useEffect(() => {
+		setTimeout(() => {
+			setIsLiked(liked);
+		}, 1200);
+	}, [liked]);
+
 	const handleLikes = () => {
 		setIsLiked(!isLiked);
 
 		const body = { postId, userId, isLiked };
 		likeDislike(body)
-			.then(() => {
-				setUploadLikes(!uploadLikes);
-			})
+			.then(() => setUploadLikes(!uploadLikes))
 			.catch();
 	};
 
 	useEffect(() => {
 		const indexUser = likedByIds
-			?.map((value, index) => {
-				if (value === auth.id) {
+			?.map((userId, index) => {
+				if (userId === auth.id) {
 					return index;
 				}
 			})
-			.filter((value) => value !== undefined);
+			.filter((userId) => userId !== undefined);
 
-		const likedBy = likedByNames?.map((value, index) => {
+		const likedBy = likedByNames?.map((username, index) => {
 			if (index === indexUser[0]) {
-				return (value = " you");
+				return (username = " you");
 			} else {
-				return (value = ` ${value}`);
+				return (username = ` ${username}`);
 			}
 		});
 
-		const newlikes = Number(likes);
-		if (newlikes === 1) {
+		const likesNum = Number(likes);
+		if (likesNum === 1) {
 			setMsg(`${likedBy[0]}`);
 		}
-		if (newlikes === 2) {
+		if (likesNum === 2) {
 			setMsg(`${likedBy[0]} and${likedBy[1]}`);
 		}
-		if (newlikes === 3) {
+		if (likesNum === 3) {
 			setMsg(`${likedBy[0]},${likedBy[1]} and${likedBy[2]}`);
 		}
-		if (newlikes > 3) {
-			const x = newlikes - 3;
+		if (likesNum > 3) {
+			const x = likesNum - 3;
 			setMsg(`${likedBy[0]},${likedBy[1]},${likedBy[2]} and other ${x} people`);
 		}
 	}, [likes]);

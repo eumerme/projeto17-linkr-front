@@ -1,6 +1,6 @@
 import Aside from "../Aside/Aside.js";
 import SearchUser from "../SearchUser/SearchUser.js";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import { Container, MainLayout, Title } from "./styles.js";
 //import InfiniteScroll from "react-infinite-scroller";
@@ -9,7 +9,6 @@ import PublishBox from "../Main/TimelinePage/PublishBox.js";
 import Posts from "./Posts/Posts.js";
 import Loading from "../commom/Loading.js";
 import Navbar from "../Navbar/Navbar.js";
-//import UploadContext from "../../../Contexts/UploadContext.js";
 
 export default function Main({
 	userpage,
@@ -27,7 +26,6 @@ export default function Main({
 }) {
 	//	const [needRender, setNeedRender] = useState(true);
 	//	const [isRendering, setIsRendering] = useState(true);
-	//	const { upload } = useContext(UploadContext);
 	const [title, setTitle] = useState("timeline");
 
 	useEffect(() => {
