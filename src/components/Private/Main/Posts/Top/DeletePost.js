@@ -26,6 +26,10 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 		setUploadPosts,
 		uploadHashtagTrending,
 		setUploadHashtagTrending,
+		uploadLikes,
+		setUploadLikes,
+		uploadComments,
+		setUploadComments,
 	} = useContext(UploadContext);
 
 	const closeModal = () => {
@@ -38,10 +42,13 @@ export default function DeleteModal({ modalIsOpen, setIsOpen, postId }) {
 				setUploadPosts(!uploadPosts);
 				setUploadHashtagTrending(!uploadHashtagTrending);
 				setIsSucess(true);
+
 				setTimeout(() => {
+					setUploadComments(!uploadComments);
+					setUploadLikes(!uploadLikes);
 					setIsOpen(false);
 					setIsSucess(false);
-				}, 2000);
+				}, 1200);
 			})
 			.catch(() => {
 				alert("Houve um problema com a sua requisição, tente novamente!");

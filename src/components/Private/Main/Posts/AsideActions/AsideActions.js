@@ -25,8 +25,8 @@ export default function AsideActions({
 				likes={likes}
 				liked={liked}
 			/>
-			<div>
-				<AiOutlineComment onClick={() => setSeeComments(!seeComments)} />
+			<div onClick={() => setSeeComments(!seeComments)}>
+				<AiOutlineComment />
 				<p>{commentsLength} comments</p>
 			</div>
 		</Infos>

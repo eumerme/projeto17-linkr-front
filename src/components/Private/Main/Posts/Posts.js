@@ -50,11 +50,13 @@ export default function Posts({
 			.catch();
 	}, [uploadLikes]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		listComments(postId)
 			.then((res) => setComments(res.data))
 			.catch();
 	}, [uploadComments]);
+
+	console.log({ seeComments });
 
 	return (
 		<>
@@ -81,7 +83,6 @@ export default function Posts({
 							text={text}
 							openModal={openModal}
 						/>
-
 						<UrlDatas onClick={() => window.open(url, "_blank")}>
 							<div>
 								<h1>{urlTitle}</h1>
@@ -189,7 +190,6 @@ const UrlDatas = styled.div`
 	border: 1px solid #4d4d4d;
 	border-radius: 11px;
 	display: flex;
-
 	cursor: pointer;
 
 	div {
@@ -272,7 +272,7 @@ const CommentsWrapper = styled.div`
 	visibility: hidden;
 	transform: translateY(5px);
 	transition: opacity 1s ease, transform 1s ease, visibility 1s;
-	background-color: crimson;
+	//background-color: crimson;
 	${(props) => {
 		if (props.seeComments) {
 			return `

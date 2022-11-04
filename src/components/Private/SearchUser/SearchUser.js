@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function SearchUser() {
 	const [users, setUsers] = useState([]);
 	const [search, setSearch] = useState("");
-	const [userFiltered, setUserFiltered] = useState([]);
+	const [usersFiltered, setUsersFiltered] = useState([]);
 	const navigate = useNavigate();
 	const searchRef = useRef(null);
 	const [isActive, setIsActive] = useState(false);
@@ -26,14 +26,14 @@ export default function SearchUser() {
 
 		if (search?.length === 0) {
 			setUsers([]);
-			setUserFiltered([]);
+			setUsersFiltered([]);
 		}
 	}, [search]);
 
 	useMemo(() => {
 		if (users.length !== 0 && search.length > 2) {
 			const lowerSearch = search.toLowerCase();
-			setUserFiltered(
+			setUsersFiltered(
 				users.filter((user) => user.name.toLowerCase().includes(lowerSearch))
 			);
 		}
@@ -79,9 +79,9 @@ export default function SearchUser() {
 
 				<IoIosSearch color="#C6C6C6" />
 			</SearchWrapper>
-			{userFiltered?.length !== 0 ? (
+			{usersFiltered?.length !== 0 ? (
 				<List ref={searchRef}>
-					{userFiltered.map((user, index) => (
+					{usersFiltered.map((user, index) => (
 						<ListItem
 							key={index}
 							onClick={() => {

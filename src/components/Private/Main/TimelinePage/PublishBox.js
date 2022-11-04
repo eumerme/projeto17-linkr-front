@@ -12,6 +12,10 @@ export default function PublishBox() {
 		setUploadPosts,
 		uploadHashtagTrending,
 		setUploadHashtagTrending,
+		uploadLikes,
+		setUploadLikes,
+		uploadComments,
+		setUploadComments,
 	} = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [publishForm, setPublishForm] = useState({
@@ -46,6 +50,8 @@ export default function PublishBox() {
 				}
 
 				setTimeout(() => {
+					setUploadComments(!uploadComments);
+					setUploadLikes(!uploadLikes);
 					setMsgBtn("Publish");
 					setIsDisabled(false);
 					setPublishForm({ url: "", comment: "" });

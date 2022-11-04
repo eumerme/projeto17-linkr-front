@@ -57,7 +57,7 @@ export default function Likes({
 		}
 		if (newlikes > 3) {
 			const x = newlikes - 3;
-			setMsg(`${likedBy[0]},${likedBy[1]},${likedBy[2]} and other${x} people`);
+			setMsg(`${likedBy[0]},${likedBy[1]},${likedBy[2]} and other ${x} people`);
 		}
 	}, [likes]);
 
