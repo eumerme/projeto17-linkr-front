@@ -10,18 +10,12 @@ export default function Likes({
 	likedByNames,
 	likedByIds,
 	likes,
-	liked,
+	isLiked,
+	setIsLiked,
 }) {
-	const [isLiked, setIsLiked] = useState(false);
 	const { uploadLikes, setUploadLikes } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [msg, setMsg] = useState("");
-
-	useEffect(() => {
-		setTimeout(() => {
-			setIsLiked(liked);
-		}, 1200);
-	}, [liked]);
 
 	const handleLikes = () => {
 		setIsLiked(!isLiked);
@@ -68,7 +62,11 @@ export default function Likes({
 	return (
 		<>
 			<div onClick={handleLikes}>
-				{!liked ? <AiOutlineHeart /> : <AiFillHeart style={{ color: "red" }} />}
+				{!isLiked ? (
+					<AiOutlineHeart />
+				) : (
+					<AiFillHeart style={{ color: "red" }} />
+				)}
 			</div>
 			<ReactTooltip type="light" className="toopTip" place="bottom" />
 			<p data-tip={msg}>{likes} likes</p>

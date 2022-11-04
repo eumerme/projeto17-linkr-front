@@ -12,7 +12,8 @@ export default function AsideActions({
 	likedByNames,
 	likedByIds,
 	likes,
-	liked,
+	isLiked,
+	setIsLiked,
 }) {
 	return (
 		<Infos>
@@ -23,7 +24,8 @@ export default function AsideActions({
 				likedByNames={likedByNames}
 				likedByIds={likedByIds}
 				likes={likes}
-				liked={liked}
+				isLiked={isLiked}
+				setIsLiked={setIsLiked}
 			/>
 			<div onClick={() => setSeeComments(!seeComments)}>
 				<AiOutlineComment />

@@ -34,7 +34,7 @@ export default function Posts({
 	const [likedByNames, setLikedByNames] = useState([]);
 	const [likedByIds, setLikedByIds] = useState([]);
 	const [likes, setLikes] = useState([]);
-	const [liked, setLiked] = useState(false);
+	const [isLiked, setIsLiked] = useState(false);
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -49,7 +49,7 @@ export default function Posts({
 				setLikedByNames(res.data.likes.likedByNames);
 				setLikedByIds(res.data.likes.likedByIds);
 				setLikes(res.data.likes.likes);
-				setLiked(res.data.liked);
+				setIsLiked(res.data.isLiked);
 			})
 			.catch();
 	}, [uploadLikes]);
@@ -73,7 +73,8 @@ export default function Posts({
 						likedByNames={likedByNames}
 						likedByIds={likedByIds}
 						likes={likes}
-						liked={liked}
+						isLiked={isLiked}
+						setIsLiked={setIsLiked}
 						setSeeComments={setSeeComments}
 						seeComments={seeComments}
 						commentsLength={comments.length}
