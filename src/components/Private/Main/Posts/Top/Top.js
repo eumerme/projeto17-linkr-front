@@ -23,7 +23,7 @@ const tagStyle = {
 export default function Top({ userId, name, authId, postId, text, openModal }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
-	const { upload, setUpload } = useContext(UploadContext);
+	//	const { upload, setUpload } = useContext(UploadContext);
 
 	return (
 		<>
@@ -31,8 +31,6 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 				<h1
 					onClick={() =>
 						redirectToUserpage({
-							setUpload,
-							upload,
 							userId,
 							name,
 							navigate,
@@ -64,9 +62,7 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 			) : (
 				<ReactTagify
 					tagStyle={tagStyle}
-					tagClicked={(tag) =>
-						redirectToHashtagPage({ setUpload, upload, tag, navigate })
-					}
+					tagClicked={(tag) => redirectToHashtagPage({ tag, navigate })}
 				>
 					<p>{text}</p>
 				</ReactTagify>

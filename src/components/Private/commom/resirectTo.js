@@ -1,14 +1,13 @@
-function redirectToUserpage({ setUpload, upload, userId, name, navigate }) {
-	setUpload(!upload);
+function redirectToUserpage({ userId, name, navigate }) {
 	navigate(`/user/${userId}`, {
 		replace: false,
 		state: { name },
 	});
 }
 
-function redirectToHashtagPage({ setUpload, upload, tag, navigate }) {
+function redirectToHashtagPage({ setIsActive, isActive, tag, navigate }) {
 	const hashtag = tag.replace("#", "");
-	setUpload(!upload);
+	if (isActive) setIsActive(!isActive);
 	navigate(`/hashtag/${hashtag}`);
 }
 

@@ -30,8 +30,8 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 
 	useEffect(() => {
 		listHashtags()
-			.then((data) => setHashtags(data.data))
-			.catch((error) => console.log(error));
+			.then((res) => setHashtags(res.data))
+			.catch();
 	}, [uploadHashtagTrending]);
 
 	const handleFollow = () => {
@@ -98,8 +98,8 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 							key={index}
 							onClick={() =>
 								redirectToHashtagPage({
-									setUpload,
-									upload,
+									setIsActive,
+									isActive,
 									navigate,
 									tag: value.name,
 								})
