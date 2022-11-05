@@ -12,6 +12,7 @@ export default function Likes({
 	likes,
 	isLiked,
 	setIsLiked,
+	isRepost,
 }) {
 	const { uploadLikes, setUploadLikes } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -61,7 +62,7 @@ export default function Likes({
 
 	return (
 		<>
-			<div onClick={handleLikes}>
+			<div onClick={() => (isRepost ? "" : handleLikes())}>
 				{!isLiked ? (
 					<AiOutlineHeart />
 				) : (

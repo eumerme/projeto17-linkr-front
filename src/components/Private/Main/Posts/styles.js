@@ -6,12 +6,10 @@ const Container = styled.div`
 	min-height: 232px;
 	background-color: #171717;
 	margin-bottom: ${({ repost }) => (repost ? 0 : "35px")};
-	//background-color: crimson;
 	border-radius: 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 4% 3%;
 
 	@media screen and (max-width: 611px) {
 		width: 100%;

@@ -19,7 +19,15 @@ const tagStyle = {
 	margin: 0,
 };
 
-export default function Top({ userId, name, authId, postId, text, openModal }) {
+export default function Top({
+	userId,
+	name,
+	authId,
+	postId,
+	text,
+	openModal,
+	repost,
+}) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
 
@@ -38,11 +46,15 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 					{name}
 				</h1>
 				{authId === userId ? (
-					<Options>
-						<TiPencil
-							style={{ cursor: "pointer" }}
-							onClick={() => setIsEditing(!isEditing)}
-						/>
+					<Options isRepost={repost.isRepost}>
+						{repost.isRepost ? (
+							""
+						) : (
+							<TiPencil
+								style={{ cursor: "pointer" }}
+								onClick={() => setIsEditing(!isEditing)}
+							/>
+						)}
 
 						<FaTrash
 							style={{ cursor: "pointer" }}
@@ -76,5 +88,6 @@ const Options = styled.div`
 	width: 55px;
 	font-size: 20px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: ${({ isRepost }) =>
+		isRepost ? "flex-end" : "space-between"};
 `;

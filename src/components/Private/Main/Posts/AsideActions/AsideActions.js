@@ -16,7 +16,10 @@ export default function AsideActions({
 	isLiked,
 	setIsLiked,
 	openModal,
+	repostsAmount,
+	isRepost,
 }) {
+	console.log({ isRepost });
 	return (
 		<Infos>
 			<img src={img} alt="" />
@@ -28,13 +31,15 @@ export default function AsideActions({
 				likes={likes}
 				isLiked={isLiked}
 				setIsLiked={setIsLiked}
+				isRepost={isRepost}
 			/>
 			<div onClick={() => setSeeComments(!seeComments)}>
 				<AiOutlineComment />
 				<p>{commentsLength} comments</p>
 			</div>
-			<div onClick={() => openModal("repost")}>
+			<div onClick={() => (isRepost ? "" : openModal("repost"))}>
 				<BiRepost />
+				<p>{Number(repostsAmount)} re-posts</p>
 			</div>
 		</Infos>
 	);

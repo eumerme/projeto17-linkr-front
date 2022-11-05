@@ -5,7 +5,12 @@ import { createNewComment } from "../../../../../services/linkr.js";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
 import Comment from "./Comment.js";
 
-export default function CommentsBox({ postId, comments, commentUserId }) {
+export default function CommentsBox({
+	postId,
+	comments,
+	commentUserId,
+	isRepost,
+}) {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [comment, setComment] = useState("");
@@ -43,23 +48,30 @@ export default function CommentsBox({ postId, comments, commentUserId }) {
 						/>
 					))}
 				</AllComents>
-				<WriterArea>
-					<img src={auth.image} alt="" />
-					<TextArea onSubmit={publishComment}>
-						<input
-							placeholder="write a comment..."
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-							type="text"
-							disabled={isDisabled}
-							required
-							autoFocus
-						></input>
-						<SendIcon type="onSubmity" disabled={isDisabled}>
-							<TiLocationArrowOutline />
-						</SendIcon>
-					</TextArea>
-				</WriterArea>
+
+				{isRepost ? (
+					""
+				) : (
+					<>
+						<WriterArea>
+							<img src={auth.image} alt="" />
+							<TextArea onSubmit={publishComment}>
+								<input
+									placeholder="write a comment..."
+									value={comment}
+									onChange={(e) => setComment(e.target.value)}
+									type="text"
+									disabled={isDisabled}
+									required
+									autoFocus
+								></input>
+								<SendIcon type="onSubmity" disabled={isDisabled}>
+									<TiLocationArrowOutline />
+								</SendIcon>
+							</TextArea>
+						</WriterArea>
+					</>
+				)}
 			</Container>
 		</>
 	);

@@ -30,7 +30,9 @@ export default function Posts({
 	urlImage,
 	urlDescription,
 	repost,
+	repostsAmount,
 }) {
+	console.log("repost posts ", repost);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const { uploadComments, uploadLikes } = useContext(UploadContext);
 	const [likedByNames, setLikedByNames] = useState([]);
@@ -68,7 +70,7 @@ export default function Posts({
 
 	return (
 		<>
-			<Container repost={repost}>
+			<Container repost={repost.isRepost}>
 				<Content>
 					<AsideActions
 						postId={postId}
@@ -83,6 +85,8 @@ export default function Posts({
 						seeComments={seeComments}
 						commentsLength={comments.length}
 						openModal={openModal}
+						repostsAmount={repostsAmount}
+						isRepost={repost.isRepost}
 					/>
 					<Description>
 						<Top
@@ -92,6 +96,7 @@ export default function Posts({
 							postId={postId}
 							text={text}
 							openModal={openModal}
+							repost={repost}
 						/>
 						<UrlDatas onClick={() => window.open(url, "_blank")}>
 							<div>
@@ -111,6 +116,7 @@ export default function Posts({
 							postId={postId}
 							comments={comments}
 							commentUserId={auth.id}
+							isRepost={repost.isRepost}
 						/>
 					</CommentsWrapper>
 				) : (

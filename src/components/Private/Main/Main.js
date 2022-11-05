@@ -95,7 +95,8 @@ export default function Main({
 										urlTitle={value.urlTitle}
 										urlImage={value.urlImage}
 										urlDescription={value.urlDescription}
-										repost={true}
+										repost={value.repost}
+										repostsAmount={value.repostsAmount}
 									/>
 								</Repost>
 							) : (
@@ -110,7 +111,8 @@ export default function Main({
 									urlTitle={value.urlTitle}
 									urlImage={value.urlImage}
 									urlDescription={value.urlDescription}
-									repost={false}
+									repost={value.repost}
+									repostsAmount={value.repostsAmount}
 								/>
 							)
 						)}
