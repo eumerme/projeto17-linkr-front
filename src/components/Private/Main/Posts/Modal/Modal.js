@@ -23,7 +23,6 @@ export default function HandleModal({
 	modalIsOpen,
 	setIsOpen,
 	postId,
-	//userId,
 	action,
 }) {
 	const [isSucess, setIsSucess] = useState(false);
@@ -42,29 +41,11 @@ export default function HandleModal({
 		setIsOpen(false);
 	};
 
-	const deletePost = () => {
-		deleteFatalPost(postId)
-			.then(() => {
-				setUploadPosts(!uploadPosts);
-				setUploadHashtagTrending(!uploadHashtagTrending);
-				setIsSucess(true);
+	const handleClick = () => {
+		const promise =
+			action === "delete" ? deleteFatalPost(postId) : newRepost(postId);
 
-				setTimeout(() => {
-					setUploadComments(!uploadComments);
-					setUploadLikes(!uploadLikes);
-					setIsOpen(false);
-					setIsSucess(false);
-				}, 1200);
-			})
-			.catch(() => {
-				alert("Houve um problema com a sua requisição, tente novamente!");
-				setIsOpen(false);
-			});
-	};
-
-	const repost = () => {
-		//const body = { postId, userId };
-		newRepost(postId)
+		promise
 			.then(() => {
 				setUploadPosts(!uploadPosts);
 				setUploadHashtagTrending(!uploadHashtagTrending);
@@ -100,7 +81,8 @@ export default function HandleModal({
 							<div>
 								<button onClick={closeModal}>{`No, go back`}</button>
 								<button
-									onClick={action === "delete" ? deletePost : repost}
+									onClick={handleClick}
+									/* onClick={action === "delete" ? deletePost : repost} */
 								>{`Yes, ${action} it`}</button>
 							</div>
 						</>

@@ -29,6 +29,7 @@ export default function Posts({
 	urlTitle,
 	urlImage,
 	urlDescription,
+	repost,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const { uploadComments, uploadLikes } = useContext(UploadContext);
@@ -63,11 +64,11 @@ export default function Posts({
 			.catch();
 	}, [uploadComments]);
 
-	console.log({ seeComments });
+	console.log({ repost });
 
 	return (
 		<>
-			<Container>
+			<Container repost={repost}>
 				<Content>
 					<AsideActions
 						postId={postId}
@@ -119,7 +120,6 @@ export default function Posts({
 			<HandleModal
 				action={action}
 				postId={postId}
-				//userId={auth.id}
 				modalIsOpen={modalIsOpen}
 				setIsOpen={setIsOpen}
 			/>
@@ -127,35 +127,7 @@ export default function Posts({
 	);
 }
 
-/* const RePost = styled.div`
-	width: 100%;
-	min-height: 279px;
-	border-radius: 16px;
-	margin-bottom: 30px;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	//background-color: #1e1e1e;
-	background-color: blue;
-
-	@media screen and (max-width: 611px) {
-		width: 100%;
-		border-radius: 0;
-		min-height: 232px;
-	}
-`;
-
-const InfoRePost = styled.div`
-	display: flex;
-	align-items: center;
-
-	p {
-		font-weight: 700;
-		font-size: 11px;
-		color: #ffffff;
-	}
-`;
-
+/*
 	<RePost>
 				{itsReposts ? (
 					<InfoRePost>

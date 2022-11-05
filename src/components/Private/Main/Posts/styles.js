@@ -3,14 +3,15 @@ import styled from "styled-components";
 const Container = styled.div`
 	width: 100%;
 	max-width: 611px;
+	min-height: 232px;
 	background-color: #171717;
-	margin-bottom: 35px;
+	margin-bottom: ${({ repost }) => (repost ? 0 : "35px")};
 	//background-color: crimson;
-	min-height: 276px;
 	border-radius: 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 4% 3%;
 
 	@media screen and (max-width: 611px) {
 		width: 100%;
@@ -83,7 +84,7 @@ const UrlDatas = styled.div`
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
-		overflow-y: hidden;
+		overflow: hidden;
 
 		h1 {
 			height: auto;
@@ -108,6 +109,7 @@ const UrlDatas = styled.div`
 			font-size: 11px;
 			color: #cecece;
 			word-wrap: break-word;
+			word-break: break-all;
 		}
 	}
 
@@ -157,8 +159,8 @@ const CommentsWrapper = styled.div`
 	transform: translateY(5px);
 	transition: opacity 1s ease, transform 1s ease, visibility 1s;
 	//background-color: crimson;
-	${(props) => {
-		if (props.seeComments) {
+	${({ seeComments }) => {
+		if (seeComments) {
 			return `
           &&& {
             opacity: 1;

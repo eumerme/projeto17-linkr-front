@@ -43,4 +43,36 @@ const Title = styled.div`
 	}
 `;
 
-export { Container, MainLayout, Title };
+const Repost = styled.div`
+	width: 100%;
+	height: auto;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+
+	background-color: #1e1e1e;
+	margin-bottom: 35px;
+
+	p {
+		font-weight: 700;
+		font-size: 11px;
+		color: #ffffff;
+		margin-left: 3px;
+	}
+
+	@media screen and (max-width: 611px) {
+		width: 100%;
+		border-radius: 0;
+	}
+`;
+
+const Info = styled.div`
+	width: auto;
+	height: auto;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	padding-left: 3%;
+`;
+
+export { Container, MainLayout, Title, Repost, Info };
