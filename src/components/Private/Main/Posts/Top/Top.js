@@ -58,7 +58,11 @@ export default function Top({
 
 						<FaTrash
 							style={{ cursor: "pointer" }}
-							onClick={() => openModal("delete")}
+							onClick={() =>
+								repost.isRepost
+									? openModal("delete-repost", "delete")
+									: openModal("delete-post", "delete")
+							}
 						/>
 					</Options>
 				) : (

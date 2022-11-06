@@ -42,10 +42,10 @@ export default function Posts({
 	const [seeComments, setSeeComments] = useState(false);
 	const [comments, setComments] = useState([]);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
-	const [action, setAction] = useState("");
+	const [info, setInfo] = useState("");
 
-	const openModal = (type) => {
-		setAction(type);
+	const openModal = (action, type) => {
+		setInfo({ action, type });
 		setIsOpen(true);
 	};
 
@@ -124,7 +124,7 @@ export default function Posts({
 				)}
 			</Container>
 			<HandleModal
-				action={action}
+				info={info}
 				postId={postId}
 				modalIsOpen={modalIsOpen}
 				setIsOpen={setIsOpen}

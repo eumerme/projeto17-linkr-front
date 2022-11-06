@@ -124,6 +124,11 @@ function newRepost(id) {
 	return axios.post(`${BASE_URL}/timeline/reposts/${id}`, {}, config);
 }
 
+function deleteRepost(id) {
+	const config = createHeaders();
+	return axios.delete(`${BASE_URL}/timeline/delete-reposts/${id}`, config);
+}
+
 export {
 	register,
 	login,
@@ -141,10 +146,9 @@ export {
 	insertHashtag,
 	listComments,
 	createNewComment,
-	//listReposts,
+	deleteRepost,
 	toggleFollow,
 	isFollowing,
-	//getRepostById,
 	newRepost,
 	//listsPostsInterval,
 };

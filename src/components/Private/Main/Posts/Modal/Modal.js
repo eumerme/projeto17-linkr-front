@@ -1,5 +1,9 @@
 import Modal from "react-modal";
-import { deleteFatalPost, newRepost } from "../../../../../services/linkr.js";
+import {
+	deleteFatalPost,
+	newRepost,
+	deleteRepost,
+} from "../../../../../services/linkr.js";
 import Loading from "../../../commom/Loading.js";
 import { useState, useContext } from "react";
 import UploadContext from "../../../../../Contexts/UploadContext.js";
@@ -19,12 +23,7 @@ const customStyles = {
 	},
 };
 
-export default function HandleModal({
-	modalIsOpen,
-	setIsOpen,
-	postId,
-	action,
-}) {
+export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 	const [isSucess, setIsSucess] = useState(false);
 	const {
 		uploadPosts,
@@ -40,10 +39,14 @@ export default function HandleModal({
 	const closeModal = () => {
 		setIsOpen(false);
 	};
+	console.log("info ", info);
 
 	const handleClick = () => {
-		const promise =
-			action === "delete" ? deleteFatalPost(postId) : newRepost(postId);
+		let promise;
+
+		if (info.action === "delete-post") promise = deleteFatalPost(postId);
+		if (info.action === "delete-repost") promise = deleteRepost(postId);
+		if (info.action === "repost") promise = newRepost(postId);
 
 		promise
 			.then(() => {
@@ -77,13 +80,13 @@ export default function HandleModal({
 						<Loading />
 					) : (
 						<>
-							<p>{`Are you sure you want to ${action} this post?`}</p>
+							<p>{`Are you sure you want to ${info.type} this post?`}</p>
 							<div>
 								<button onClick={closeModal}>{`No, go back`}</button>
 								<button
 									onClick={handleClick}
 									/* onClick={action === "delete" ? deletePost : repost} */
-								>{`Yes, ${action} it`}</button>
+								>{`Yes, ${info.type} it`}</button>
 							</div>
 						</>
 					)}
