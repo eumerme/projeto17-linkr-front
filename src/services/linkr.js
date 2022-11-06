@@ -25,22 +25,22 @@ async function login(body) {
 
 async function publish(body) {
 	const config = createHeaders();
-	return axios.post(`${BASE_URL}/timeline/publish`, body, config);
+	return axios.post(`${BASE_URL}/publish`, body, config);
 }
 
 function listPosts() {
 	const config = createHeaders();
-	return axios.get(`${BASE_URL}/timeline/posts`, config);
+	return axios.get(`${BASE_URL}/posts`, config);
 }
 
 async function editPostText(body, id) {
 	const config = createHeaders();
-	return axios.patch(`${BASE_URL}/timeline/posts/update/${id}`, body, config);
+	return axios.patch(`${BASE_URL}/posts/update/${id}`, body, config);
 }
 
 async function deleteFatalPost(postId) {
 	const config = createHeaders();
-	return axios.delete(`${BASE_URL}/timeline/posts/delete/${postId}`, config);
+	return axios.delete(`${BASE_URL}/posts/delete/${postId}`, config);
 }
 
 async function userLogout() {
@@ -65,12 +65,12 @@ async function listUsers() {
 
 function likeDislike(body) {
 	const config = createHeaders();
-	return axios.post(`${BASE_URL}/timeline/like`, body, config);
+	return axios.post(`${BASE_URL}/likes`, body, config);
 }
 
 function listLikes(id) {
 	const config = createHeaders();
-	return axios.get(`${BASE_URL}/timeline/postsLikes/${id}`, config);
+	return axios.get(`${BASE_URL}/postsLikes/${id}`, config);
 }
 
 async function listUserPosts(id) {
@@ -85,12 +85,12 @@ async function insertHashtag(body) {
 
 async function listComments(postId) {
 	const config = createHeaders();
-	return await axios.get(`${BASE_URL}/timeline/comments/${postId}`, config);
+	return await axios.get(`${BASE_URL}/comments/${postId}`, config);
 }
 
 async function createNewComment(body) {
 	const config = createHeaders();
-	return await axios.post(`${BASE_URL}/timeline/newcomment`, body, config);
+	return await axios.post(`${BASE_URL}/newcomment`, body, config);
 }
 
 async function isFollowing(body) {
@@ -105,12 +105,17 @@ async function toggleFollow(body) {
 
 function newRepost(id) {
 	const config = createHeaders();
-	return axios.post(`${BASE_URL}/timeline/reposts/${id}`, {}, config);
+	return axios.post(`${BASE_URL}/reposts/${id}`, {}, config);
 }
 
 function deleteRepost(id) {
 	const config = createHeaders();
-	return axios.delete(`${BASE_URL}/timeline/delete-reposts/${id}`, config);
+	return axios.delete(`${BASE_URL}/delete-reposts/${id}`, config);
+}
+
+function deleteComment(commentId) {
+	const config = createHeaders();
+	return axios.delete(`${BASE_URL}/comment/${commentId}`, config);
 }
 
 export {
@@ -134,4 +139,5 @@ export {
 	toggleFollow,
 	isFollowing,
 	newRepost,
+	deleteComment,
 };

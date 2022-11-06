@@ -11,7 +11,7 @@ import {
 	UrlDatas,
 	CommentsWrapper,
 } from "./styles.js";
-import HandleModal from "./Modal/Modal.js";
+import HandleModal from "./HandleModal/HandleModal.js";
 
 export default function Posts({
 	userId,
@@ -37,8 +37,8 @@ export default function Posts({
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [info, setInfo] = useState("");
 
-	const openModal = (action, type) => {
-		setInfo({ action, type });
+	const openModal = (action, type, commentId = "") => {
+		setInfo({ action, type, commentId });
 		setIsOpen(true);
 	};
 
@@ -108,6 +108,7 @@ export default function Posts({
 							comments={comments}
 							commentUserId={auth.id}
 							isRepost={repost.isRepost}
+							openModal={openModal}
 						/>
 					</CommentsWrapper>
 				) : (

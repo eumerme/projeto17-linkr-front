@@ -10,6 +10,7 @@ export default function CommentsBox({
 	comments,
 	commentUserId,
 	isRepost,
+	openModal,
 }) {
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -37,12 +38,14 @@ export default function CommentsBox({
 					{comments.map((value, index) => (
 						<Comment
 							key={index}
+							commentId={value.id}
 							imageUrl={value.imageUrl}
 							commentUserId={value.commentUserId}
 							postUserId={value.postUserId}
 							name={value.name}
 							comment={value.comment}
 							userId={auth.id}
+							openModal={openModal}
 						/>
 					))}
 				</AllComents>
