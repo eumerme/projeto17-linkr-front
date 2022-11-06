@@ -4,7 +4,7 @@ const Container = styled.div`
 	width: 100%;
 	max-width: 611px;
 	min-height: 232px;
-	background-color: #171717;
+	background-color: #1e1e1e;
 	margin-bottom: ${({ repost }) => (repost ? 0 : "35px")};
 	border-radius: 16px;
 	display: flex;
@@ -23,6 +23,12 @@ const Content = styled.div`
 	min-height: 232px;
 	display: flex;
 	padding: 4% 3%;
+	border-radius: 16px;
+	background-color: #171717;
+
+	@media screen and (max-width: 611px) {
+		border-radius: 0;
+	}
 `;
 
 const Description = styled.div`
