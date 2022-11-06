@@ -1,21 +1,14 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import UploadContext from "../../../Contexts/UploadContext.js";
 import Logout from "./Logout/Logout.js";
 import styled from "styled-components";
+import { redirectToTimeline } from "../commom/resirectTo.js";
 
 export default function Navbar() {
-	const { setUpload, upload } = useContext(UploadContext);
 	const navigate = useNavigate();
-
-	const redirectToTimeline = () => {
-		setUpload(!upload);
-		navigate("/timeline");
-	};
 
 	return (
 		<NavbarLayout>
-			<h1 onClick={redirectToTimeline}>linkr</h1>
+			<h1 onClick={() => redirectToTimeline({ navigate })}>linkr</h1>
 			<Logout />
 		</NavbarLayout>
 	);

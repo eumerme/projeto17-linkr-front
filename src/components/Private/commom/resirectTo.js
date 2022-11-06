@@ -11,4 +11,8 @@ function redirectToHashtagPage({ setIsActive, isActive, tag, navigate }) {
 	navigate(`/hashtag/${hashtag}`);
 }
 
-export { redirectToHashtagPage, redirectToUserpage };
+function redirectToTimeline({ navigate }) {
+	navigate("/timeline");
+}
+
+export { redirectToHashtagPage, redirectToUserpage, redirectToTimeline };
