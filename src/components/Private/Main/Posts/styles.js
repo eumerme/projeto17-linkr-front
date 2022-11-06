@@ -12,9 +12,9 @@ const Container = styled.div`
 	align-items: center;
 
 	@media screen and (max-width: 611px) {
-		width: 100%;
+		//width: 100%;
 		border-radius: 0;
-		min-height: 232px;
+		//min-height: 232px;
 	}
 `;
 

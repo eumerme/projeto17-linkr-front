@@ -45,29 +45,21 @@ export default function Top({
 				>
 					{name}
 				</h1>
-				{authId === userId ? (
+				{authId === userId && repost.isRepost === false ? (
 					<Options isRepost={repost.isRepost}>
-						{repost.isRepost ? (
-							""
-						) : (
-							<TiPencil
-								style={{ cursor: "pointer" }}
-								onClick={() => setIsEditing(!isEditing)}
-							/>
-						)}
+						<TiPencil
+							style={{ cursor: "pointer" }}
+							onClick={() => setIsEditing(!isEditing)}
+						/>
 						<FaTrash
 							style={{ cursor: "pointer" }}
-							onClick={() =>
-								repost.isRepost
-									? openModal("delete-repost", "delete")
-									: openModal("delete-post", "delete")
-							}
+							onClick={() => openModal("delete-post", "delete")}
 						/>
 					</Options>
 				) : (
 					""
 				)}
-				{authId === repost.repostedById ? (
+				{authId === repost.repostedById && repost.isRepost === true ? (
 					<Options isRepost={repost.isRepost}>
 						<FaTrash
 							style={{ cursor: "pointer" }}

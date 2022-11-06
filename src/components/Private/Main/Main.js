@@ -47,7 +47,7 @@ export default function Main({
 					<>
 						{allPosts.map((value, index) =>
 							value.repost.isRepost ? (
-								<Repost>
+								<Repost key={index}>
 									<Info>
 										<BiRepost style={{ color: "#FFFFFF", fontSize: "24px" }} />
 										<p>
@@ -58,7 +58,6 @@ export default function Main({
 										</p>
 									</Info>
 									<Posts
-										key={index}
 										userId={value.userId}
 										name={value.name}
 										postId={value.id}

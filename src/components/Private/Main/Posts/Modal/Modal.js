@@ -24,7 +24,7 @@ const customStyles = {
 };
 
 export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
-	const [isSucess, setIsSucess] = useState(false);
+	const [isSucess, setIsSucess] = useState(true);
 	const {
 		uploadPosts,
 		setUploadPosts,
@@ -41,6 +41,7 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 	};
 
 	const handleClick = () => {
+		setIsSucess(false);
 		let promise;
 
 		if (info.action === "delete-post") promise = deleteFatalPost(postId);
@@ -49,16 +50,12 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 
 		promise
 			.then(() => {
+				setIsSucess(true);
 				setUploadPosts(!uploadPosts);
 				setUploadHashtagTrending(!uploadHashtagTrending);
-				setIsSucess(true);
-
-				setTimeout(() => {
-					setUploadComments(!uploadComments);
-					setUploadLikes(!uploadLikes);
-					setIsOpen(false);
-					setIsSucess(false);
-				}, 1200);
+				setUploadComments(!uploadComments);
+				setUploadLikes(!uploadLikes);
+				setIsOpen(false);
 			})
 			.catch(() => {
 				alert("Houve um problema com a sua requisição, tente novamente!");
@@ -76,8 +73,6 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 			>
 				<ModalStyle>
 					{isSucess ? (
-						<Loading />
-					) : (
 						<>
 							<p>{`Are you sure you want to ${info.type} this post?`}</p>
 							<div>
@@ -85,6 +80,8 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 								<button onClick={handleClick}>{`Yes, ${info.type} it`}</button>
 							</div>
 						</>
+					) : (
+						<Loading />
 					)}
 				</ModalStyle>
 			</Modal>
