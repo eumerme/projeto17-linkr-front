@@ -125,6 +125,11 @@ function newRepost(body) {
 	return axios.post(`${BASE_URL}/timeline/reposts`, body, config);
 }
 
+function deleteReposts(id) {
+	const config = createHeaders();
+	return axios.delete(`${BASE_URL}/timeline/reposts/delete/${id}`, config);
+}
+
 export {
 	register,
 	login,

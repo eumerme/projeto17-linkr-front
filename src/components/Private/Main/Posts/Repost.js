@@ -25,7 +25,6 @@ export default function RepostModal({
 	userId,
 }) {
 	const [isSucess, setIsSucess] = useState(false);
-	const { upload, setUpload } = useContext(UploadContext);
 
 	function closeModal() {
 		setModalRepost(false);
@@ -37,7 +36,6 @@ export default function RepostModal({
 			userId,
 		})
 			.then(() => {
-				setUpload(!upload);
 				setIsSucess(true);
 				setTimeout(function () {
 					setModalRepost(false);
