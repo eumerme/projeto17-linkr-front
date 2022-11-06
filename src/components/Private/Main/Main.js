@@ -1,20 +1,17 @@
 import Aside from "../Aside/Aside.js";
 import SearchUser from "../SearchUser/SearchUser.js";
 import { useEffect, useLayoutEffect, useState } from "react";
-
 import { Container, MainLayout, Title, Repost, Info } from "./styles.js";
 import PublishBox from "../Main/TimelinePage/PublishBox.js";
 import Posts from "./Posts/Posts.js";
 import Loading from "../commom/Loading.js";
 import Navbar from "../Navbar/Navbar.js";
-
 import { BiRepost } from "react-icons/bi";
 
 export default function Main({
 	userpage,
 	follows,
 	followeeId,
-
 	allPosts,
 	errorServer,
 	empty,
