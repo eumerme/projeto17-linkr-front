@@ -64,7 +64,6 @@ async function listUsers() {
 }
 
 function likeDislike(body) {
-	console.log(body);
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/timeline/like`, body, config);
 }
@@ -104,11 +103,6 @@ async function toggleFollow(body) {
 	return await axios.post(`${BASE_URL}/follow-unfollow`, body, config);
 }
 
-/* async function listsPostsInterval() {
-	const config = createHeaders();
-	return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
-} */
-
 function newRepost(id) {
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/timeline/reposts/${id}`, {}, config);
@@ -140,5 +134,4 @@ export {
 	toggleFollow,
 	isFollowing,
 	newRepost,
-	//listsPostsInterval,
 };

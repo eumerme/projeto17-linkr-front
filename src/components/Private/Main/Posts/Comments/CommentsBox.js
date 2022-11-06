@@ -30,8 +30,6 @@ export default function CommentsBox({
 			.catch(() => setIsDisabled(false));
 	};
 
-	console.log(comments);
-
 	return (
 		<>
 			<Container>
@@ -99,8 +97,6 @@ const AllComents = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-
-	//background-color: coral;
 
 	::-webkit-scrollbar {
 		display: none;

@@ -19,12 +19,9 @@ const Container = styled.div`
 	height: 100vh;
 	box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
 	display: flex;
-	//align-items: center;
-	//justify-content: space-between;
 
 	@media screen and (max-width: 768px) {
 		flex-direction: column;
-		//	justify-content: center;
 	}
 `;
 
@@ -87,7 +84,7 @@ const Form = styled.form`
 		width: 100%;
 		height: 65px;
 		border-radius: 6px;
-		background-color: ${(props) => (props.isDisabled ? "#8A8A8A" : "#FFF")};
+		background-color: ${({ isDisabled }) => (isDisabled ? "#8A8A8A" : "#FFF")};
 		border: inherit;
 		outline: #000000;
 		margin-bottom: 12px;
@@ -107,7 +104,8 @@ const Form = styled.form`
 	button {
 		width: 100%;
 		height: 65px;
-		background-color: ${(props) => (props.isDisabled ? "#8A8A8A" : "#1877F2")};
+		background-color: ${({ isDisabled }) =>
+			isDisabled ? "#8A8A8A" : "#1877F2"};
 		display: flex;
 		align-items: center;
 		justify-content: center;

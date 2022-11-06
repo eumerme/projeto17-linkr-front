@@ -55,7 +55,6 @@ export default function Top({
 								onClick={() => setIsEditing(!isEditing)}
 							/>
 						)}
-
 						<FaTrash
 							style={{ cursor: "pointer" }}
 							onClick={() =>

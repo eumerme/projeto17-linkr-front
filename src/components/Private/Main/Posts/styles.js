@@ -23,7 +23,6 @@ const Content = styled.div`
 	min-height: 232px;
 	display: flex;
 	padding: 4% 3%;
-	//background-color: blueviolet;
 `;
 
 const Description = styled.div`
@@ -31,7 +30,6 @@ const Description = styled.div`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	//background-color: lightblue;
 
 	span {
 		width: 100%;
@@ -42,7 +40,7 @@ const Description = styled.div`
 		display: flex;
 		justify-content: space-between;
 		line-height: 20px;
-		//background-color: lightcoral;
+
 		h1 {
 			cursor: pointer;
 		}
@@ -57,7 +55,7 @@ const Description = styled.div`
 			flex-wrap: wrap;
 			word-wrap: break-word;
 			word-break: break-all;
-			//background-color: #b7b7b7;
+
 			span {
 				width: auto;
 				padding: 0 4px;
@@ -156,7 +154,7 @@ const CommentsWrapper = styled.div`
 	visibility: hidden;
 	transform: translateY(5px);
 	transition: opacity 1s ease, transform 1s ease, visibility 1s;
-	//background-color: crimson;
+
 	${({ seeComments }) => {
 		if (seeComments) {
 			return `

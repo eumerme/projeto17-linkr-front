@@ -41,8 +41,7 @@ export default function SignIn() {
 				);
 				navigate("/timeline");
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
 				setIsDisabled(false);
 				setMsgBtn("Log In");
 				alert("Email ou senha incorretos!");

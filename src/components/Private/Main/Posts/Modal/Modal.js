@@ -39,7 +39,6 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 	const closeModal = () => {
 		setIsOpen(false);
 	};
-	console.log("info ", info);
 
 	const handleClick = () => {
 		let promise;
@@ -83,10 +82,7 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 							<p>{`Are you sure you want to ${info.type} this post?`}</p>
 							<div>
 								<button onClick={closeModal}>{`No, go back`}</button>
-								<button
-									onClick={handleClick}
-									/* onClick={action === "delete" ? deletePost : repost} */
-								>{`Yes, ${info.type} it`}</button>
+								<button onClick={handleClick}>{`Yes, ${info.type} it`}</button>
 							</div>
 						</>
 					)}

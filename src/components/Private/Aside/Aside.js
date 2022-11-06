@@ -16,13 +16,8 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
-	const {
-		setUpload,
-		upload,
-		uploadHashtagTrending,
-		uploadFollowButton,
-		setUploadFollowButton,
-	} = useContext(UploadContext);
+	const { uploadHashtagTrending, uploadFollowButton, setUploadFollowButton } =
+		useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const user = Number(followeeId) === auth.id;

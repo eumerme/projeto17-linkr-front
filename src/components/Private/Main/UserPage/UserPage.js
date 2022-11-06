@@ -9,7 +9,6 @@ export default function UserPage() {
 	const { state } = useLocation();
 	const { uploadFollowButton, uploaPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
-	//const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
 	const [empty, setEmpty] = useState(false);
@@ -20,7 +19,6 @@ export default function UserPage() {
 			listUserPosts(id)
 				.then((res) => {
 					setAllPosts(res.data);
-					//setPosts(res.data.slice(0, posts.length));
 					if (res.data.length === 0) setEmpty(true);
 				})
 				.catch(() => setErrorServer(true));
@@ -39,8 +37,6 @@ export default function UserPage() {
 	return (
 		<Main
 			pageTitle={"userpage"}
-			/* posts={posts}
-			setPosts={setPosts} */
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}

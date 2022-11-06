@@ -4,7 +4,6 @@ import UploadContext from "../../../../Contexts/UploadContext.js";
 import Main from "../Main.js";
 
 export default function Timeline() {
-	//	const [posts, setPosts] = useState([]);
 	const [allPosts, setAllPosts] = useState([]);
 	const [existPost, setExistPost] = useState(null);
 	const [errorServer, setErrorServer] = useState(false);
@@ -13,7 +12,6 @@ export default function Timeline() {
 
 	const handlePosts = (posts) => {
 		setAllPosts(Array.from(posts));
-		//setPosts(Array.from(posts).slice(0, posts.length));
 	};
 
 	useLayoutEffect(() => {
@@ -36,8 +34,6 @@ export default function Timeline() {
 	return (
 		<Main
 			pageTitle={"timeline"}
-			/* posts={posts}
-			setPosts={setPosts} */
 			allPosts={allPosts}
 			errorServer={errorServer}
 			empty={empty}

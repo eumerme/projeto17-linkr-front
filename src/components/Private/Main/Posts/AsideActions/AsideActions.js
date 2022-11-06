@@ -19,7 +19,6 @@ export default function AsideActions({
 	repostsAmount,
 	isRepost,
 }) {
-	console.log({ isRepost });
 	return (
 		<Infos>
 			<img src={img} alt="" />
@@ -52,7 +51,6 @@ const Infos = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	//background-color: crimson;
 	div {
 		cursor: pointer;
 		color: #ffffff;
