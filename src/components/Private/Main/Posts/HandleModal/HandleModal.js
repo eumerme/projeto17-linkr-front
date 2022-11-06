@@ -61,7 +61,9 @@ export default function HandleModal({ modalIsOpen, setIsOpen, postId, info }) {
 				setIsOpen(false);
 			})
 			.catch(() => {
-				alert("Houve um problema com a sua requisição, tente novamente!");
+				alert(
+					"An error occurred while processing your request, please try again"
+				);
 				setIsOpen(false);
 			});
 	};
