@@ -35,11 +35,19 @@ const NavbarLayout = styled.div`
 		cursor: pointer;
 	}
 
-	@media screen and (max-width: 352px) {
+	@media screen and (max-width: 380px) {
 		padding: 0 23px;
 
 		h1 {
 			font-size: 45px;
+		}
+	}
+
+	@media screen and (max-width: 315px) {
+		padding: 0 18px;
+
+		h1 {
+			font-size: 40px;
 		}
 	}
 `;

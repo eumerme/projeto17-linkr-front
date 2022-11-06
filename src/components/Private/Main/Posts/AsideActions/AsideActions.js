@@ -88,7 +88,14 @@ const Infos = styled.div`
 		color: #505050;
 	}
 
-	@media screen and (max-width: 330px) {
+	@media screen and (max-width: 380px) {
+		img {
+			width: 47px;
+			height: 47px;
+		}
+	}
+
+	@media screen and (max-width: 315px) {
 		img {
 			width: 40px;
 			height: 40px;

@@ -73,7 +73,7 @@ const Wrapper = styled.span`
 		margin-left: 20px;
 	}
 
-	@media screen and (max-width: 352px) {
+	@media screen and (max-width: 380px) {
 		img {
 			width: 47px;
 			height: 47px;

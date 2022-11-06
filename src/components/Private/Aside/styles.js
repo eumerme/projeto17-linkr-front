@@ -18,8 +18,12 @@ const Container = styled.div`
 		z-index: 3;
 	}
 
-	@media screen and (max-width: 352px) {
+	@media screen and (max-width: 380px) {
 		right: 115px;
+	}
+
+	@media screen and (max-width: 315px) {
+		right: 110px;
 	}
 `;
 
@@ -128,10 +132,6 @@ const FollowIcon = styled.button`
 	cursor: pointer;
 	opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
 	visibility: ${({ user }) => (user ? "hidden" : "visible")};
-	:hover {
-		opacity: 0.6;
-		transition: 0.4s;
-	}
 
 	@media screen and (min-width: 1024px) {
 		display: none;
@@ -155,22 +155,18 @@ const TrendingBoxMobile = styled.div`
 		color: ${({ isActive }) => (isActive ? "#1877f2" : "#ffffff")};
 		cursor: pointer;
 		font-family: "Passion One";
-		:hover {
-			opacity: 0.6;
-			transition: 0.4s;
-		}
 	}
 
 	@media screen and (min-width: 1024px) {
 		display: none;
 	}
 
-	@media screen and (max-width: 352px) {
+	@media screen and (max-width: 380px) {
 		left: 125px;
 	}
 
-	@media screen and (max-width: 306px) {
-		left: 120px;
+	@media screen and (max-width: 315px) {
+		left: 110px;
 	}
 `;
 
