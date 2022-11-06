@@ -7,6 +7,8 @@ import Posts from "./Posts/Posts.js";
 import Loading from "../commom/Loading.js";
 import Navbar from "../Navbar/Navbar.js";
 import { BiRepost } from "react-icons/bi";
+import { redirectToUserpage } from "../commom/resirectTo.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Main({
 	userpage,
@@ -22,6 +24,7 @@ export default function Main({
 }) {
 	const [title, setTitle] = useState("timeline");
 	const auth = JSON.parse(localStorage.getItem("linkr"));
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -52,9 +55,19 @@ export default function Main({
 										<BiRepost style={{ color: "#FFFFFF", fontSize: "24px" }} />
 										<p>
 											{"Re-posted by "}
-											{value.repost.repostedById === auth.id
-												? "you"
-												: value.repost.repostedByName}
+											<strong
+												onClick={() => {
+													redirectToUserpage({
+														name: value.repost.repostedByName,
+														navigate,
+														userId: value.repost.repostedById,
+													});
+												}}
+											>
+												{value.repost.repostedById === auth.id
+													? "you"
+													: value.repost.repostedByName}
+											</strong>
 										</p>
 									</Info>
 									<Posts
