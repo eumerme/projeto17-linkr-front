@@ -29,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         line-height: 1;
         background-color: #333333;
+        font-family: "Lato", sans-serif;
     }
     ol, ul {
         list-style: none;
@@ -67,6 +68,7 @@ const GlobalStyle = createGlobalStyle`
     
     img{
         object-fit: cover;
+        border-radius: 50%;
     }
 `;
 

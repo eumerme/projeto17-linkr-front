@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Modal from "react-modal";
-import { newRepost } from "../../services/linkr";
-import Loading from "../commom/Loading";
+import { newRepost } from "../../../../services/linkr.js";
+import Loading from "../../commom/Loading.js";
 import { useState, useContext } from "react";
-import UploadContext from "../../Contexts/UploadContext";
+import UploadContext from "../../../../Contexts/UploadContext.js";
 
 const customStyles = {
 	content: {
@@ -22,30 +22,30 @@ export default function RepostModal({
 	modalRepost,
 	setModalRepost,
 	postId,
-    userId
+	userId,
 }) {
 	const [isSucess, setIsSucess] = useState(false);
-	const { reload, setReload } = useContext(UploadContext);
 
 	function closeModal() {
 		setModalRepost(false);
 	}
 
-    function repost(){
-        newRepost({
-          postId,
-          userId
-        }).then(() => {
-          setIsSucess(true);
-          setTimeout(function () {
-              setModalRepost(false);
-              setIsSucess(false);
-          }, 2000);
-		  setReload(!reload);
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
+	function repost() {
+		newRepost({
+			postId,
+			userId,
+		})
+			.then(() => {
+				setIsSucess(true);
+				setTimeout(function () {
+					setModalRepost(false);
+					setIsSucess(false);
+				}, 2000);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
 
 	return (
 		<>
@@ -80,7 +80,8 @@ export default function RepostModal({
 const Style = styled.div`
 	width: 597px;
 	height: 262px;
-	background: #333333;
+	//	background: #333333;
+	background: crimson;
 	border-radius: 50px;
 	font-family: "Lato", sans-serif;
 	display: flex;

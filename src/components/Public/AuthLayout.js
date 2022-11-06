@@ -1,21 +1,13 @@
 import styled from "styled-components";
 
-export default function AuthMainLayout({
-	children,
-	isDisabled,
-	...otherprops
-}) {
+export default function AuthLayout({ children, isDisabled, onSubmit }) {
 	return (
 		<Container>
 			<Infos>
 				<h1>Linkr</h1>
-				<p>
-					save, share and discover
-					<br />
-					the best links on the web
-				</p>
+				<p>save, share and discover the best links on the web</p>
 			</Infos>
-			<Form isDisabled={isDisabled} {...otherprops}>
+			<Form onSubmit={onSubmit} isDisabled={isDisabled}>
 				{children}
 			</Form>
 		</Container>
@@ -24,14 +16,15 @@ export default function AuthMainLayout({
 
 const Container = styled.div`
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
 	display: flex;
-	justify-content: space-between;
+	//align-items: center;
+	//justify-content: space-between;
 
 	@media screen and (max-width: 768px) {
-		background-color: white;
 		flex-direction: column;
+		//	justify-content: center;
 	}
 `;
 
@@ -42,7 +35,7 @@ const Infos = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
-	padding-left: 7%;
+	padding: 0 7%;
 	background-color: #151515;
 	color: #fff;
 	font-weight: 700;
@@ -54,9 +47,9 @@ const Infos = styled.div`
 	}
 
 	p {
+		max-width: 400px;
 		font-family: "Oswald", sans-serif;
 		font-size: 43px;
-		padding-right: 30px;
 	}
 
 	@media screen and (max-width: 1000px) {
@@ -64,21 +57,18 @@ const Infos = styled.div`
 	}
 
 	@media screen and (max-width: 768px) {
-		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0;
 		width: 100%;
-		height: 175px;
-		padding-left: 0;
+		height: auto;
+		padding: 25px 50px;
 		align-items: center;
+		text-align: center;
 
 		h1 {
-			font-size: 76px;
+			font-size: 78px;
 		}
 
 		p {
-			font-size: 23px;
+			font-size: 32px;
 		}
 	}
 `;
@@ -98,7 +88,8 @@ const Form = styled.form`
 		height: 65px;
 		border-radius: 6px;
 		background-color: ${(props) => (props.isDisabled ? "#8A8A8A" : "#FFF")};
-		border: none;
+		border: inherit;
+		outline: #000000;
 		margin-bottom: 12px;
 		padding-left: 15px;
 		font-family: "Oswald", sans-serif;
@@ -130,8 +121,16 @@ const Form = styled.form`
 		margin-bottom: 12px;
 	}
 
+	input:hover {
+		opacity: 0.92;
+		border-radius: 6px;
+	}
+	button:hover {
+		opacity: 0.9;
+		border-radius: 6px;
+	}
+
 	p {
-		font-family: "Lato", sans-serif;
 		font-weight: 400;
 		font-size: 20px;
 		color: #fff;
@@ -146,11 +145,15 @@ const Form = styled.form`
 	@media screen and (max-width: 768px) {
 		width: 100%;
 		height: 100%;
-		justify-content: start;
-		padding-top: 200px;
+		justify-content: flex-start;
 
 		input,
 		button {
+			font-size: 22px;
+			height: 58px;
+		}
+
+		input::placeholder {
 			font-size: 22px;
 		}
 

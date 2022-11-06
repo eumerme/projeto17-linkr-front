@@ -1,53 +1,50 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../../Contexts/UploadContext";
-import { listHashtags, toggleFollow } from "../../services/linkr";
+import UploadContext from "../../../Contexts/UploadContext.js";
+import { listHashtags, toggleFollow } from "../../../services/linkr.js";
 import { BsFillPersonCheckFill, BsFillPersonPlusFill } from "react-icons/bs";
+import { redirectToHashtagPage } from "../commom/resirectTo.js";
 
-export default function AsideMainLayout({
-	userpage,
-	timeline,
-	follows,
-	followeeId,
-	hashtag,
-}) {
+export default function Aside({ pageTitle, follows, followeeId }) {
 	const dropdownTrending = useRef(null);
 	const navigate = useNavigate();
 	const [hashtags, setHashtags] = useState([]);
-	const { setUpload, upload } = useContext(UploadContext);
+	const {
+		setUpload,
+		upload,
+		uploadHashtagTrending,
+		uploadFollowButton,
+		setUploadFollowButton,
+	} = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [isDisabled, setIsDisabled] = useState(false);
 	const user = Number(followeeId) === auth.id;
 	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
-		setTimeout(function () {
-			listHashtags()
-				.then((data) => {
-					setHashtags(data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}, 1000);
-	}, [upload]);
+		listHashtags()
+			.then((data) => setHashtags(data.data))
+			.catch((error) => console.log(error));
+	}, [uploadHashtagTrending]);
 
 	const handleFollow = () => {
 		setIsDisabled(true);
 
-		setTimeout(function () {
-			toggleFollow({ userId: auth.id, followeeId: Number(followeeId) })
+		setTimeout(() => {
+			const body = { userId: auth.id, followeeId: Number(followeeId) };
+			toggleFollow(body)
 				.then(() => {
-					setUpload(!upload);
 					setIsDisabled(false);
+					setUploadFollowButton(!uploadFollowButton);
 				})
-				.catch((error) => {
-					alert(
-						"Não foi possível executar a operação. Tente novamente em instantes."
-					);
-					setIsDisabled(false);
-				});
+				.catch(() => setIsDisabled(false));
 		}, 1000);
 	};
 
@@ -70,15 +67,11 @@ export default function AsideMainLayout({
 		};
 	}, [isActive]);
 
-	function redirect(text) {
-		setUpload(!upload);
-		navigate(`/hashtag/${text}`);
-	}
-	console.log({ isActive, dropdownTrending });
+	//	console.log({ isActive, dropdownTrending });
 
 	return (
-		<Container timeline={timeline}>
-			{userpage ? (
+		<Container pageTitle={pageTitle}>
+			{pageTitle === "userpage" ? (
 				<>
 					<FollowButton
 						follows={follows}
@@ -95,24 +88,36 @@ export default function AsideMainLayout({
 			) : (
 				""
 			)}
-			<TrendingBox hashtag={hashtag} isActive={isActive} ref={dropdownTrending}>
+			<TrendingBox
+				pageTitle={pageTitle}
+				isActive={isActive}
+				ref={dropdownTrending}
+			>
 				<h2>trending</h2>
 				<ul>
 					{hashtags.map((value, index) => (
-						<li key={index} onClick={() => redirect(value.name)}>
+						<li
+							key={index}
+							onClick={() =>
+								redirectToHashtagPage({
+									setUpload,
+									upload,
+									navigate,
+									tag: value.name,
+								})
+							}
+						>
 							# {value.name}
 						</li>
 					))}
 				</ul>
 			</TrendingBox>
-			<HashtagTrendingMobile
+			<TrendingBoxMobile
 				isActive={isActive}
-				onClick={() => {
-					setIsActive(!isActive);
-				}}
+				onClick={() => setIsActive(!isActive)}
 			>
 				#
-			</HashtagTrendingMobile>
+			</TrendingBoxMobile>
 		</Container>
 	);
 }
@@ -122,7 +127,7 @@ const Container = styled.div`
 	height: auto;
 	padding: 103px 0 0 50px;
 	position: sticky;
-	top: ${(props) => (props.timeline ? "153px" : "72px")};
+	top: ${({ pageTitle }) => (pageTitle === "timeline" ? "153px" : "72px")};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
@@ -135,8 +140,8 @@ const Container = styled.div`
 		z-index: 3;
 	}
 
-	@media screen and (max-width: 400px) {
-		right: 125px;
+	@media screen and (max-width: 352px) {
+		right: 115px;
 	}
 `;
 
@@ -145,7 +150,7 @@ const TrendingBox = styled.div`
 	height: 406px;
 	border-radius: 16px;
 	background-color: #171717;
-	margin-top: ${(props) => (props.hashtag ? "81px" : "0")};
+	margin-top: ${({ pageTitle }) => (pageTitle === "hashtag" ? "81px" : "0")};
 	margin-bottom: 28px;
 
 	h2 {
@@ -167,7 +172,6 @@ const TrendingBox = styled.div`
 			display: none;
 		}
 		li {
-			font-family: "Lato", sans-serif;
 			overflow-x: hidden;
 			font-size: 19px;
 			font-weight: 700;
@@ -188,15 +192,14 @@ const TrendingBox = styled.div`
 		left: 50px;
 		margin-top: 0;
 
-		${(props) => {
-			if (props.isActive) {
+		${({ isActive }) => {
+			if (isActive) {
 				return `
-              &&& {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);				
-              } 
-            `;
+				&&& {
+					opacity: 1;
+					visibility: visible;
+					transform: translateY(0);				
+				}`;
 			}
 		}}
 	}
@@ -207,7 +210,7 @@ const TrendingBox = styled.div`
 		border-radius: 0 0 16px 16px;
 	}
 
-	@media screen and (max-width: 339px) {
+	@media screen and (max-width: 352px) {
 		width: 100%;
 		border-radius: 0 0 16px 16px;
 	}
@@ -218,19 +221,18 @@ const FollowButton = styled.button`
 	height: 31px;
 	margin-bottom: 50px;
 	border-radius: 5px;
-	background-color: ${(props) => (props.follows ? "#ffffff" : "#1877f2")};
-	font-family: "Lato", sans-serif;
+	background-color: ${({ follows }) => (follows ? "#ffffff" : "#1877f2")};
 	font-size: 14px;
 	font-weight: 700;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: ${(props) => (props.follows ? "#1877f2" : "#ffffff")};
+	color: ${({ follows }) => (follows ? "#1877f2" : "#ffffff")};
 	cursor: pointer;
 	outline: inherit;
 	border: inherit;
-	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
-	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+	opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+	visibility: ${({ user }) => (user ? "hidden" : "visible")};
 
 	@media screen and (max-width: 1024px) {
 		display: none;
@@ -246,8 +248,8 @@ const FollowIcon = styled.button`
 	border: inherit;
 	outline: inherit;
 	cursor: pointer;
-	opacity: ${(props) => (props.disabled ? "0.5" : "1")};
-	visibility: ${(props) => (props.user ? "hidden" : "visible")};
+	opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
+	visibility: ${({ user }) => (user ? "hidden" : "visible")};
 	:hover {
 		opacity: 0.6;
 		transition: 0.4s;
@@ -258,7 +260,7 @@ const FollowIcon = styled.button`
 	}
 `;
 
-const HashtagTrendingMobile = styled.div`
+const TrendingBoxMobile = styled.div`
 	@media screen and (max-width: 1024px) {
 		width: 35px;
 		height: 35px;
@@ -270,10 +272,11 @@ const HashtagTrendingMobile = styled.div`
 		left: 147px;
 		z-index: 3;
 		margin-top: 0;
-		font-size: 30px;
-		font-weight: 700;
-		color: ${(props) => (props.isActive ? "#1877f2" : "#ffffff")};
+		font-size: 35px;
+		font-weight: 500;
+		color: ${({ isActive }) => (isActive ? "#1877f2" : "#ffffff")};
 		cursor: pointer;
+		font-family: "Passion One";
 		:hover {
 			opacity: 0.6;
 			transition: 0.4s;
@@ -284,7 +287,11 @@ const HashtagTrendingMobile = styled.div`
 		display: none;
 	}
 
-	@media screen and (max-width: 339px) {
+	@media screen and (max-width: 352px) {
 		left: 125px;
+	}
+
+	@media screen and (max-width: 306px) {
+		left: 120px;
 	}
 `;
