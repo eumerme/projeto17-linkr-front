@@ -109,16 +109,6 @@ async function toggleFollow(body) {
 	return await axios.get(`${BASE_URL}/timeline/setinterval`, config);
 } */
 
-/* function listReposts(postId) {
-	const config = createHeaders();
-	return axios.get(`${BASE_URL}/timeline/reposts/${postId}`, config);
-} */
-
-/* function getRepostById(id) {
-	const config = createHeaders();
-	return axios.get(`${BASE_URL}/timeline/repost/${id}`, config);
-} */
-
 function newRepost(id) {
 	const config = createHeaders();
 	return axios.post(`${BASE_URL}/timeline/reposts/${id}`, {}, config);

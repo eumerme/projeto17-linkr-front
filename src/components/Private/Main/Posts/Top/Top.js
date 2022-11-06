@@ -68,6 +68,16 @@ export default function Top({
 				) : (
 					""
 				)}
+				{authId === repost.repostedById ? (
+					<Options isRepost={repost.isRepost}>
+						<FaTrash
+							style={{ cursor: "pointer" }}
+							onClick={() => openModal("delete-repost", "delete")}
+						/>
+					</Options>
+				) : (
+					""
+				)}
 			</span>
 			{isEditing ? (
 				<EditPost
