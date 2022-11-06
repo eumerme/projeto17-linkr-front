@@ -39,6 +39,8 @@ export default function PublishBox() {
 		publish(body)
 			.then(() => {
 				setUploadPosts(!uploadPosts);
+				setUploadComments(!uploadComments);
+				setUploadLikes(!uploadLikes);
 
 				if (publishForm.comment.includes("#")) {
 					searchHashtag({
@@ -49,16 +51,14 @@ export default function PublishBox() {
 					});
 				}
 
-				setTimeout(() => {
-					setUploadComments(!uploadComments);
-					setUploadLikes(!uploadLikes);
-					setMsgBtn("Publish");
-					setIsDisabled(false);
-					setPublishForm({ url: "", comment: "" });
-				}, 1200);
+				setIsDisabled(false);
+				setMsgBtn("Publish");
+				setPublishForm({ url: "", comment: "" });
 			})
 			.catch(() => {
-				alert("Houve um erro ao publicar seu link");
+				alert(
+					"An error occured while trying to publish your post, please try again"
+				);
 				setMsgBtn("Publish");
 				setIsDisabled(false);
 				setPublishForm({ url: "", comment: "" });

@@ -12,14 +12,12 @@ export default function HashtagPage() {
 	const { uploadPosts } = useContext(UploadContext);
 
 	useLayoutEffect(() => {
-		setTimeout(() => {
-			listPostsbyHashtags(hashtag)
-				.then((res) => {
-					setAllPosts(res.data);
-					if (res.data.length === 0) setEmpty(true);
-				})
-				.catch(() => setErrorServer(true));
-		}, 500);
+		listPostsbyHashtags(hashtag)
+			.then((res) => {
+				setAllPosts(res.data);
+				if (res.data.length === 0) setEmpty(true);
+			})
+			.catch(() => setErrorServer(true));
 	}, [hashtag, uploadPosts]);
 
 	return (

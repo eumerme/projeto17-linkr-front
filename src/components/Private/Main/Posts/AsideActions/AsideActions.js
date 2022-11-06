@@ -34,11 +34,15 @@ export default function AsideActions({
 			/>
 			<div onClick={() => setSeeComments(!seeComments)}>
 				<AiOutlineComment />
-				<p>{commentsLength} comments</p>
+				<p>
+					{commentsLength} {" comments"}
+				</p>
 			</div>
 			<div onClick={() => (isRepost ? "" : openModal("repost", "repost"))}>
 				<BiRepost />
-				<p>{Number(repostsAmount)} re-posts</p>
+				<p>
+					{Number(repostsAmount)} {" re-posts"}
+				</p>
 			</div>
 		</Infos>
 	);

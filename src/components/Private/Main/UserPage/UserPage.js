@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { isFollowing, listUserPosts } from "../../../../services/linkr.js";
 import UploadContext from "../../../../Contexts/UploadContext.js";
@@ -14,15 +14,13 @@ export default function UserPage() {
 	const [empty, setEmpty] = useState(false);
 	const [follow, setFollow] = useState(null);
 
-	useEffect(() => {
-		setTimeout(() => {
-			listUserPosts(id)
-				.then((res) => {
-					setAllPosts(res.data);
-					if (res.data.length === 0) setEmpty(true);
-				})
-				.catch(() => setErrorServer(true));
-		}, 500);
+	useLayoutEffect(() => {
+		listUserPosts(id)
+			.then((res) => {
+				setAllPosts(res.data);
+				if (res.data.length === 0) setEmpty(true);
+			})
+			.catch(() => setErrorServer(true));
 	}, [id, uploaPosts]);
 
 	useLayoutEffect(() => {

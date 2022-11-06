@@ -46,14 +46,13 @@ export default function Logout() {
 			<ToggleArrow isActive={isActive}>
 				<IoIosArrowDown />
 			</ToggleArrow>
-
 			<img src={auth.image} alt="profileImg"></img>
 			<ButtonWrapper
 				ref={dropdownRef}
 				isActive={isActive}
 				onClick={() => ButtonLogout()}
 			>
-				Logout
+				{"Logout"}
 			</ButtonWrapper>
 		</Wrapper>
 	);

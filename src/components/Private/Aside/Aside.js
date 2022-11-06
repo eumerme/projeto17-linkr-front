@@ -32,15 +32,13 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 	const handleFollow = () => {
 		setIsDisabled(true);
 
-		setTimeout(() => {
-			const body = { userId: auth.id, followeeId: Number(followeeId) };
-			toggleFollow(body)
-				.then(() => {
-					setIsDisabled(false);
-					setUploadFollowButton(!uploadFollowButton);
-				})
-				.catch(() => setIsDisabled(false));
-		}, 1000);
+		const body = { userId: auth.id, followeeId: Number(followeeId) };
+		toggleFollow(body)
+			.then(() => {
+				setIsDisabled(false);
+				setUploadFollowButton(!uploadFollowButton);
+			})
+			.catch(() => setIsDisabled(false));
 	};
 
 	useEffect(() => {
@@ -86,7 +84,7 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 				isActive={isActive}
 				ref={dropdownTrending}
 			>
-				<h2>trending</h2>
+				<h2>{"trending"}</h2>
 				<ul>
 					{hashtags.map((value, index) => (
 						<li
@@ -100,7 +98,7 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 								})
 							}
 						>
-							# {value.name}
+							{"# "} {value.name}
 						</li>
 					))}
 				</ul>
@@ -109,7 +107,7 @@ export default function Aside({ pageTitle, follows, followeeId }) {
 				isActive={isActive}
 				onClick={() => setIsActive(!isActive)}
 			>
-				#
+				{"#"}
 			</TrendingBoxMobile>
 		</Container>
 	);

@@ -8,7 +8,7 @@ export default function Navbar() {
 
 	return (
 		<NavbarLayout>
-			<h1 onClick={() => redirectToTimeline({ navigate })}>linkr</h1>
+			<h1 onClick={() => redirectToTimeline({ navigate })}>{"linkr"}</h1>
 			<Logout />
 		</NavbarLayout>
 	);

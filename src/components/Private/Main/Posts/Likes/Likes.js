@@ -70,7 +70,9 @@ export default function Likes({
 				)}
 			</div>
 			<ReactTooltip type="light" className="toopTip" place="bottom" />
-			<p data-tip={msg}>{likes} likes</p>
+			<p data-tip={msg}>
+				{likes} {" likes"}
+			</p>
 		</>
 	);
 }

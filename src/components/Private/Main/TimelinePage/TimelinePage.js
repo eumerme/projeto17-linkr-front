@@ -15,28 +15,26 @@ export default function Timeline() {
 	};
 
 	useLayoutEffect(() => {
-		setTimeout(() => {
-			listPosts()
-				.then((res) => {
-					if (res.data.followSomeone === true) {
-						if (res.data.posts.length === 0) setEmpty(true);
-						else setExistPost(true);
-						handlePosts(res.data.posts);
-					} else {
-						if (res.data.posts.length === 0) setExistPost(false);
-						else handlePosts(res.data.posts);
-					}
-				})
-				.catch((error) => {
-					if (error.response.status === 401) {
-						alert("Your session has expired, please log in again");
-						localStorage.clear("linkr");
-						window.location.reload();
-					} else {
-						setErrorServer(true);
-					}
-				});
-		}, 500);
+		listPosts()
+			.then((res) => {
+				if (res.data.followSomeone === true) {
+					if (res.data.posts.length === 0) setEmpty(true);
+					else setExistPost(true);
+					handlePosts(res.data.posts);
+				} else {
+					if (res.data.posts.length === 0) setExistPost(false);
+					else handlePosts(res.data.posts);
+				}
+			})
+			.catch((error) => {
+				if (error.response.status === 401) {
+					alert("Your session has expired, please log in again");
+					localStorage.clear("linkr");
+					window.location.reload();
+				} else {
+					setErrorServer(true);
+				}
+			});
 	}, [uploadPosts]);
 
 	return (

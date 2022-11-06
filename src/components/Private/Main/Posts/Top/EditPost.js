@@ -49,7 +49,7 @@ export default function EditPost({ isEditing, setIsEditing, text, id }) {
 					setUploadHashtagTrending(!uploadHashtagTrending);
 				})
 				.catch(() => {
-					alert("Não foi possível salvar suas alterações, tente novamente!");
+					alert("Your changes could not be saved, please try again");
 					setIsDisabled(false);
 				});
 		}

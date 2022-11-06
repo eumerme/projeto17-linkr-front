@@ -6,8 +6,9 @@ export default function Loading({ error, empty, existPost }) {
 		return (
 			<Wrapper>
 				<h1>
-					An error occured while trying to fetch the posts, please refresh the
-					page
+					{
+						"An error occured while trying to fetch the posts, please refresh the page"
+					}
 				</h1>
 			</Wrapper>
 		);
@@ -16,14 +17,14 @@ export default function Loading({ error, empty, existPost }) {
 	if (empty && existPost === null) {
 		return (
 			<Wrapper>
-				<h1>No posts found from your friends</h1>
+				<h1>{"No posts found from your friends"}</h1>
 			</Wrapper>
 		);
 	}
 	if (empty) {
 		return (
 			<Wrapper>
-				<h1>There are no posts yet</h1>
+				<h1>{"There are no posts yet"}</h1>
 			</Wrapper>
 		);
 	}
@@ -31,7 +32,7 @@ export default function Loading({ error, empty, existPost }) {
 	if (existPost === false) {
 		return (
 			<Wrapper>
-				<h1>You don't follow anyone yet. Search for new friends!</h1>
+				<h1>{"You don't follow anyone yet. Search for new friends!"}</h1>
 			</Wrapper>
 		);
 	}
