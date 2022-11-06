@@ -15,8 +15,7 @@ export default function Main({
 	userpage,
 	follows,
 	followeeId,
-	/* posts,
-	setPosts, */
+
 	allPosts,
 	errorServer,
 	empty,
