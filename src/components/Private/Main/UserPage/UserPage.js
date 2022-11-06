@@ -7,7 +7,7 @@ import Main from "../Main.js";
 export default function UserPage() {
 	const { id } = useParams();
 	const { state } = useLocation();
-	const { uploadFollowButton, uploaPosts } = useContext(UploadContext);
+	const { uploadFollowButton, uploadPosts } = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [allPosts, setAllPosts] = useState([]);
 	const [errorServer, setErrorServer] = useState(false);
@@ -21,7 +21,7 @@ export default function UserPage() {
 				if (res.data.length === 0) setEmpty(true);
 			})
 			.catch(() => setErrorServer(true));
-	}, [id, uploaPosts]);
+	}, [id, uploadPosts]);
 
 	useLayoutEffect(() => {
 		const body = { userId: auth.id, followeeId: Number(id) };

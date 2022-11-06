@@ -45,8 +45,8 @@ export default function EditPost({ isEditing, setIsEditing, text, id }) {
 			editPostText({ comment }, id)
 				.then(() => {
 					setIsEditing(!isEditing);
-					setUploadPosts(!uploadPosts);
 					setUploadHashtagTrending(!uploadHashtagTrending);
+					setUploadPosts(!uploadPosts);
 				})
 				.catch(() => {
 					alert("Your changes could not be saved, please try again");
