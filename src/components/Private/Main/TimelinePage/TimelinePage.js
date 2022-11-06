@@ -27,7 +27,15 @@ export default function Timeline() {
 						else handlePosts(res.data.posts);
 					}
 				})
-				.catch(() => setErrorServer(true));
+				.catch((error) => {
+					if (error.response.status === 401) {
+						alert("Your session has expired, please log in again");
+						localStorage.clear("linkr");
+						window.location.reload();
+					} else {
+						setErrorServer(true);
+					}
+				});
 		}, 500);
 	}, [uploadPosts]);
 

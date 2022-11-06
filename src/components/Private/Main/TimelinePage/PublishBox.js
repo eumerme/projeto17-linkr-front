@@ -57,17 +57,11 @@ export default function PublishBox() {
 					setPublishForm({ url: "", comment: "" });
 				}, 1200);
 			})
-			.catch((error) => {
-				if (error.response.status === 401) {
-					alert("Sessão expirada, faça login novamente");
-					localStorage.clear("linkr");
-					window.location.reload();
-				} else {
-					alert("Houve um erro ao publicar seu link");
-					setMsgBtn("Publish");
-					setIsDisabled(false);
-					setPublishForm({ url: "", comment: "" });
-				}
+			.catch(() => {
+				alert("Houve um erro ao publicar seu link");
+				setMsgBtn("Publish");
+				setIsDisabled(false);
+				setPublishForm({ url: "", comment: "" });
 			});
 	};
 
