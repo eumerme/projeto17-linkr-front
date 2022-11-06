@@ -10,7 +10,7 @@ function ButtonLogout() {
 			localStorage.clear("linkr");
 			window.location.reload();
 		})
-		.catch((error) => console.error(error));
+		.catch();
 }
 
 export default function Logout() {
@@ -85,8 +85,8 @@ const Wrapper = styled.span`
 
 const ToggleArrow = styled.div`
 	font-size: 20px;
-	transform: ${(props) =>
-		props.isActive ? "rotate(-180deg)" : "rotate(0deg)"};
+	transform: ${({ isActive }) =>
+		isActive ? "rotate(-180deg)" : "rotate(0deg)"};
 	transition: all 0.5s ease;
 `;
 
@@ -108,8 +108,8 @@ const ButtonWrapper = styled.div`
 	transform: translateY(-3px);
 	transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 
-	${(props) => {
-		if (props.isActive) {
+	${({ isActive }) => {
+		if (isActive) {
 			return `
               &&& {
                 opacity: 1;

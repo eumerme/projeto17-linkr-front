@@ -10,7 +10,6 @@ import UploadContext from "../Contexts/UploadContext.js";
 import { useState } from "react";
 
 export default function App() {
-	const [upload, setUpload] = useState(true);
 	const [uploadPosts, setUploadPosts] = useState(false);
 	const [uploadComments, setUploadComments] = useState(false);
 	const [uploadHashtagTrending, setUploadHashtagTrending] = useState(false);
@@ -22,8 +21,6 @@ export default function App() {
 			<GlobalStyle />
 			<UploadContext.Provider
 				value={{
-					upload,
-					setUpload,
 					uploadPosts,
 					setUploadPosts,
 					uploadComments,

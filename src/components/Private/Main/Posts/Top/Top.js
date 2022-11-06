@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import {
 	redirectToHashtagPage,
@@ -10,7 +10,6 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import EditPost from "./EditPost.js";
 import { useNavigate } from "react-router-dom";
-import UploadContext from "../../../../../Contexts/UploadContext.js";
 
 const tagStyle = {
 	fontSize: "17px",
@@ -20,11 +19,17 @@ const tagStyle = {
 	margin: 0,
 };
 
-export default function Top({ userId, name, authId, postId, text, openModal }) {
+export default function Top({
+	userId,
+	name,
+	authId,
+	postId,
+	text,
+	openModal,
+	repost,
+}) {
 	const [isEditing, setIsEditing] = useState(false);
 	const navigate = useNavigate();
-	const { upload, setUpload, uploadPosts, setUploadPosts } =
-		useContext(UploadContext);
 
 	return (
 		<>
@@ -32,8 +37,6 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 				<h1
 					onClick={() =>
 						redirectToUserpage({
-							setUpload,
-							upload,
 							userId,
 							name,
 							navigate,
@@ -43,13 +46,33 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 					{name}
 				</h1>
 				{authId === userId ? (
-					<Options>
-						<TiPencil
+					<Options isRepost={repost.isRepost}>
+						{repost.isRepost ? (
+							""
+						) : (
+							<TiPencil
+								style={{ cursor: "pointer" }}
+								onClick={() => setIsEditing(!isEditing)}
+							/>
+						)}
+						<FaTrash
 							style={{ cursor: "pointer" }}
-							onClick={() => setIsEditing(!isEditing)}
+							onClick={() =>
+								repost.isRepost
+									? openModal("delete-repost", "delete")
+									: openModal("delete-post", "delete")
+							}
 						/>
-
-						<FaTrash style={{ cursor: "pointer" }} onClick={openModal} />
+					</Options>
+				) : (
+					""
+				)}
+				{authId === repost.repostedById ? (
+					<Options isRepost={repost.isRepost}>
+						<FaTrash
+							style={{ cursor: "pointer" }}
+							onClick={() => openModal("delete-repost", "delete")}
+						/>
 					</Options>
 				) : (
 					""
@@ -65,9 +88,7 @@ export default function Top({ userId, name, authId, postId, text, openModal }) {
 			) : (
 				<ReactTagify
 					tagStyle={tagStyle}
-					tagClicked={(tag) =>
-						redirectToHashtagPage({ setUpload, upload, tag, navigate })
-					}
+					tagClicked={(tag) => redirectToHashtagPage({ tag, navigate })}
 				>
 					<p>{text}</p>
 				</ReactTagify>
@@ -80,37 +101,6 @@ const Options = styled.div`
 	width: 55px;
 	font-size: 20px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: ${({ isRepost }) =>
+		isRepost ? "flex-end" : "space-between"};
 `;
-
-/* const Info = styled.span`
-	width: 100%;
-	font-size: 22px;
-	font-weight: 400;
-	color: #ffffff;
-	margin-bottom: 10px;
-	display: flex;
-	justify-content: space-between;
-	line-height: 20px;
-
-	h1 {
-		cursor: pointer;
-	}
-
-	p {
-		width: 100%;
-		font-size: 17px;
-		font-weight: 400;
-		color: #b7b7b7;
-		margin-bottom: 10px;
-		display: flex;
-		flex-wrap: wrap;
-		word-wrap: break-word;
-		word-break: break-all;
-		//background-color: #b7b7b7;
-		span {
-			width: auto;
-			padding: 4px;
-		}
-	}
-`; */

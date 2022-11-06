@@ -1,7 +1,6 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UploadContext from "../../../../../Contexts/UploadContext.js";
 import { isFollowing } from "../../../../../services/linkr.js";
 import { redirectToUserpage } from "../../../commom/resirectTo.js";
 
@@ -14,7 +13,6 @@ export default function Comment({
 	userId,
 }) {
 	const navigate = useNavigate();
-	const { upload, setUpload } = useContext(UploadContext);
 	const [commentTag, setCommentTag] = useState("");
 
 	useLayoutEffect(() => {
@@ -37,8 +35,6 @@ export default function Comment({
 					<h1
 						onClick={() => {
 							redirectToUserpage({
-								setUpload,
-								upload,
 								name,
 								navigate,
 								userId: commentUserId,
@@ -68,8 +64,6 @@ const Container = styled.div`
 		display: none;
 	}
 
-	//background-color: blueviolet;
-
 	img {
 		position: sticky;
 		top: 4px;
@@ -96,8 +90,6 @@ const Infos = styled.div`
 	word-wrap: break-word;
 	word-break: break-all;
 	line-height: 20px;
-
-	//background-color: blue;
 
 	h1 {
 		font-weight: 700;

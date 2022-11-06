@@ -12,6 +12,10 @@ export default function PublishBox() {
 		setUploadPosts,
 		uploadHashtagTrending,
 		setUploadHashtagTrending,
+		uploadLikes,
+		setUploadLikes,
+		uploadComments,
+		setUploadComments,
 	} = useContext(UploadContext);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
 	const [publishForm, setPublishForm] = useState({
@@ -46,6 +50,8 @@ export default function PublishBox() {
 				}
 
 				setTimeout(() => {
+					setUploadComments(!uploadComments);
+					setUploadLikes(!uploadLikes);
 					setMsgBtn("Publish");
 					setIsDisabled(false);
 					setPublishForm({ url: "", comment: "" });
@@ -163,7 +169,7 @@ const Form = styled.form`
 		padding-left: 13px;
 		font-size: 15px;
 		font-weight: 300;
-		opacity: ${(props) => (props.isDisabled ? "0.6" : "1")};
+		opacity: ${({ isDisabled }) => (isDisabled ? "0.6" : "1")};
 	}
 	input:nth-child(3) {
 		margin: 7px 0;
@@ -179,7 +185,7 @@ const Form = styled.form`
 		outline: inherit;
 		border-radius: 5px;
 		background-color: #1877f2;
-		opacity: ${(props) => (props.isDisabled ? "0.6" : "1")};
+		opacity: ${({ isDisabled }) => (isDisabled ? "0.6" : "1")};
 		cursor: pointer;
 	}
 `;

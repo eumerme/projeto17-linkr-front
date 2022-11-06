@@ -5,8 +5,6 @@ import UploadContext from "../../../../../Contexts/UploadContext.js";
 import searchHashtag from "../../../commom/searchHashtag.js";
 
 export default function EditPost({ isEditing, setIsEditing, text, id }) {
-	console.log(isEditing, text, id);
-
 	const [comment, setComment] = useState(text);
 	const [isDisabled, setIsDisabled] = useState(false);
 	const auth = JSON.parse(localStorage.getItem("linkr"));
@@ -31,8 +29,6 @@ export default function EditPost({ isEditing, setIsEditing, text, id }) {
 			window.addEventListener("keyup", pageClickEvent);
 		}
 	}, [isEditing]);
-
-	console.log("comment ", comment);
 
 	const textEdited = (e) => {
 		if (e.key === "Enter") {

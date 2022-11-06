@@ -1,21 +1,23 @@
 import styled from "styled-components";
 import { AiOutlineComment } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { likes } from "../../../../../services/linkr";
+import { BiRepost } from "react-icons/bi";
 import Likes from "../Likes/Likes";
 
 export default function AsideActions({
 	img,
 	postId,
 	userId,
-	username,
 	setSeeComments,
 	seeComments,
 	commentsLength,
 	likedByNames,
 	likedByIds,
 	likes,
-	liked,
+	isLiked,
+	setIsLiked,
+	openModal,
+	repostsAmount,
+	isRepost,
 }) {
 	return (
 		<Infos>
@@ -26,11 +28,17 @@ export default function AsideActions({
 				likedByNames={likedByNames}
 				likedByIds={likedByIds}
 				likes={likes}
-				liked={liked}
+				isLiked={isLiked}
+				setIsLiked={setIsLiked}
+				isRepost={isRepost}
 			/>
-			<div>
-				<AiOutlineComment onClick={() => setSeeComments(!seeComments)} />
+			<div onClick={() => setSeeComments(!seeComments)}>
+				<AiOutlineComment />
 				<p>{commentsLength} comments</p>
+			</div>
+			<div onClick={() => (isRepost ? "" : openModal("repost", "repost"))}>
+				<BiRepost />
+				<p>{Number(repostsAmount)} re-posts</p>
 			</div>
 		</Infos>
 	);
@@ -43,7 +51,6 @@ const Infos = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	//background-color: crimson;
 	div {
 		cursor: pointer;
 		color: #ffffff;
